@@ -20,13 +20,13 @@ struct PreviewCellView: View {
                 ForEach(preview.previews) { preview in
                   Text(preview.displayName ?? "Preview")
                     .font(.headline)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(Color(UIColor.label))
                     .padding(.leading, 8)
                   preview.view()
-                    .border(Color.black)
+                    .border(Color(UIColor.separator))
                     .background {
                       Checkerboard()
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color(UIColor.systemBackground))
                         .opacity(0.1)
                     }
                   Divider()
@@ -39,28 +39,29 @@ struct PreviewCellView: View {
               VStack(alignment: .leading) {
                 Text(preview.displayName)
                   .font(.headline)
-                  .foregroundStyle(.black)
+                  .foregroundStyle(Color(UIColor.label))
                   .padding(.leading, 8)
                 
                 Text("\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")")
                   .font(.subheadline)
-                  .foregroundStyle(.gray)
+                  .foregroundStyle(Color(UIColor.secondaryLabel))
                   .padding(.leading, 8)
               }
               Spacer()
               Image(systemName: "chevron.right")
-                  .foregroundColor(.gray)
+                  .foregroundColor(Color(UIColor.systemBackground))
                   .padding(.trailing, 8)
             }
           }
 
           preview.previews[0].view()
-            .border(Color.black)
+            .border(Color(UIColor.separator))
             .background {
               Checkerboard()
                 .foregroundStyle(.black)
                 .opacity(0.1)
             }
+            .preferredColorScheme(.none)
           Divider()
         }
     }
