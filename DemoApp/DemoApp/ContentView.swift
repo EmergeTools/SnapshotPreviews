@@ -14,7 +14,7 @@ struct ContentView: View {
     NavigationView {
       VStack {
         NavigationLink("Open Browser") {
-          ETBrowser()
+          LazyView(ETBrowser())
         }
         Image(systemName: "globe")
           .imageScale(.large)
@@ -23,6 +23,16 @@ struct ContentView: View {
       }
       .padding()
     }
+  }
+}
+
+struct LazyView<Content: View>: View {
+  private let build: () -> Content
+  init(_ build: @autoclosure @escaping () -> Content) {
+    self.build = build
+  }
+  var body: Content {
+    build()
   }
 }
 
