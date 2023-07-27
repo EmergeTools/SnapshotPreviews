@@ -30,7 +30,7 @@ class MyPreviewTest: PreviewTest {
 }
 ```
 
-Note there are no test functions. They get automatically added at runtime by `PreviewTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results.
+Note there are no test functions. They get automatically added at runtime by `PreviewTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results. The test must be run on an iOS simulator (not device).
 
 ![Screenshot of Xcode test output](images/testOutput.png)
 
