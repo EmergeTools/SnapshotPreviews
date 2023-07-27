@@ -8,6 +8,9 @@ let package = Package(
     platforms: [.iOS(.v16)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
+        .library(
+          name: "PreviewGallery",
+          targets: ["PreviewGallery"]),
         // Test library to import in your XCTest target.
         // This is the only library that depends on XCTest.framework
         .library(
@@ -24,6 +27,7 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .target(name: "PreviewGallery", dependencies: ["SnapshotPreviewsCore"]),
         // Snapshotting must be a dependency here so it dynamically links
         .target(name: "SnapshottingTests", dependencies: [.product(name: "Snapshotting", package: "Snapshotting")]),
         .target(name: "SnapshotPreviewsCore", dependencies: [.product(name: "SnapshottingCore", package: "Snapshotting")]),
