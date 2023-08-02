@@ -30,6 +30,8 @@
 		FA1671FD2A53E11E00A42DB0 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FC2A53E11E00A42DB0 /* MessageView.swift */; };
 		FA1671FF2A53E1AF00A42DB0 /* ConversationMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FE2A53E1AF00A42DB0 /* ConversationMessageView.swift */; };
 		FA3C0DE72A620E9A00278952 /* MyPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C0DE62A620E9A00278952 /* MyPreviewTest.swift */; };
+		FA4F5AD92A7A3E7700B268FF /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; };
+		FA4F5ADA2A7A3E7700B268FF /* Snapshotting in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA9C8E442A56959300DC4574 /* RatingPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C8E432A56959300DC4574 /* RatingPreviews.swift */; };
 		FACA23792A55FBEE0080545A /* DemoModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1671D72A5399F700A42DB0 /* DemoModule.framework */; };
 		FAF1BA632A54935C00AEBE1B /* .. in Resources */ = {isa = PBXBuildFile; fileRef = FAF1BA622A54934200AEBE1B /* .. */; };
@@ -59,6 +61,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FA4F5ADA2A7A3E7700B268FF /* Snapshotting in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4F5AD92A7A3E7700B268FF /* Snapshotting in Frameworks */,
 				FA0D85432A72A5BD002A28ED /* SnapshottingTests in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +298,7 @@
 			name = DemoAppUITests;
 			packageProductDependencies = (
 				FA0D85422A72A5BD002A28ED /* SnapshottingTests */,
+				FA4F5AD82A7A3E7700B268FF /* Snapshotting */,
 			);
 			productName = DemoAppUITests;
 			productReference = FAC167E72A5F41C500D79C23 /* DemoAppUITests.xctest */;
@@ -797,6 +802,10 @@
 		FA0D85422A72A5BD002A28ED /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SnapshottingTests;
+		};
+		FA4F5AD82A7A3E7700B268FF /* Snapshotting */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Snapshotting;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

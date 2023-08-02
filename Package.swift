@@ -17,16 +17,23 @@ let package = Package(
         .library(
           name: "SnapshotPreviewsCore",
           targets: ["SnapshotPreviewsCore"]),
-    ],
-    dependencies: [
-      .package(name: "Snapshotting", path: "Sources/Snapshotting"),
+        // Dynamic library that your main app will have inserted to generate previews
+        .library(
+          name: "Snapshotting",
+          type: .dynamic,
+          targets: ["Snapshotting"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
-        // Snapshotting must be a dependency here so it dynamically links
-        .target(name: "SnapshottingTests", dependencies: [.product(name: "Snapshotting", package: "Snapshotting")]),
-        .target(name: "SnapshotPreviewsCore", dependencies: [.product(name: "SnapshottingCore", package: "Snapshotting")]),
+        // Target that provides the XCTest
+        .target(name: "SnapshottingTests"),
+        // Core functionality
+        .target(name: "SnapshotPreviewsCore"),
+        // Inserted dylib
+        .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
+        // Swift code in the inserted dylib
+        .target(name: "SnapshottingSwift", dependencies: ["SnapshotPreviewsCore"]),
         .testTarget(
             name: "SnapshotPreviewsTests",
             dependencies: ["SnapshotPreviewsCore"]),

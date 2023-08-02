@@ -56,6 +56,11 @@ NSString* getDylibPath(NSString* dylibName) {
   }
 
   NSString *path = getDylibPath(@"Snapshotting");
+  if (!path) {
+    NSLog(@"Snapshotting dylib not found, ensure it is a dependency of your test target.");
+  }
+  assert(path != nil);
+
   NSMutableDictionary *launchEnvironment = [@{
     @"EMERGE_IS_RUNNING_FOR_SNAPSHOTS": @"1",
     @"DYLD_INSERT_LIBRARIES": path
@@ -73,7 +78,7 @@ NSString* getDylibPath(NSString* dylibName) {
   [self expectationForPredicate:exists evaluatedWithObject:label handler:nil];
   [self waitForExpectationsWithTimeout:14 handler:nil];
 
-  XCTAssertTrue(label.exists);
+  assert(label.exists);
 
   resultPath = label.label;
 
