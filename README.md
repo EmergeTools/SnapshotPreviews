@@ -15,9 +15,12 @@ See [the documentation](https://docs.emergetools.com/docs/swiftui-previews) for 
 
 ## Local Debugging
 
-Use this Swift Package for locally debugging your views snapshots. You’ll need a UI test target that imports the `SnapshottingTests` product from this package. Create a test that inherits from `PreviewTest` like this:
+Use this Swift Package for locally debugging your views snapshots. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:
 
 ```
+import Snapshotting
+import SnapshottingTests
+
 class MyPreviewTest: PreviewTest {
 
   override func getApp() -> XCUIApplication {

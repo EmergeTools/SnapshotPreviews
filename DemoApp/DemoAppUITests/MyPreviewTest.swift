@@ -7,6 +7,7 @@
 
 import Foundation
 import XCTest
+import Snapshotting
 import SnapshottingTests
 
 class MyPreviewTest: PreviewTest {

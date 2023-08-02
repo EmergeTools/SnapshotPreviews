@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SnapshottingCore
+import SnapshotPreviewsCore
 import UIKit
 
 class Snapshots {
@@ -26,7 +26,7 @@ class Snapshots {
 
   let window: UIWindow
 
-  var previews: [(SnapshottingCore.Preview, String)] = []
+  var previews: [(SnapshotPreviewsCore.Preview, String)] = []
 
   var completion: (() -> Void)?
 
