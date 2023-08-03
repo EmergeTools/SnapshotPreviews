@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FA0D853B2A72A1E9002A28ED /* CodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0D853A2A72A1E9002A28ED /* CodeEntryView.swift */; };
 		FA0D85432A72A5BD002A28ED /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = FA0D85422A72A5BD002A28ED /* SnapshottingTests */; };
 		FA1671C32A5367A800A42DB0 /* DemoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671C22A5367A800A42DB0 /* DemoAppApp.swift */; };
 		FA1671C52A5367A800A42DB0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671C42A5367A800A42DB0 /* ContentView.swift */; };
@@ -19,9 +18,6 @@
 		FA1671E62A539CCF00A42DB0 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671E52A539CCF00A42DB0 /* ButtonView.swift */; };
 		FA1671E82A539EA900A42DB0 /* ProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671E72A539EA900A42DB0 /* ProductCard.swift */; };
 		FA1671EA2A539F6E00A42DB0 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671E92A539F6E00A42DB0 /* RatingView.swift */; };
-		FA1671ED2A539F9400A42DB0 /* RideShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671EC2A539F9400A42DB0 /* RideShareButton.swift */; };
-		FA1671EF2A539FEC00A42DB0 /* RideDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671EE2A539FEC00A42DB0 /* RideDetailView.swift */; };
-		FA1671F12A53A04D00A42DB0 /* RideOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671F02A53A04D00A42DB0 /* RideOptionsView.swift */; };
 		FA1671F32A53A0AA00A42DB0 /* InfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671F22A53A0AA00A42DB0 /* InfoCardView.swift */; };
 		FA1671F52A53A0E100A42DB0 /* FeatureCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671F42A53A0E100A42DB0 /* FeatureCardView.swift */; };
 		FA1671F72A53A15200A42DB0 /* TripCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671F62A53A15200A42DB0 /* TripCardView.swift */; };
@@ -34,6 +30,11 @@
 		FA4F5ADA2A7A3E7700B268FF /* Snapshotting in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA9C8E442A56959300DC4574 /* RatingPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C8E432A56959300DC4574 /* RatingPreviews.swift */; };
 		FACA23792A55FBEE0080545A /* DemoModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1671D72A5399F700A42DB0 /* DemoModule.framework */; };
+		FAD52BF62A7B5EEA001F1832 /* ExpandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF12A7B5EEA001F1832 /* ExpandingView.swift */; };
+		FAD52BF72A7B5EEA001F1832 /* CodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF22A7B5EEA001F1832 /* CodeEntryView.swift */; };
+		FAD52BF82A7B5EEA001F1832 /* RideDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF32A7B5EEA001F1832 /* RideDetailView.swift */; };
+		FAD52BF92A7B5EEA001F1832 /* RideShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF42A7B5EEA001F1832 /* RideShareButton.swift */; };
+		FAD52BFA2A7B5EEA001F1832 /* RideOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */; };
 		FAF1BA632A54935C00AEBE1B /* .. in Resources */ = {isa = PBXBuildFile; fileRef = FAF1BA622A54934200AEBE1B /* .. */; };
 /* End PBXBuildFile section */
 
@@ -80,7 +81,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FA0D853A2A72A1E9002A28ED /* CodeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEntryView.swift; sourceTree = "<group>"; };
 		FA1671BF2A5367A800A42DB0 /* DemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA1671C22A5367A800A42DB0 /* DemoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAppApp.swift; sourceTree = "<group>"; };
 		FA1671C42A5367A800A42DB0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -93,9 +93,6 @@
 		FA1671E52A539CCF00A42DB0 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		FA1671E72A539EA900A42DB0 /* ProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCard.swift; sourceTree = "<group>"; };
 		FA1671E92A539F6E00A42DB0 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		FA1671EC2A539F9400A42DB0 /* RideShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideShareButton.swift; sourceTree = "<group>"; };
-		FA1671EE2A539FEC00A42DB0 /* RideDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailView.swift; sourceTree = "<group>"; };
-		FA1671F02A53A04D00A42DB0 /* RideOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideOptionsView.swift; sourceTree = "<group>"; };
 		FA1671F22A53A0AA00A42DB0 /* InfoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCardView.swift; sourceTree = "<group>"; };
 		FA1671F42A53A0E100A42DB0 /* FeatureCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureCardView.swift; sourceTree = "<group>"; };
 		FA1671F62A53A15200A42DB0 /* TripCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCardView.swift; sourceTree = "<group>"; };
@@ -107,6 +104,11 @@
 		FA9C8E432A56959300DC4574 /* RatingPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPreviews.swift; sourceTree = "<group>"; };
 		FAC167E72A5F41C500D79C23 /* DemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACA23752A55FB970080545A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		FAD52BF12A7B5EEA001F1832 /* ExpandingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandingView.swift; sourceTree = "<group>"; };
+		FAD52BF22A7B5EEA001F1832 /* CodeEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEntryView.swift; sourceTree = "<group>"; };
+		FAD52BF32A7B5EEA001F1832 /* RideDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideDetailView.swift; sourceTree = "<group>"; };
+		FAD52BF42A7B5EEA001F1832 /* RideShareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideShareButton.swift; sourceTree = "<group>"; };
+		FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideOptionsView.swift; sourceTree = "<group>"; };
 		FAF1BA622A54934200AEBE1B /* .. */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ..; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,9 +165,9 @@
 			isa = PBXGroup;
 			children = (
 				FAF1BA622A54934200AEBE1B /* .. */,
-				FA1671EB2A539F7F00A42DB0 /* RideShareViews */,
 				FA1671C22A5367A800A42DB0 /* DemoAppApp.swift */,
 				FA1671C42A5367A800A42DB0 /* ContentView.swift */,
+				FAD52BF02A7B5EBB001F1832 /* TestViews */,
 				FA1671C62A5367A800A42DB0 /* Assets.xcassets */,
 				FA1671C82A5367A800A42DB0 /* DemoApp.entitlements */,
 				FA1671C92A5367A800A42DB0 /* Preview Content */,
@@ -201,17 +203,6 @@
 			path = DemoModule;
 			sourceTree = "<group>";
 		};
-		FA1671EB2A539F7F00A42DB0 /* RideShareViews */ = {
-			isa = PBXGroup;
-			children = (
-				FA1671EC2A539F9400A42DB0 /* RideShareButton.swift */,
-				FA1671EE2A539FEC00A42DB0 /* RideDetailView.swift */,
-				FA1671F02A53A04D00A42DB0 /* RideOptionsView.swift */,
-				FA0D853A2A72A1E9002A28ED /* CodeEntryView.swift */,
-			);
-			path = RideShareViews;
-			sourceTree = "<group>";
-		};
 		FA6E72BD2A54944800448463 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +217,18 @@
 				FA3C0DE62A620E9A00278952 /* MyPreviewTest.swift */,
 			);
 			path = DemoAppUITests;
+			sourceTree = "<group>";
+		};
+		FAD52BF02A7B5EBB001F1832 /* TestViews */ = {
+			isa = PBXGroup;
+			children = (
+				FAD52BF22A7B5EEA001F1832 /* CodeEntryView.swift */,
+				FAD52BF12A7B5EEA001F1832 /* ExpandingView.swift */,
+				FAD52BF32A7B5EEA001F1832 /* RideDetailView.swift */,
+				FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */,
+				FAD52BF42A7B5EEA001F1832 /* RideShareButton.swift */,
+			);
+			path = TestViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -381,11 +384,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA1671C52A5367A800A42DB0 /* ContentView.swift in Sources */,
-				FA1671EF2A539FEC00A42DB0 /* RideDetailView.swift in Sources */,
-				FA0D853B2A72A1E9002A28ED /* CodeEntryView.swift in Sources */,
+				FAD52BF82A7B5EEA001F1832 /* RideDetailView.swift in Sources */,
 				FA1671C32A5367A800A42DB0 /* DemoAppApp.swift in Sources */,
-				FA1671ED2A539F9400A42DB0 /* RideShareButton.swift in Sources */,
-				FA1671F12A53A04D00A42DB0 /* RideOptionsView.swift in Sources */,
+				FAD52BFA2A7B5EEA001F1832 /* RideOptionsView.swift in Sources */,
+				FAD52BF72A7B5EEA001F1832 /* CodeEntryView.swift in Sources */,
+				FAD52BF62A7B5EEA001F1832 /* ExpandingView.swift in Sources */,
+				FAD52BF92A7B5EEA001F1832 /* RideShareButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
