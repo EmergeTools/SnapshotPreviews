@@ -7,6 +7,7 @@
 
 import Foundation
 import SnapshotPreviewsCore
+import SwiftUI
 import UIKit
 
 class Snapshots {
@@ -54,7 +55,10 @@ class Snapshots {
     }
 
     let (preview, typeName) = previews.removeFirst()
-    let view = preview.view()
+    var view = preview.view()
+    if let colorScheme = preview.colorScheme() {
+      view = AnyView(view.colorScheme(colorScheme))
+    }
     let fileName = "\(typeName)-\(preview.previewId).png"
     let file = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: fileName, directoryHint: .notDirectory)
     print(file)
