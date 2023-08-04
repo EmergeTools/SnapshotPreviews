@@ -20,7 +20,7 @@ enum ViewInspection {
       return (0..<childrenCount).map { Self.attribute(label: ".\($0)", value: tupleViews) as! any View }
    }
 
-   public static func children(of view: some View) -> [any View] {
+  public static func children(of view: some View) -> [(any View, [AnyViewModifier])] {
       let typeName = String(reflecting: type(of: view))
       if typeName.starts(with: "SwiftUI.Tuple") {
          return Self.tupleChildren(view).flatMap { Self.children(of: $0) }
@@ -28,10 +28,27 @@ enum ViewInspection {
          let content = Self.attribute(label: "content", value: view) as! any View
          return children(of: content)
       } else if typeName.starts(with: "SwiftUI.ForEach"), let provider = view as? ViewsProvider {
-         return provider.views()
+        return provider.views().map { ($0, [])}
+      } else if typeName.starts(with: "SwiftUI.AnyView") {
+        let storage = Self.attribute(label: "storage", value: view)!
+        let storageView = Self.attribute(label: "view", value: storage) as! any View
+        return children(of: storageView)
+      } else if typeName.starts(with: "SwiftUI.ModifiedContent") {
+        let content = Self.attribute(label: "content", value: view) as! any View
+        let modifier = Self.attribute(label: "modifier", value: view) as! any ViewModifier
+        let anyModifier = Self.eraseModifier(someModifier: modifier)
+        return children(of: content).map { (view, modifiers) in
+          var modifiers = modifiers
+          modifiers.append(anyModifier)
+          return (view, modifiers)
+        }
       }
-      return [view]
+      return [(view, [])]
    }
+
+  static func eraseModifier(someModifier: some ViewModifier) -> AnyViewModifier {
+    AnyViewModifier(modifier: someModifier)
+  }
 
   public static func preferredColorScheme(of view: some View) -> ColorScheme? {
     let typeName = String(reflecting: type(of: view))
@@ -39,10 +56,16 @@ enum ViewInspection {
       let modifier = Self.attribute(label: "modifier", value: view)!
       if let colorSchemePreference = modifier as? _PreferenceWritingModifier<PreferredColorSchemeKey> {
         return colorSchemePreference.value
+      } else if let m = modifier as? AnyViewModifier, let colorSchemePreference = m.viewModifier as? _PreferenceWritingModifier<PreferredColorSchemeKey> {
+        return colorSchemePreference.value
       } else {
         let content = Self.attribute(label: "content", value: view) as! any View
         return preferredColorScheme(of: content)
       }
+    } else if typeName.starts(with: "SwiftUI.AnyView") {
+      let storage = Self.attribute(label: "storage", value: view)!
+      let storageView = Self.attribute(label: "view", value: storage) as! any View
+      return preferredColorScheme(of: storageView)
     }
     return nil
   }

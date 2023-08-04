@@ -129,6 +129,7 @@ struct RideDetailView_Previews: PreviewProvider {
             .environment(\.sizeCategory, .accessibilityExtraExtraLarge)
             .previewLayout(.sizeThatFits)
         }
+        .environment(\.layoutDirection, .rightToLeft)
     }
 }
 

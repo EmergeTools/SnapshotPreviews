@@ -19,22 +19,22 @@ struct RideOptionView: View {
                     .font(.headline)
 
                 Text(description)
-                    .foregroundColor(.gray)
+                .foregroundColor(Color(uiColor: UIColor.systemGray))
                     .font(.subheadline)
                     .lineLimit(2)
 
                 Text("$\(price, specifier: "%.2f")")
                     .font(.headline)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color(uiColor: UIColor.systemBlue))
             }
 
             Spacer()
 
             Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
+            .foregroundColor(Color(uiColor: UIColor.systemGray))
         }
         .padding()
-        .background(Color.white)
+        .background(Color(uiColor: UIColor.systemBackground))
         .cornerRadius(12)
         .shadow(color: .gray, radius: 3, x: 0, y: 2)
     }
