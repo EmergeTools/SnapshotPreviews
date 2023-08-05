@@ -33,10 +33,7 @@ private class CompletedViewController: UIViewController {
         label.numberOfLines = 0
         label.accessibilityIdentifier = "emg_finished_label"
 
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        if let documentsDirectory = paths.first {
-            label.text = "\(documentsDirectory)"
-        }
+        label.text = "\(Snapshots.resultsDir.path())"
 
         view.addSubview(label)
 
