@@ -42,14 +42,14 @@ struct RideOptionView: View {
 
 struct RideOptionView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
+      PreviewVariants(layout: .sizeThatFits) {
             RideOptionView(title: "Economy", description: "Affordable and efficient", price: 19.99)
-                .previewLayout(.sizeThatFits)
                 .padding()
+                .previewVariant(named: "Economy")
 
             RideOptionView(title: "Luxury", description: "Premium experience", price: 39.99)
-                .previewLayout(.sizeThatFits)
                 .padding()
+                .previewVariant(named: "Luxury")
         }
     }
 }
