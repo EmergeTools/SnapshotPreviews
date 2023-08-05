@@ -67,7 +67,8 @@ NSString* getDylibPath(NSString* dylibName) {
   } mutableCopy];
   NSArray *previews = [self snapshotPreviews];
   if (previews) {
-    launchEnvironment[@"SNAPSHOT_PREVIEWS"] = previews;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:previews options:nil error:nil];
+    launchEnvironment[@"SNAPSHOT_PREVIEWS"] = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   }
   app.launchEnvironment = launchEnvironment;
   [app launch];
@@ -82,7 +83,7 @@ NSString* getDylibPath(NSString* dylibName) {
 
   resultPath = label.label;
 
-  NSLog(@"Images can be found in %@", path);
+  NSLog(@"Images can be found in %@", resultPath);
 
   NSError *error = nil;
   NSArray<NSString *> *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:resultPath error:&error];

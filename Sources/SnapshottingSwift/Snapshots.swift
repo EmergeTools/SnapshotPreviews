@@ -31,7 +31,13 @@ class Snapshots {
 
   var completion: (() -> Void)?
 
+  static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+  static let resultsDir = documentsURL.appendingPathComponent("EMGSnapshots")
+
   func saveSnapshots(completion: @escaping () -> Void) {
+    try? FileManager.default.removeItem(at: Self.resultsDir)
+    try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
+
     self.completion = completion
     let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"];
     var previewsSet: Set<String>? = nil
@@ -60,7 +66,7 @@ class Snapshots {
       view = AnyView(view.colorScheme(colorScheme))
     }
     let fileName = "\(typeName)-\(preview.previewId).png"
-    let file = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: fileName, directoryHint: .notDirectory)
+    let file = Self.resultsDir.appending(path: fileName, directoryHint: .notDirectory)
     print(file)
     view.snapshot(layout: preview.layout, window: window, async: false) { image in
           if let pngData = image.pngData() {
