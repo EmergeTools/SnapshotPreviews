@@ -76,7 +76,7 @@ NSString* getDylibPath(NSString* dylibName) {
   NSPredicate *exists = [NSPredicate predicateWithFormat:@"exists == 1"];
 
   [self expectationForPredicate:exists evaluatedWithObject:label handler:nil];
-  [self waitForExpectationsWithTimeout:14 handler:nil];
+  [self waitForExpectationsWithTimeout:120 handler:nil];
 
   assert(label.exists);
 

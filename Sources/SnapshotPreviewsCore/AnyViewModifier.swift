@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-public struct AnyViewModifier: ViewModifier {
-  public func body(content: Content) -> some View {
+struct AnyViewModifier: ViewModifier {
+  func body(content: Content) -> some View {
     modifier(content)
   }
 
-  public init(modifier: some ViewModifier) {
+  init(modifier: some ViewModifier) {
     self.viewModifier = modifier
     self.modifier = { AnyView($0.modifier(modifier)) }
   }

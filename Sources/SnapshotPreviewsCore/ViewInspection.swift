@@ -21,29 +21,32 @@ enum ViewInspection {
    }
 
   public static func children(of view: some View) -> [(any View, [AnyViewModifier])] {
-      let typeName = String(reflecting: type(of: view))
-      if typeName.starts(with: "SwiftUI.Tuple") {
-         return Self.tupleChildren(view).flatMap { Self.children(of: $0) }
-      } else if typeName.starts(with: "SwiftUI.Group") {
-         let content = Self.attribute(label: "content", value: view) as! any View
-         return children(of: content)
-      } else if typeName.starts(with: "SwiftUI.ForEach"), let provider = view as? ViewsProvider {
-        return provider.views().map { ($0, [])}
-      } else if typeName.starts(with: "SwiftUI.AnyView") {
-        let storage = Self.attribute(label: "storage", value: view)!
-        let storageView = Self.attribute(label: "view", value: storage) as! any View
-        return children(of: storageView)
-      } else if typeName.starts(with: "SwiftUI.ModifiedContent") {
-        let content = Self.attribute(label: "content", value: view) as! any View
-        let modifier = Self.attribute(label: "modifier", value: view) as! any ViewModifier
-        let anyModifier = Self.eraseModifier(someModifier: modifier)
-        return children(of: content).map { (view, modifiers) in
-          var modifiers = modifiers
-          modifiers.append(anyModifier)
-          return (view, modifiers)
-        }
+    let typeName = String(reflecting: type(of: view))
+    if typeName.starts(with: "SwiftUI.Tuple") {
+       return Self.tupleChildren(view).flatMap { children(of: $0) }
+    } else if typeName.starts(with: "SwiftUI.Group") {
+       let content = Self.attribute(label: "content", value: view) as! any View
+       return children(of: content)
+    } else if typeName.starts(with: "SwiftUI.ForEach"), let provider = view as? ViewsProvider {
+      return provider.views().flatMap { children(of: $0) }
+    } else if typeName.starts(with: "SwiftUI.AnyView") {
+      let storage = Self.attribute(label: "storage", value: view)!
+      let storageView = Self.attribute(label: "view", value: storage) as! any View
+      return children(of: storageView)
+    } else if typeName.starts(with: "SwiftUI.ModifiedContent") {
+      let content = Self.attribute(label: "content", value: view) as! any View
+      let modifier = Self.attribute(label: "modifier", value: view) as! any ViewModifier
+      let anyModifier = Self.eraseModifier(someModifier: modifier)
+      return children(of: content).map { (view, modifiers) in
+        var modifiers = modifiers
+        modifiers.append(anyModifier)
+        return (view, modifiers)
       }
-      return [(view, [])]
+    }
+    if !typeName.starts(with: "SwiftUI.") {
+      return children(of: view.body)
+    }
+    return [(view, [])]
    }
 
   static func eraseModifier(someModifier: some ViewModifier) -> AnyViewModifier {
