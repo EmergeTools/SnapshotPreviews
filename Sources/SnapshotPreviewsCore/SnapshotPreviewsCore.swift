@@ -7,13 +7,18 @@ public struct Preview: Identifiable {
     displayName = preview.displayName
     device = preview.device
     layout = preview.layout
-    _colorScheme = {
-      let v = ViewInspection.children(of: provider.previews)[preview.id]
-      return ViewInspection.preferredColorScheme(of: v)
+    let _view = {
+      let (v, modifiers) = ViewInspection.children(of: provider.previews)[preview.id]
+      var result = AnyView(v)
+      for modifier in modifiers.reversed() {
+        result = AnyView(result.modifier(modifier))
+      }
+      return result
     }
-    _view = {
-      let v = ViewInspection.children(of: provider.previews)[preview.id]
-      return AnyView(v)
+    self._view = _view
+    _colorScheme = {
+      let v = _view()
+      return ViewInspection.preferredColorScheme(of: v)
     }
   }
 
