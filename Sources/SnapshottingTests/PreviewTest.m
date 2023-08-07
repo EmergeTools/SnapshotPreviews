@@ -11,6 +11,7 @@
 
 static NSString *resultPath;
 static NSMutableArray<NSString *> *imagePaths;
+static NSDictionary *metadata;
 
 NSString* getDylibPath(NSString* dylibName) {
     uint32_t count = _dyld_image_count();
@@ -102,6 +103,9 @@ NSString* getDylibPath(NSString* dylibName) {
 
             class_addMethod([self class], NSSelectorFromString(testSelectorName), (IMP) dynamicTestMethod, "v@:");
             i++;
+          } else if ([file isEqualToString:@"metadata.json"]) {
+            NSData *data = [NSData dataWithContentsOfFile:[resultPath stringByAppendingPathComponent:file]];
+            metadata = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
           }
       }
   }
@@ -117,7 +121,12 @@ void dynamicTestMethod(id self, SEL _cmd) {
   UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
   NSData *imageData = UIImagePNGRepresentation(image);
   if (imageData) {
-    XCTAttachment *attachment = [XCTAttachment attachmentWithUniformTypeIdentifier:@"public.png" name:@"Rendered Preview" payload:imageData userInfo:nil];
+    NSString *displayName = @"Rendered Preview";
+    NSDictionary *imageMetadata = metadata[imageName];
+    if (imageMetadata && imageMetadata[@"displayName"]) {
+      displayName = imageMetadata[@"displayName"];
+    }
+    XCTAttachment *attachment = [XCTAttachment attachmentWithUniformTypeIdentifier:@"public.png" name:displayName payload:imageData userInfo:nil];
       attachment.lifetime = XCTAttachmentLifetimeKeepAlways;
       [self addAttachment:attachment];
   }

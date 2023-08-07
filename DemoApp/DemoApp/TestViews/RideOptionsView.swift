@@ -45,11 +45,11 @@ struct RideOptionView_Previews: PreviewProvider {
       PreviewVariants(layout: .sizeThatFits) {
             RideOptionView(title: "Economy", description: "Affordable and efficient", price: 19.99)
                 .padding()
-                .previewVariant(named: "Economy")
+                .previewVariant(named: "Ride Option View - Economy")
 
             RideOptionView(title: "Luxury", description: "Premium experience", price: 39.99)
                 .padding()
-                .previewVariant(named: "Luxury")
+                .previewVariant(named: "Ride Option View - Luxury")
         }
     }
 }
