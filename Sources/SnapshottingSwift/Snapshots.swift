@@ -51,10 +51,24 @@ class Snapshots {
       return previewsSet.contains(name)
     }
     previews = previewTypes.flatMap { preview in preview.previews.map { ($0, preview.typeName) } }
+    var previewMetadata: [String: [String: String]] = [:]
+    previews.forEach { (preview, typeName) in
+      if let displayName = preview.displayName {
+        previewMetadata[fileName(typeName: typeName, preview: preview)] = [
+          "displayName": displayName
+        ]
+      }
+    }
+    let data = try! JSONEncoder().encode(previewMetadata)
+    try! data.write(to: Self.resultsDir.appending(path: "metadata.json", directoryHint: .notDirectory))
     generateSnapshot()
   }
 
-  func generateSnapshot() {
+  private func fileName(typeName: String, preview: Preview) -> String {
+    "\(typeName)-\(preview.previewId).png"
+  }
+
+  private func generateSnapshot() {
     guard !previews.isEmpty else {
       completion?()
       return
@@ -65,7 +79,7 @@ class Snapshots {
     if let colorScheme = preview.colorScheme() {
       view = AnyView(view.colorScheme(colorScheme))
     }
-    let fileName = "\(typeName)-\(preview.previewId).png"
+    let fileName = fileName(typeName: typeName, preview: preview)
     let file = Self.resultsDir.appending(path: fileName, directoryHint: .notDirectory)
     print(file)
     view.snapshot(layout: preview.layout, window: window, async: false) { image in
