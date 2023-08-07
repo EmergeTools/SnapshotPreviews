@@ -11,7 +11,11 @@ import UIKit
 
 extension View {
   public func snapshot(layout: PreviewLayout, window: UIWindow, async: Bool, completion: @escaping (UIImage) -> Void) {
-    let controller = ExpandingViewController(rootView: self, layout: layout)
+    UIView.setAnimationsEnabled(false)
+    let animationDisabledView = self.transaction { transaction in
+      transaction.disablesAnimations = true
+    }
+    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout)
     controller._disableSafeArea = true
     let view = controller.view!
     view.translatesAutoresizingMaskIntoConstraints = false
