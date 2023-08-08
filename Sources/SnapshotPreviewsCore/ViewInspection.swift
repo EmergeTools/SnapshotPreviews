@@ -21,7 +21,8 @@ enum ViewInspection {
    }
 
   public static func children(of view: some View) -> [(any View, [AnyViewModifier])] {
-    let typeName = String(reflecting: type(of: view))
+    let viewType = type(of: view)
+    let typeName = String(reflecting: viewType)
     if typeName.starts(with: "SwiftUI.Tuple") {
        return Self.tupleChildren(view).flatMap { children(of: $0) }
     } else if typeName.starts(with: "SwiftUI.Group") {
@@ -43,7 +44,7 @@ enum ViewInspection {
         return (view, modifiers)
       }
     }
-    if !typeName.starts(with: "SwiftUI.") {
+    if viewType.Body != Never.self && !typeName.starts(with: "SwiftUI.") {
       return children(of: view.body)
     }
     return [(view, [])]
