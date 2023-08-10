@@ -106,6 +106,16 @@ NSString* getDylibPath(NSString* dylibName) {
           } else if ([file isEqualToString:@"metadata.json"]) {
             NSData *data = [NSData dataWithContentsOfFile:[resultPath stringByAppendingPathComponent:file]];
             metadata = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
+            for (NSString *key in metadata) {
+              if (metadata[key][@"error"]) {
+                NSString *testSelectorName = [NSString stringWithFormat:@"%@-%d", [key stringByDeletingPathExtension], i];
+                [imagePaths addObject:key];
+                [self.dynamicTestSelectors addObject:testSelectorName];
+
+                class_addMethod([self class], NSSelectorFromString(testSelectorName), (IMP) dynamicTestMethod, "v@:");
+                i++;
+              }
+            }
           }
       }
   }
@@ -118,11 +128,17 @@ void dynamicTestMethod(id self, SEL _cmd) {
 
   NSString *imageName = imagePaths[index];
   NSString *imagePath = [resultPath stringByAppendingFormat:@"/%@", imageName];
+  NSDictionary *imageMetadata = metadata[imageName];
+
+  if (imageMetadata && imageMetadata[@"error"]) {
+    XCTFail(@"%@", imageMetadata[@"error"]);
+    return;
+  }
+
   UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
   NSData *imageData = UIImagePNGRepresentation(image);
   if (imageData) {
     NSString *displayName = @"Rendered Preview";
-    NSDictionary *imageMetadata = metadata[imageName];
     if (imageMetadata && imageMetadata[@"displayName"]) {
       displayName = imageMetadata[@"displayName"];
     }

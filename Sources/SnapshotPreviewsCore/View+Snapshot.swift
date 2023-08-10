@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 extension View {
-  public func snapshot(layout: PreviewLayout, window: UIWindow, async: Bool, completion: @escaping (UIImage) -> Void) {
+  public func snapshot(layout: PreviewLayout, window: UIWindow, async: Bool, completion: @escaping (Result<UIImage, Error>) -> Void) {
     UIView.setAnimationsEnabled(false)
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
@@ -26,11 +26,11 @@ extension View {
     controller.expansionSettled = {
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, rootVC: containerVC, controller: controller))
+          completion(.success(Self.takeSnapshot(layout: layout, rootVC: containerVC, controller: controller)))
         }
       } else {
         DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, rootVC: containerVC, controller: controller))
+          completion(.success(Self.takeSnapshot(layout: layout, rootVC: containerVC, controller: controller)))
         }
       }
     }

@@ -1,5 +1,18 @@
 import SwiftUI
 
+enum PreviewError: Error {
+  case previewCountMismatch(expected: Int, actual: Int)
+}
+
+extension PreviewError: LocalizedError {
+  var errorDescription: String? {
+    switch self {
+    case .previewCountMismatch(let expected, let actual):
+      return "Expected \(expected) previews but found \(actual). Please file a bug."
+    }
+  }
+}
+
 public struct Preview: Identifiable {
   init(preview: SwiftUI._Preview, provider: any PreviewProvider.Type) {
     previewId = "\(preview.id)"
@@ -8,7 +21,12 @@ public struct Preview: Identifiable {
     device = preview.device
     layout = preview.layout
     let _view = {
-      let (v, modifiers) = ViewInspection.children(of: provider.previews)[preview.id]
+      let children = ViewInspection.children(of: provider.previews)
+      guard provider._allPreviews.count == children.count else {
+        throw PreviewError.previewCountMismatch(expected: provider._allPreviews.count, actual: children.count)
+      }
+
+      let (v, modifiers) = children[preview.id]
       var result = AnyView(v)
       for modifier in modifiers.reversed() {
         result = AnyView(result.modifier(modifier))
@@ -17,7 +35,7 @@ public struct Preview: Identifiable {
     }
     self._view = _view
     _colorScheme = {
-      let v = _view()
+      let v = try _view()
       return ViewInspection.preferredColorScheme(of: v)
     }
   }
@@ -68,13 +86,13 @@ public struct Preview: Identifiable {
   public let displayName: String?
   public let device: PreviewDevice?
   public let layout: PreviewLayout
-  private let _colorScheme: () -> ColorScheme?
-  public func colorScheme() -> ColorScheme? {
-    _colorScheme()
+  private let _colorScheme: () throws -> ColorScheme?
+  public func colorScheme() throws -> ColorScheme? {
+    try _colorScheme()
   }
-  private let _view: () -> AnyView
-  public func view() -> AnyView {
-    _view()
+  private let _view: () throws -> AnyView
+  public func view() throws -> AnyView {
+    try _view()
   }
 }
 
