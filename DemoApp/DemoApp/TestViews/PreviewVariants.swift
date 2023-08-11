@@ -1,5 +1,4 @@
 import SwiftUI
-import SnapshotPreviewsCore
 
 struct PreviewView: Identifiable {
   let id = UUID()
