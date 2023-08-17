@@ -13,6 +13,24 @@ Emerge handles the heavy lifting of generating, diffing and hosting the snapshot
 
 See [the documentation](https://docs.emergetools.com/docs/swiftui-previews) for how to set up snapshot testing for your app.
 
+## Preview Gallery
+
+`PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your SwiftUI previews into a gallery of compoents and features you can access from your application. Xcode is not required to view the previews. You can use it to preview individual components (buttons/rows/icons/etc)
+or even entire interactive features.
+
+<p align="center">
+  <img src="./images/image1.png" />
+</p>
+
+The public API of PreviewGallery is just one SwiftUI `View` named `PreviewGallery`. Just display this view to get the full gallery. For example, you could add a button like this:
+
+```swift
+import SwiftUI
+import PreviewGallery
+
+NavigationLink("Open Gallery") { PreviewGallery() }
+```
+
 ## Local Debugging
 
 Use this Swift Package for locally debugging your views snapshots. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:

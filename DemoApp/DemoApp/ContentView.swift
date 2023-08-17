@@ -7,11 +7,15 @@
 
 import SwiftUI
 import DemoModule
+import PreviewGallery
 
 struct ContentView: View {
   var body: some View {
     NavigationView {
       VStack {
+        NavigationLink("Open Gallery") {
+          LazyView(PreviewGallery())
+        }
         Image(systemName: "globe")
           .imageScale(.large)
           .foregroundStyle(.tint)

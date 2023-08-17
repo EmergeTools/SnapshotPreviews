@@ -28,6 +28,7 @@
 		FA1671FB2A53E03800A42DB0 /* MessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FA2A53E03800A42DB0 /* MessageRow.swift */; };
 		FA1671FD2A53E11E00A42DB0 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FC2A53E11E00A42DB0 /* MessageView.swift */; };
 		FA1671FF2A53E1AF00A42DB0 /* ConversationMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FE2A53E1AF00A42DB0 /* ConversationMessageView.swift */; };
+		FA170AD32A8B3BA400D1D53D /* PreviewGallery in Frameworks */ = {isa = PBXBuildFile; productRef = FA170AD22A8B3BA400D1D53D /* PreviewGallery */; };
 		FA3C0DE72A620E9A00278952 /* MyPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C0DE62A620E9A00278952 /* MyPreviewTest.swift */; };
 		FA40515D2A95B587007A66D4 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA40515C2A95B587007A66D4 /* EmptyView.swift */; };
 		FA4F5AD92A7A3E7700B268FF /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; };
@@ -127,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA170AD32A8B3BA400D1D53D /* PreviewGallery in Frameworks */,
 				FACA23792A55FBEE0080545A /* DemoModule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +278,7 @@
 			);
 			name = DemoApp;
 			packageProductDependencies = (
+				FA170AD22A8B3BA400D1D53D /* PreviewGallery */,
 			);
 			productName = DemoApp;
 			productReference = FA1671BF2A5367A800A42DB0 /* DemoApp.app */;
@@ -826,6 +829,10 @@
 		FA0D85422A72A5BD002A28ED /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SnapshottingTests;
+		};
+		FA170AD22A8B3BA400D1D53D /* PreviewGallery */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PreviewGallery;
 		};
 		FA4F5AD82A7A3E7700B268FF /* Snapshotting */ = {
 			isa = XCSwiftPackageProductDependency;
