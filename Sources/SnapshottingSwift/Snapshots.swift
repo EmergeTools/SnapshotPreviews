@@ -91,7 +91,7 @@ class Snapshots {
     completion?()
   }
 
-  private func fileName(typeName: String, preview: Preview) -> String {
+  private func fileName(typeName: String, preview: SnapshotPreviewsCore.Preview) -> String {
     "\(typeName)-\(preview.previewId).png"
   }
 
