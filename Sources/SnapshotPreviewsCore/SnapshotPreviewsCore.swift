@@ -98,8 +98,10 @@ public struct Preview: Identifiable {
 
 // Wraps PreviewProvider or PreviewRegistry
 public struct PreviewType: Hashable, Identifiable {
-  init<A: PreviewProvider>(typeName: String, preivewProvider: A.Type) {
+  init<A: PreviewProvider>(typeName: String, imageName: String, offset: Int, preivewProvider: A.Type) {
     self.typeName = typeName
+    self.imageName = imageName
+    self.offset = offset
     self.fileID = nil
     self.previews = A._allPreviews.map { Preview(preview: $0, provider: A.self) }
     self.platform = A.platform
@@ -107,8 +109,10 @@ public struct PreviewType: Hashable, Identifiable {
 
 #if swift(>=5.9)
   @available(iOS 17.0, *)
-  init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
+  init?<A: PreviewRegistry>(typeName: String, imageName: String, offset: Int, registry: A.Type) {
     self.typeName = typeName
+    self.imageName = imageName
+    self.offset = offset
     self.fileID = A.fileID
     guard let internalPreview = try? A.makePreview(), let preview = Preview(preview: internalPreview)  else {
       return nil
@@ -149,6 +153,8 @@ public struct PreviewType: Hashable, Identifiable {
   }
 
   public let id = UUID()
+  public let imageName: String
+  public let offset: Int
   public let fileID: String?
   public let typeName: String
   public var previews: [Preview]
@@ -162,17 +168,17 @@ public func findPreviews(
   return getPreviewTypes()
     .filter { shouldInclude($0.name) }
     .compactMap { conformance -> PreviewType? in
-      let (name, accessor, proto) = conformance
+      let (name, image, offset, accessor, proto) = conformance
       willAccess(name)
       switch proto {
       case "PreviewProvider":
         let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
-        return PreviewType(typeName: name, preivewProvider: previewProvider)
+        return PreviewType(typeName: name, imageName: image, offset: offset, preivewProvider: previewProvider)
       case "PreviewRegistry":
   #if swift(>=5.9)
         if #available(iOS 17.0, *) {
           let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
-          return PreviewType(typeName: name, registry: previewRegistry)
+          return PreviewType(typeName: name, imageName: image, offset: offset, registry: previewRegistry)
         }
   #endif
         return nil

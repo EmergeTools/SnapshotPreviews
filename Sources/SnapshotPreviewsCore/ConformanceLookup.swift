@@ -34,7 +34,7 @@ private func getTypeName(descriptor: UnsafePointer<TargetModuleContextDescriptor
   }
 }
 
-typealias LookupResult = (name: String, accessor: () -> UInt64, proto: String)
+typealias LookupResult = (name: String, accessor: UnsafeRawPointer, proto: String)
 
 private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDescriptor>) -> LookupResult? {
   let flags = conformance.pointee.conformanceFlags
@@ -63,15 +63,14 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   if let name = getTypeName(descriptor: descriptor),
      [ContextDescriptorKind.Class, ContextDescriptorKind.Struct, ContextDescriptorKind.Enum].contains(descriptor.pointee.flags.kind) {
     let accessFunctionPointer = UnsafeRawPointer(descriptor).advanced(by: MemoryLayout<TargetModuleContextDescriptor>.offset(of: \.accessFunction)!).advanced(by: Int(descriptor.pointee.accessFunction))
-    let accessFunction = unsafeBitCast(accessFunctionPointer, to: (@convention(c) () -> UInt64).self)
-    return (name, accessFunction, protocolName)
+    return (name, accessFunctionPointer, protocolName)
   }
   return nil
 }
 
-func getPreviewTypes() -> [LookupResult] {
+func getPreviewTypes() -> [(name: String, image: String, offset: Int, accessor: () -> UInt64, proto: String)] {
   let images = _dyld_image_count()
-  var types = [LookupResult]()
+  var types = [(name: String, image: String, offset: Int, accessor: () -> UInt64, proto: String)]()
   for i in 0..<images {
     let imageName = String(cString: _dyld_get_image_name(i))
     // System frameworks on the simulator are in Xcode.app/Contents/** (Although Xcode could be renamed like Xcode-beta.app so don't check for that specifically)
@@ -87,13 +86,16 @@ func getPreviewTypes() -> [LookupResult] {
         "__TEXT",
         "__swift5_proto",
         &size))?.assumingMemoryBound(to: Int32.self)
-    if var sectData = sectStart {
+    if let sectStart {
+      var sectData = sectStart
       for _ in 0..<Int(size)/MemoryLayout<Int32>.size {
         let conformance = UnsafeRawPointer(sectData)
           .advanced(by: Int(sectData.pointee))
           .assumingMemoryBound(to: ProtocolConformanceDescriptor.self)
         if let result = parseConformance(conformance: conformance) {
-          types.append(result)
+          let offset = UnsafeRawPointer(sectStart).distance(to: result.accessor)
+          let accessFunction = unsafeBitCast(result.accessor, to: (@convention(c) () -> UInt64).self)
+          types.append((result.name, imageName, offset, accessFunction, result.proto))
         }
         sectData = sectData.successor()
       }
