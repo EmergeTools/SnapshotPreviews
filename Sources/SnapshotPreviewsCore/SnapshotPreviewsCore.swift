@@ -155,24 +155,30 @@ public struct PreviewType: Hashable, Identifiable {
   public let platform: PreviewPlatform?
 }
 
-public func findPreviews(shouldInclude: (String) -> Bool = { _ in true }) -> [PreviewType] {
-  return getPreviewTypes().filter { shouldInclude($0.name) }.compactMap { conformance -> PreviewType? in
-    let (name, accessor, proto) = conformance
-    switch proto {
-    case "PreviewProvider":
-      let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
-      return PreviewType(typeName: name, preivewProvider: previewProvider)
-    case "PreviewRegistry":
-#if swift(>=5.9)
-      if #available(iOS 17.0, *) {
-        let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
-        return PreviewType(typeName: name, registry: previewRegistry)
+public func findPreviews(
+  shouldInclude: (String) -> Bool = { _ in true },
+  willAccess: (String) -> Void = { _ in }) -> [PreviewType]
+{
+  return getPreviewTypes()
+    .filter { shouldInclude($0.name) }
+    .compactMap { conformance -> PreviewType? in
+      let (name, accessor, proto) = conformance
+      willAccess(name)
+      switch proto {
+      case "PreviewProvider":
+        let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
+        return PreviewType(typeName: name, preivewProvider: previewProvider)
+      case "PreviewRegistry":
+  #if swift(>=5.9)
+        if #available(iOS 17.0, *) {
+          let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
+          return PreviewType(typeName: name, registry: previewRegistry)
+        }
+  #endif
+        return nil
+      default:
+        return nil
       }
-#endif
-      return nil
-    default:
-      return nil
-    }
   }
 }
 
