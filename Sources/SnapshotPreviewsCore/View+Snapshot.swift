@@ -111,7 +111,7 @@ extension View {
 extension UIView {
   func render(size: CGSize, context: CGContext) -> Bool {
     if size.height < UIScreen.main.bounds.size.height * 2 {
-      return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: false)
+      return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
     } else {
       layer.layerForSnapshot.render(in: context)
       return true
