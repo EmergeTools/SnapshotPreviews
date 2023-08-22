@@ -1,15 +1,8 @@
 import SwiftUI
 
-enum PreviewError: Error {
-  case previewCountMismatch(expected: Int, actual: Int)
-}
-
-extension PreviewError: LocalizedError {
-  var errorDescription: String? {
-    switch self {
-    case .previewCountMismatch(let expected, let actual):
-      return "Expected \(expected) previews but found \(actual). Please file a bug."
-    }
+extension View {
+  fileprivate func applyModifier<M: ViewModifier>(_ mod: M) -> any View {
+    return modifier(mod)
   }
 }
 
@@ -27,11 +20,11 @@ public struct Preview: Identifiable {
       }
 
       let (v, modifiers) = children[preview.id]
-      var result = AnyView(v)
-      for modifier in modifiers.reversed() {
-        result = AnyView(result.modifier(modifier))
+      var result = v
+      for mod in modifiers {
+        result = result.applyModifier(mod)
       }
-      return result
+      return AnyView(result)
     }
     self._view = _view
     _colorScheme = {

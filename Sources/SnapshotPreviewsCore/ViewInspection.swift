@@ -20,7 +20,7 @@ enum ViewInspection {
       return (0..<childrenCount).map { Self.attribute(label: ".\($0)", value: tupleViews) as! any View }
    }
 
-  public static func children(of view: some View) -> [(any View, [AnyViewModifier])] {
+  public static func children(of view: some View) -> [(any View, [any ViewModifier])] {
     let viewType = type(of: view)
     let typeName = String(reflecting: viewType)
     if typeName.starts(with: "SwiftUI.Tuple") {
@@ -37,10 +37,9 @@ enum ViewInspection {
     } else if typeName.starts(with: "SwiftUI.ModifiedContent") {
       let content = Self.attribute(label: "content", value: view) as! any View
       let modifier = Self.attribute(label: "modifier", value: view) as! any ViewModifier
-      let anyModifier = Self.eraseModifier(someModifier: modifier)
       return children(of: content).map { (view, modifiers) in
         var modifiers = modifiers
-        modifiers.append(anyModifier)
+        modifiers.append(modifier)
         return (view, modifiers)
       }
     }
@@ -50,17 +49,13 @@ enum ViewInspection {
     return [(view, [])]
    }
 
-  static func eraseModifier(someModifier: some ViewModifier) -> AnyViewModifier {
-    AnyViewModifier(modifier: someModifier)
-  }
-
   public static func preferredColorScheme(of view: some View) -> ColorScheme? {
     let typeName = String(reflecting: type(of: view))
     if typeName.starts(with: "SwiftUI.ModifiedContent") {
       let modifier = Self.attribute(label: "modifier", value: view)!
       if let colorSchemePreference = modifier as? _PreferenceWritingModifier<PreferredColorSchemeKey> {
         return colorSchemePreference.value
-      } else if let m = modifier as? AnyViewModifier, let colorSchemePreference = m.viewModifier as? _PreferenceWritingModifier<PreferredColorSchemeKey> {
+      } else if let colorSchemePreference = modifier as? _PreferenceWritingModifier<PreferredColorSchemeKey> {
         return colorSchemePreference.value
       } else {
         let content = Self.attribute(label: "content", value: view) as! any View
