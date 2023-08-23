@@ -54,7 +54,11 @@ enum ViewInspection {
       }
     }
     if viewType.Body != Never.self && !typeName.starts(with: "SwiftUI.") {
-      return children(of: view.body)
+      let children = children(of: view.body)
+      if children.count == 1 {
+        return [(view, [])]
+      }
+      return children
     }
     return [(view, [])]
    }
