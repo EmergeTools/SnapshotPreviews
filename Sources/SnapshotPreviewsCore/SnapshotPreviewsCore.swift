@@ -7,17 +7,14 @@ extension View {
 }
 
 public struct Preview: Identifiable {
-  init(preview: SwiftUI._Preview, provider: any PreviewProvider.Type) {
+  init<P>(preview: SwiftUI._Preview, extraction: PreviewProviderExtraction<P>) {
     previewId = "\(preview.id)"
     orientation = preview.interfaceOrientation
     displayName = preview.displayName
     device = preview.device
     layout = preview.layout
     let _view = {
-      let children = ViewInspection.children(of: provider.previews)
-      guard provider._allPreviews.count == children.count else {
-        throw PreviewError.previewCountMismatch(expected: provider._allPreviews.count, actual: children.count)
-      }
+      let children = try extraction.previews.get()
 
       let (v, modifiers) = children[preview.id]
       var result = v
@@ -94,7 +91,8 @@ public struct PreviewType: Hashable, Identifiable {
   init<A: PreviewProvider>(typeName: String, preivewProvider: A.Type) {
     self.typeName = typeName
     self.fileID = nil
-    self.previews = A._allPreviews.map { Preview(preview: $0, provider: A.self) }
+    let extraction = PreviewProviderExtraction<A>()
+    self.previews = A._allPreviews.map { Preview(preview: $0, extraction: extraction) }
     self.platform = A.platform
   }
 
