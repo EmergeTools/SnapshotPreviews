@@ -29,6 +29,7 @@
 		FA1671FD2A53E11E00A42DB0 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FC2A53E11E00A42DB0 /* MessageView.swift */; };
 		FA1671FF2A53E1AF00A42DB0 /* ConversationMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1671FE2A53E1AF00A42DB0 /* ConversationMessageView.swift */; };
 		FA3C0DE72A620E9A00278952 /* MyPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3C0DE62A620E9A00278952 /* MyPreviewTest.swift */; };
+		FA40515D2A95B587007A66D4 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA40515C2A95B587007A66D4 /* EmptyView.swift */; };
 		FA4F5AD92A7A3E7700B268FF /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; };
 		FA4F5ADA2A7A3E7700B268FF /* Snapshotting in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA9C8E442A56959300DC4574 /* RatingPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C8E432A56959300DC4574 /* RatingPreviews.swift */; };
@@ -107,6 +108,7 @@
 		FA1671FC2A53E11E00A42DB0 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		FA1671FE2A53E1AF00A42DB0 /* ConversationMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMessageView.swift; sourceTree = "<group>"; };
 		FA3C0DE62A620E9A00278952 /* MyPreviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPreviewTest.swift; sourceTree = "<group>"; };
+		FA40515C2A95B587007A66D4 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		FA9C8E432A56959300DC4574 /* RatingPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPreviews.swift; sourceTree = "<group>"; };
 		FAC167E72A5F41C500D79C23 /* DemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACA23752A55FB970080545A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -230,6 +232,7 @@
 			children = (
 				FAD52BF22A7B5EEA001F1832 /* CodeEntryView.swift */,
 				FAD52BF12A7B5EEA001F1832 /* ExpandingView.swift */,
+				FA40515C2A95B587007A66D4 /* EmptyView.swift */,
 				FAD52BF32A7B5EEA001F1832 /* RideDetailView.swift */,
 				FA0B20F82A7DCB0100EC91D3 /* ArrayBuilder.swift */,
 				FA0B20F92A7DCB0100EC91D3 /* PreviewVariants.swift */,
@@ -396,6 +399,7 @@
 				FAD52BF82A7B5EEA001F1832 /* RideDetailView.swift in Sources */,
 				FA1671C32A5367A800A42DB0 /* DemoAppApp.swift in Sources */,
 				FA0B20FA2A7DCB0100EC91D3 /* ArrayBuilder.swift in Sources */,
+				FA40515D2A95B587007A66D4 /* EmptyView.swift in Sources */,
 				FAD52BFA2A7B5EEA001F1832 /* RideOptionsView.swift in Sources */,
 				FA0B20F12A7DA20200EC91D3 /* AnyViewPreview.swift in Sources */,
 				FA0B20FB2A7DCB0100EC91D3 /* PreviewVariants.swift in Sources */,

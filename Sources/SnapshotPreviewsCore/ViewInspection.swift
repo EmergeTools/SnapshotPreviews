@@ -23,7 +23,17 @@ enum ViewInspection {
   public static func children(of view: some View) -> [(any View, [any ViewModifier])] {
     let viewType = type(of: view)
     let typeName = String(reflecting: viewType)
-    if typeName.starts(with: "SwiftUI.Tuple") {
+    if typeName.starts(with: "SwiftUI._ConditionalContent") {
+      let storage = Self.attribute(label: "storage", value: view)!
+      if let trueContent = Self.attribute(label: "trueContent", value: storage) as? any View {
+        return children(of: trueContent)
+      } else {
+        let content = Self.attribute(label: "falseContent", value: storage) as! any View
+        return children(of: content)
+      }
+    } else if typeName.starts(with: "SwiftUI.EmptyView") {
+      return []
+    } else if typeName.starts(with: "SwiftUI.Tuple") {
        return Self.tupleChildren(view).flatMap { children(of: $0) }
     } else if typeName.starts(with: "SwiftUI.Group") {
        let content = Self.attribute(label: "content", value: view) as! any View
