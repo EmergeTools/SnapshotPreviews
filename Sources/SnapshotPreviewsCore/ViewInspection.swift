@@ -20,48 +20,52 @@ enum ViewInspection {
       return (0..<childrenCount).map { Self.attribute(label: ".\($0)", value: tupleViews) as! any View }
    }
 
-  public static func children(of view: some View) -> [(any View, [any ViewModifier])] {
+  public static func childrenIfMultiple(of view: some View) -> [(any View, [any ViewModifier])] {
+    let children = children(of: view)
+    if children.count == 1 {
+      return [(view, [])]
+    }
+    return children
+  }
+
+  private static func children(of view: some View) -> [(any View, [any ViewModifier])] {
     let viewType = type(of: view)
     let typeName = String(reflecting: viewType)
     if typeName.starts(with: "SwiftUI._ConditionalContent") {
       let storage = Self.attribute(label: "storage", value: view)!
       if let trueContent = Self.attribute(label: "trueContent", value: storage) as? any View {
-        return children(of: trueContent)
+        return childrenIfMultiple(of: trueContent)
       } else {
         let content = Self.attribute(label: "falseContent", value: storage) as! any View
-        return children(of: content)
+        return childrenIfMultiple(of: content)
       }
     } else if typeName.starts(with: "SwiftUI.EmptyView") {
       return []
     } else if typeName.starts(with: "SwiftUI.Tuple") {
-       return Self.tupleChildren(view).flatMap { children(of: $0) }
+      return tupleChildren(view).flatMap { childrenIfMultiple(of: $0) }
     } else if typeName.starts(with: "SwiftUI.Group") {
-       let content = Self.attribute(label: "content", value: view) as! any View
-       return children(of: content)
+      let content = Self.attribute(label: "content", value: view) as! any View
+      return childrenIfMultiple(of: content)
     } else if typeName.starts(with: "SwiftUI.ForEach"), let provider = view as? ViewsProvider {
-      return provider.views().flatMap { children(of: $0) }
+      return provider.views().flatMap { childrenIfMultiple(of: $0) }
     } else if typeName.starts(with: "SwiftUI.AnyView") {
       let storage = Self.attribute(label: "storage", value: view)!
       let storageView = Self.attribute(label: "view", value: storage) as! any View
-      return children(of: storageView)
+      return childrenIfMultiple(of: storageView)
     } else if typeName.starts(with: "SwiftUI.ModifiedContent") {
       let content = Self.attribute(label: "content", value: view) as! any View
       let modifier = Self.attribute(label: "modifier", value: view) as! any ViewModifier
-      return children(of: content).map { (view, modifiers) in
+      return childrenIfMultiple(of: content).map { (view, modifiers) in
         var modifiers = modifiers
         modifiers.append(modifier)
         return (view, modifiers)
       }
     }
     if viewType.Body != Never.self && !typeName.starts(with: "SwiftUI.") {
-      let children = children(of: view.body)
-      if children.count == 1 {
-        return [(view, [])]
-      }
-      return children
+      return childrenIfMultiple(of: view.body)
     }
     return [(view, [])]
-   }
+  }
 
   public static func preferredColorScheme(of view: some View) -> ColorScheme? {
     let typeName = String(reflecting: type(of: view))
