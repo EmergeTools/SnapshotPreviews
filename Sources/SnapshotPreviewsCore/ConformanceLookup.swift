@@ -34,7 +34,7 @@ private func getTypeName(descriptor: UnsafePointer<TargetModuleContextDescriptor
   }
 }
 
-typealias LookupResult = (name: String, accessor: () -> UInt64, proto: String)
+public typealias LookupResult = (name: String, accessor: () -> UInt64, proto: String)
 
 private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDescriptor>) -> LookupResult? {
   let flags = conformance.pointee.conformanceFlags
