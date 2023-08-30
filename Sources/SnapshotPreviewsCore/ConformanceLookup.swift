@@ -69,7 +69,7 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   return nil
 }
 
-func getPreviewTypes() -> [LookupResult] {
+public func getPreviewTypes() -> [LookupResult] {
   let images = _dyld_image_count()
   var types = [LookupResult]()
   for i in 0..<images {
