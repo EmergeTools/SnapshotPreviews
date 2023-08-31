@@ -8,6 +8,9 @@ let package = Package(
     platforms: [.iOS(.v16)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
+        .library(
+          name: "PreviewGallery",
+          targets: ["PreviewGallery"]),
         // Test library to import in your XCTest target.
         // This is the only library that depends on XCTest.framework
         .library(
@@ -34,6 +37,7 @@ let package = Package(
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
         // Swift code in the inserted dylib
         .target(name: "SnapshottingSwift", dependencies: ["SnapshotPreviewsCore"]),
+        .target(name: "PreviewGallery", dependencies: ["SnapshotPreviewsCore"]),
         .testTarget(
             name: "SnapshotPreviewsTests",
             dependencies: ["SnapshotPreviewsCore"]),
