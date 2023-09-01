@@ -19,4 +19,18 @@ class MyPreviewTest: PreviewTest {
   override func snapshotPreviews() -> [String]? {
     return nil
   }
+
+  override func enableAccessibilityAudit() -> Bool {
+    true
+  }
+
+  @available(iOS 17.0, *)
+  override func auditType() -> XCUIAccessibilityAuditType {
+    return .all
+  }
+
+  @available(iOS 17.0, *)
+  override func handle(_ issue: XCUIAccessibilityAuditIssue) -> Bool {
+    return false
+  }
 }

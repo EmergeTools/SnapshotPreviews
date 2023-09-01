@@ -33,7 +33,7 @@ public struct Preview: Identifiable {
 #if swift(>=5.9)
   @available(iOS 17.0, *)
   init?(preview: DeveloperToolsSupport.Preview) {
-    previewId = ""
+    previewId = "0"
     orientation = nil
     device = nil
     let preview = Mirror(reflecting: preview)

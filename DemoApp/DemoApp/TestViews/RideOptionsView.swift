@@ -21,6 +21,7 @@ struct RideOptionView: View {
                 Text(description)
                 .foregroundColor(Color(uiColor: UIColor.systemGray))
                     .font(.subheadline)
+                    .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(2)
 
                 Text("$\(price, specifier: "%.2f")")

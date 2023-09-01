@@ -12,12 +12,13 @@ import UIKit
 public class Initializer: NSObject {
 
   @objc
+  static public let shared = Initializer()
+
+  let snapshots = Snapshots()
+
+  @objc
   @MainActor public func start() {
-    let snapshots = Snapshots()
-    snapshots.saveSnapshots {
-      snapshots.window.rootViewController = CompletedViewController()
-      NSLog("done generating snapshots")
-    }
+    snapshots.writeClassNames()
   }
 
 }
