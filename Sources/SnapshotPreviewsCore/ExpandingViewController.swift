@@ -20,6 +20,11 @@ extension UIView {
     var subviews = subviews
     while !subviews.isEmpty {
       let subview = subviews.removeFirst()
+      // Don’t expand UITextView, it can cause flakes
+      guard !(subview is UITextView) else {
+        continue
+      }
+
       subviews.append(contentsOf: subview.subviews)
       if let scrollView = subview as? UIScrollView {
         return scrollView
