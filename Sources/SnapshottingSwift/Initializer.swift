@@ -33,7 +33,7 @@ private class CompletedViewController: UIViewController {
         label.numberOfLines = 0
         label.accessibilityIdentifier = "emg_finished_label"
 
-        label.text = "\(Snapshots.resultsDir.path())"
+        label.text = "\(Snapshots.resultsDir.path)"
 
         view.addSubview(label)
 
