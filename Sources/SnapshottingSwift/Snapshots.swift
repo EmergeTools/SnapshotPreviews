@@ -86,7 +86,7 @@ class Snapshots {
       previewMetadata[name] = metadata
     }
     let data = try! JSONEncoder().encode(previewMetadata)
-    try! data.write(to: Self.resultsDir.appending(path: "metadata.json", directoryHint: .notDirectory))
+    try! data.write(to: Self.resultsDir.appendingPathComponent("metadata.json", isDirectory: false))
 
     completion?()
   }
@@ -108,7 +108,7 @@ class Snapshots {
         view = AnyView(view.colorScheme(colorScheme))
       }
       let fileName = fileName(typeName: typeName, preview: preview)
-      let file = Self.resultsDir.appending(path: fileName, directoryHint: .notDirectory)
+      let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
       print(file)
       view.snapshot(layout: preview.layout, window: window, async: false) { imageResult in
         do {
