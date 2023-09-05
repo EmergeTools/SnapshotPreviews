@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum ViewInspection {
+public enum ViewInspection {
 
    static func attribute(label: String, value: Any) -> Any? {
       let mirror = (value as? Mirror) ?? Mirror(reflecting: value)
