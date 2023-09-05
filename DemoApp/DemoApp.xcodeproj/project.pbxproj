@@ -42,7 +42,6 @@
 		FAD52BF82A7B5EEA001F1832 /* RideDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF32A7B5EEA001F1832 /* RideDetailView.swift */; };
 		FAD52BF92A7B5EEA001F1832 /* RideShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF42A7B5EEA001F1832 /* RideShareButton.swift */; };
 		FAD52BFA2A7B5EEA001F1832 /* RideOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */; };
-		FAF1BA632A54935C00AEBE1B /* .. in Resources */ = {isa = PBXBuildFile; fileRef = FAF1BA622A54934200AEBE1B /* .. */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -378,7 +377,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA1671CB2A5367A800A42DB0 /* Preview Assets.xcassets in Resources */,
-				FAF1BA632A54935C00AEBE1B /* .. in Resources */,
 				FA1671C72A5367A800A42DB0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
