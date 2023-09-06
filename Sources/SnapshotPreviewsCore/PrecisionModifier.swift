@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 public struct EmergePrecisionModifier: ViewModifier {
-  let precision: Float
+  let precision: Float?
 
   public func body(content: Content) -> some View {
     content
@@ -17,7 +17,7 @@ public struct EmergePrecisionModifier: ViewModifier {
 }
 
 extension View {
-  public func emergeSnapshotPrecision(_ precision: Float) -> some View {
+  public func emergeSnapshotPrecision(_ precision: Float?) -> some View {
     modifier(EmergePrecisionModifier(precision: precision))
   }
 }
