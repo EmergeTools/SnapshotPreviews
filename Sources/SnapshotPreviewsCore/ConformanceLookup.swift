@@ -49,6 +49,11 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   let descriptorOffset = Int(conformance.pointee.protocolDescriptor & ~1)
   let jumpPtr = UnsafeRawPointer(conformance).advanced(by: MemoryLayout<ProtocolConformanceDescriptor>.offset(of: \.protocolDescriptor)!).advanced(by: descriptorOffset)
   let address = jumpPtr.load(as: UInt64.self)
+
+  // Address will be 0 if the protocol is not available (such as only defined on a newer OS)
+  guard address != 0 else {
+    return nil
+  }
   let protoPtr = UnsafeRawPointer(bitPattern: UInt(address))!
   let proto = protoPtr.load(as: ProtocolDescriptor.self)
   let namePtr = protoPtr.advanced(by: MemoryLayout<ProtocolDescriptor>.offset(of: \.name)!).advanced(by: Int(proto.name))
