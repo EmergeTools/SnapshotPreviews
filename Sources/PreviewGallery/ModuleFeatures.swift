@@ -48,7 +48,7 @@ struct ModuleFeatures: View {
           }
         }
       }
-    }.navigationTitle("Features")
+    }.navigationTitle("Screens")
   }
 
 }
