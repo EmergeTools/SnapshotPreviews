@@ -32,7 +32,7 @@ struct ModulePreviews: View {
               } label: {
                 VStack {
                   TitleSubtitleRow(
-                    title: "Features",
+                    title: "Screens",
                     subtitle: "\(featureProviders.count) Preview\(featureProviders.count != 1 ? "s" : "")")
                   Divider()
                 }
