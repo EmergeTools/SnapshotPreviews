@@ -14,12 +14,18 @@ enum RenderingError: Error {
 }
 
 extension View {
-  public func snapshot(layout: PreviewLayout, window: UIWindow, async: Bool, completion: @escaping (Result<UIImage, Error>) -> Void) {
+  public func snapshot(
+    layout: PreviewLayout,
+    window: UIWindow,
+    supportsExpansion: Bool,
+    async: Bool,
+    completion: @escaping (Result<UIImage, Error>) -> Void)
+  {
     UIView.setAnimationsEnabled(false)
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
     }
-    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout)
+    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout, supportsExpansion: supportsExpansion)
     controller._disableSafeArea = true
     let view = controller.view!
     view.translatesAutoresizingMaskIntoConstraints = false
