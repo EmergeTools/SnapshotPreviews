@@ -38,12 +38,14 @@ public final class ExpandingViewController<Content: View>: UIHostingController<C
 
   private var didCall = false
   private var previousHeight: CGFloat?
+  private let supportsExpansion: Bool
 
   private var heightAnchor: NSLayoutConstraint?
 
   var expansionSettled: (() -> Void)?
 
-  init(rootView: Content, layout: PreviewLayout) {
+  init(rootView: Content, layout: PreviewLayout, supportsExpansion: Bool) {
+    self.supportsExpansion = supportsExpansion
     super.init(rootView: rootView)
 
     switch layout {
@@ -82,7 +84,7 @@ public final class ExpandingViewController<Content: View>: UIHostingController<C
     }
 
     let scrollView = view.firstScrollView
-    if let scrollView {
+    if let scrollView, supportsExpansion {
       let diff = Int(scrollView.contentSize.height - scrollView.visibleContentHeight)
       if abs(diff) > 0 {
         if previousHeight != nil || diff > 0 {

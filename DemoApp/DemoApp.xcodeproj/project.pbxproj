@@ -111,6 +111,7 @@
 		FA1671FE2A53E1AF00A42DB0 /* ConversationMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationMessageView.swift; sourceTree = "<group>"; };
 		FA3C0DE62A620E9A00278952 /* MyPreviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPreviewTest.swift; sourceTree = "<group>"; };
 		FA40515C2A95B587007A66D4 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		FA44246E2AAA5B27005BFCD9 /* DemoApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = DemoApp.xctestplan; sourceTree = "<group>"; };
 		FA5E82962A96448A008DE3F0 /* StateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateView.swift; sourceTree = "<group>"; };
 		FA9C8E432A56959300DC4574 /* RatingPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPreviews.swift; sourceTree = "<group>"; };
 		FAC167E72A5F41C500D79C23 /* DemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +157,7 @@
 		FA1671B62A5367A800A42DB0 = {
 			isa = PBXGroup;
 			children = (
+				FA44246E2AAA5B27005BFCD9 /* DemoApp.xctestplan */,
 				FA1671C12A5367A800A42DB0 /* DemoApp */,
 				FA1671D82A5399F700A42DB0 /* DemoModule */,
 				FAC167E82A5F41C500D79C23 /* DemoAppUITests */,

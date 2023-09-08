@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "FF846110-BFA2-419E-BF99-A9FC438920E2",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:DemoApp.xcodeproj",
+        "identifier" : "FAC167E62A5F41C500D79C23",
+        "name" : "DemoAppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

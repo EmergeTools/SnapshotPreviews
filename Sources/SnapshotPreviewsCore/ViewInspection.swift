@@ -106,6 +106,18 @@ public enum ViewInspection {
       return nil
     }
   }
+
+  public static func shouldExpand(_ view: some View) -> Bool {
+    return getModifier(of: view) { modifier in
+      let typeName = String(reflecting: modifier)
+      if typeName.contains(".EmergeExpansionModifier") {
+        if let enabled = Self.attribute(label: "enabled", value: modifier) as? Bool {
+          return enabled
+        }
+      }
+      return true
+    } ?? true
+  }
 }
 
 protocol ViewsProvider {
