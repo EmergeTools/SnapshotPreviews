@@ -18,6 +18,7 @@ extension View {
     layout: PreviewLayout,
     window: UIWindow,
     supportsExpansion: Bool,
+    renderingMode: EmergeRenderingMode?,
     async: Bool,
     completion: @escaping (Result<UIImage, Error>) -> Void)
   {
@@ -36,11 +37,11 @@ extension View {
     controller.expansionSettled = {
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, rootVC: containerVC, controller: controller))
+          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller))
         }
       } else {
         DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, rootVC: containerVC, controller: controller))
+          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller))
         }
       }
     }
@@ -74,7 +75,12 @@ extension View {
     return (windowRootVC, containerVC)
   }
 
-  private static func takeSnapshot(layout: PreviewLayout, rootVC: UIViewController, controller: UIViewController) -> Result<UIImage, Error> {
+  private static func takeSnapshot(
+    layout: PreviewLayout,
+    renderingMode: EmergeRenderingMode?,
+    rootVC: UIViewController,
+    controller: UIViewController) -> Result<UIImage, Error>
+  {
     let view = controller.view!
     let drawCode: (CGContext) -> Void
 
@@ -86,12 +92,12 @@ extension View {
     case .fixed(width: let width, height: let height):
       targetSize = CGSize(width: width, height: height)
       drawCode = { ctx in
-        success = view.render(size: targetSize, context: ctx)
+        success = view.render(size: targetSize, mode: renderingMode, context: ctx)
       }
     case .sizeThatFits:
       targetSize = view.bounds.size
       drawCode = { ctx in
-        success = view.render(size: targetSize, context: ctx)
+        success = view.render(size: targetSize, mode: renderingMode, context: ctx)
       }
     case .device:
       fallthrough
@@ -100,7 +106,7 @@ extension View {
 
       targetSize = CGSize(width: UIScreen.main.bounds.size.width, height: max(viewSize.height, UIScreen.main.bounds.size.height))
       drawCode = { ctx in
-        success = rootVC.view.render(size: targetSize, context: ctx)
+        success = rootVC.view.render(size: targetSize, mode: renderingMode, context: ctx)
       }
     }
     let renderer = UIGraphicsImageRenderer(size: targetSize)
@@ -115,12 +121,20 @@ extension View {
 }
 
 extension UIView {
-  func render(size: CGSize, context: CGContext) -> Bool {
-    if size.height < UIScreen.main.bounds.size.height * 2 {
-      return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
-    } else {
+  func render(size: CGSize, mode: EmergeRenderingMode?, context: CGContext) -> Bool {
+    switch mode {
+    case .coreAnimation:
       layer.layerForSnapshot.render(in: context)
       return true
+    case .uiView:
+      return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
+    case .none:
+      if size.height < UIScreen.main.bounds.size.height * 2 {
+        return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
+      } else {
+        layer.layerForSnapshot.render(in: context)
+        return true
+      }
     }
   }
 }

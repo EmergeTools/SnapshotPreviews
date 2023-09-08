@@ -105,13 +105,14 @@ class Snapshots {
     do {
       var view = try preview.view()
       let supportsExpansion = ViewInspection.shouldExpand(view)
+      let renderingMode = ViewInspection.renderingMode(of: view)
       if let colorScheme = try preview.colorScheme() {
         view = AnyView(view.colorScheme(colorScheme))
       }
       let fileName = fileName(typeName: typeName, preview: preview)
       let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
       print(file)
-      view.snapshot(layout: preview.layout, window: window, supportsExpansion: supportsExpansion, async: false) { imageResult in
+      view.snapshot(layout: preview.layout, window: window, supportsExpansion: supportsExpansion, renderingMode: renderingMode, async: false) { imageResult in
         do {
           let image = try imageResult.get()
           if let pngData = image.pngData() {

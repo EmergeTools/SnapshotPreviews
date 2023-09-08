@@ -118,6 +118,23 @@ public enum ViewInspection {
       return true
     } ?? true
   }
+
+  public static func renderingMode(of view: some View) -> EmergeRenderingMode? {
+    return getModifier(of: view) { modifier in
+      let typeName = String(reflecting: modifier)
+      if typeName.contains(".RenderingModeModifier") {
+        if let mode = Self.attribute(label: "renderingMode", value: modifier) {
+          let caseName = String(reflecting: mode)
+          if caseName.contains("EmergeRenderingMode.coreAnimation") {
+            return .coreAnimation
+          } else if caseName.contains("EmergeRenderingMode.uiView") {
+            return .uiView
+          }
+        }
+      }
+      return nil
+    }
+  }
 }
 
 protocol ViewsProvider {
