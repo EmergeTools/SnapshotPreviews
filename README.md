@@ -11,18 +11,18 @@ Emerge handles the heavy lifting of generating, diffing and hosting the snapshot
 
 ## Generating Snapshots
 
-See [the documentation](https://docs.emergetools.com/docs/swiftui-previews) for how to set up snapshot testing for your app.
+See [the documentation](https://docs.emergetools.com/docs/snapshot-testing) for how to set up snapshot testing for your app.
 
 ## Preview Gallery
 
-`PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your SwiftUI previews into a gallery of compoents and features you can access from your application. Xcode is not required to view the previews. You can use it to preview individual components (buttons/rows/icons/etc)
+`PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your SwiftUI previews into a gallery of components and features you can access from your application. Xcode is not required to view the previews. You can use it to preview individual components (buttons/rows/icons/etc)
 or even entire interactive features.
 
 <p align="center">
   <img src="./images/image1.png" />
 </p>
 
-The public API of PreviewGallery is just one SwiftUI `View` named `PreviewGallery`. Just display this view to get the full gallery. For example, you could add a button like this:
+The public API of PreviewGallery is a single SwiftUI `View` named `PreviewGallery`. Displaying this view gives you access to the full gallery. For example, you could add a button with navigation like this:
 
 ```swift
 import SwiftUI
@@ -51,7 +51,7 @@ class MyPreviewTest: PreviewTest {
 }
 ```
 
-Note there are no test functions. They get automatically added at runtime by `PreviewTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results. The test must be run on an iOS simulator (not device).
+Note that there are no test functions; they are automatically added at runtime by `PreviewTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results. The test must be run on an iOS simulator (not device).
 
 ![Screenshot of Xcode test output](images/testOutput.png)
 
