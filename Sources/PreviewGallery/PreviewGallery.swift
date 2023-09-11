@@ -17,12 +17,13 @@ struct PreviewCellView: View {
       NavigationLink {
         PreviewsDetail(previewType: preview)
       } label: {
-        VStack(alignment: .center, spacing: 8) {
+        VStack(alignment: .center, spacing: 10) {
           TitleSubtitleRow(
             title: preview.displayName,
             subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")")
           PreviewCell(preview: preview.previews[0])
         }
+        .padding(.bottom, 8)
       }
       Divider()
     }
