@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import SnapshotPreviewsCore
 
-struct ModuleFeatures: View {
+struct ModuleScreens: View {
   
   let module: String
   let data: PreviewData
@@ -57,7 +57,7 @@ struct ModuleFeatures: View {
 #if DEBUG
 struct ModuleFeatures_Preview: PreviewProvider {
   static var previews: some View {
-    ModuleFeatures(
+    ModuleScreens(
       module: "TestModule",
       data: PreviewData(
         previews: [
