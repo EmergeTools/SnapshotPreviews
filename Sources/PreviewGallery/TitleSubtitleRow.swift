@@ -17,18 +17,26 @@ struct TitleSubtitleRow: View {
       VStack(alignment: .leading) {
         Text(title)
           .font(.headline)
-          .foregroundStyle(Color(UIColor.label))
-          .padding(.leading, 8)
+          .foregroundStyle(Color.black)
 
         Text(subtitle)
           .font(.subheadline)
-          .foregroundStyle(Color(UIColor.secondaryLabel))
-          .padding(.leading, 8)
+          .foregroundStyle(Color.secondary)
       }
+        .padding(.leading, 8)
       Spacer()
       Image(systemName: "chevron.right")
-        .foregroundColor(Color(UIColor.secondaryLabel))
+        .foregroundColor(Color.secondary)
         .padding(.trailing, 8)
     }
   }
 }
+
+#if DEBUG
+struct TitleSubtitleRow_Preview: PreviewProvider {
+  static var previews: some View {
+    TitleSubtitleRow(title: "SuperAwesomeType", subtitle: "Regular display")
+      .previewLayout(.sizeThatFits)
+  }
+}
+#endif
