@@ -13,16 +13,18 @@ struct PreviewCellView: View {
   let preview: PreviewType
   
   var body: some View {
-    NavigationLink {
-      PreviewsDetail(previewType: preview)
-    } label: {
-      VStack(alignment: .center, spacing: 8) {
-        TitleSubtitleRow(
-          title: preview.displayName,
-          subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")")
-        PreviewCell(preview: preview.previews[0])
-        Divider()
+    VStack(spacing: 8) {
+      NavigationLink {
+        PreviewsDetail(previewType: preview)
+      } label: {
+        VStack(alignment: .center, spacing: 8) {
+          TitleSubtitleRow(
+            title: preview.displayName,
+            subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")")
+          PreviewCell(preview: preview.previews[0])
+        }
       }
+      Divider()
     }
     .background(Color(UIColor.systemBackground))
   }
