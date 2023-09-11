@@ -18,6 +18,7 @@ struct PreviewCell: View {
   var body: some View {
     VStack {
       try! preview.view()
+        .padding(.vertical, 8)
         .border(Color(UIColor.separator))
         .background {
           Checkerboard()
