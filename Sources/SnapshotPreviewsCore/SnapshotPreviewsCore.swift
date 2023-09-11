@@ -88,7 +88,7 @@ public struct Preview: Identifiable {
 
 // Wraps PreviewProvider or PreviewRegistry
 public struct PreviewType: Hashable, Identifiable {
-  init<A: PreviewProvider>(typeName: String, preivewProvider: A.Type) {
+  public init<A: PreviewProvider>(typeName: String, preivewProvider: A.Type) {
     self.typeName = typeName
     self.fileID = nil
     let extraction = PreviewProviderExtraction<A>()

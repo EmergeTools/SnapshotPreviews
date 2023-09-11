@@ -17,7 +17,7 @@ struct TitleSubtitleRow: View {
       VStack(alignment: .leading) {
         Text(title)
           .font(.headline)
-          .foregroundStyle(Color.black)
+          .foregroundStyle(Color.primary)
 
         Text(subtitle)
           .font(.subheadline)
