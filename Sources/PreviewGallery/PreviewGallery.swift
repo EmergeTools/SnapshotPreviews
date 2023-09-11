@@ -1,6 +1,6 @@
 //
 //  PreviewGallery.swift
-//  
+//
 //
 //  Created by Noah Martin on 7/3/23.
 //
@@ -10,11 +10,11 @@ import SwiftUI
 import SnapshotPreviewsCore
 
 struct PreviewCellView: View {
-    let preview: PreviewType
-
+  let preview: PreviewType
+  
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      Group {
+      VStack(alignment: .center) {
         NavigationLink {
           PreviewsDetail(previewType: preview)
         } label: {
@@ -32,19 +32,19 @@ struct PreviewCellView: View {
 }
 
 public struct PreviewGallery: View {
-
+  
   let data: PreviewData
-
+  
   public init(data: PreviewData = .default) {
     self.data = data
   }
-
+  
   public var body: some View {
     if data.modules.count > 1 {
       List {
-          ForEach(Array(data.modules).sorted(), id: \.self) { module in
-            ModulePreviews(module: module, data: data)
-          }
+        ForEach(Array(data.modules).sorted(), id: \.self) { module in
+          ModulePreviews(module: module, data: data)
+        }
       }.navigationTitle("Modules")
     } else {
       ScrollView {

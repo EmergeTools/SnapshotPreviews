@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SnapshotPreviewsCore
 
 struct ModulePreviews: View {
   let module: String
@@ -28,7 +29,7 @@ struct ModulePreviews: View {
           LazyVStack(alignment: .leading) {
             if !featureProviders.isEmpty {
               NavigationLink {
-                ModuleFeatures(module: module, data: data)
+                ModuleScreens(module: module, data: data)
               } label: {
                 VStack {
                   TitleSubtitleRow(
@@ -42,8 +43,45 @@ struct ModulePreviews: View {
               PreviewCellView(preview: preview)
             }
           }
+          .padding(.top, 8)
         }
         .navigationTitle(module)
       }
   }
 }
+
+#if DEBUG
+struct ModulePreviews_Preview: PreviewProvider {
+  static var previews: some View {
+    let testData = PreviewData(
+      previews: [
+        PreviewType(typeName: "TestModule.ModulePreviews_TestPreview1", preivewProvider: ModulePreviews_TestPreview1.self),
+        PreviewType(typeName: "TestModule.ModulePreviews_TestPreview2", preivewProvider: ModulePreviews_TestPreview2.self),
+      ]
+    )
+    ModulePreviews(module: "TestModule", data: testData)
+  }
+}
+
+private struct ModulePreviews_TestPreview1: PreviewProvider {
+  static var previews: some View {
+    VStack {
+      Text("Hello world")
+      Text("Hello world2")
+      Text("Hello world3")
+    }
+    .previewLayout(.sizeThatFits)
+  }
+}
+
+private struct ModulePreviews_TestPreview2: PreviewProvider {
+  static var previews: some View {
+    VStack {
+      Text("Hello world")
+      Text("Hello world2")
+      Text("Hello world3")
+    }
+    .previewLayout(.sizeThatFits)
+  }
+}
+#endif
