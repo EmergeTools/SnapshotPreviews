@@ -15,17 +15,16 @@ struct PreviewsDetail: View {
   
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 8) {
+      VStack(alignment: .leading) {
         ForEach(previewType.previews) { preview in
           VStack {
             VStack {
               Text(preview.displayName ?? "Preview")
                 .font(.headline)
                 .foregroundStyle(Color(UIColor.label))
-                .padding(.leading, 8)
               PreviewCell(preview: preview)
             }
-              .padding()
+            .padding(.vertical, 8)
             Divider()
           }
         }
