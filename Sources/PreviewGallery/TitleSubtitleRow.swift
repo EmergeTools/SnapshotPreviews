@@ -29,12 +29,3 @@ struct TitleSubtitleRow: View {
     }
   }
 }
-
-#if DEBUG
-struct TitleSubtitleRow_Preview: PreviewProvider {
-  static var previews: some View {
-    TitleSubtitleRow(title: "SuperAwesomeType", subtitle: "Regular display")
-      .previewLayout(.sizeThatFits)
-  }
-}
-#endif

@@ -61,26 +61,3 @@ struct Checkerboard: Shape {
     return path
   }
 }
-
-#if DEBUG
-private struct CheckerboardView: View {
-  var body: some View {
-    VStack {
-      Text("Hello world")
-    }
-    .background {
-      Checkerboard()
-        .foregroundStyle(Color(UIColor.label))
-        .opacity(0.1)
-        .background(Color(UIColor.systemBackground))
-    }
-  }
-}
-
-private struct CheckerboardView_Preview: PreviewProvider {
-  static var previews: some View {
-    CheckerboardView()
-      .previewLayout(.fixed(width: 300, height: 300))
-  }
-}
-#endif

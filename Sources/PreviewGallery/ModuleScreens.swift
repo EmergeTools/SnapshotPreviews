@@ -53,37 +53,3 @@ struct ModuleScreens: View {
   }
   
 }
-
-#if DEBUG
-struct ModuleFeatures_Preview: PreviewProvider {
-  static var previews: some View {
-    ModuleScreens(
-      module: "TestModule",
-      data: PreviewData(
-        previews: [
-          PreviewType(typeName: "TestModule.ModuleFeatures_TestPreview", preivewProvider: ModuleFeatures_TestPreview.self),
-          PreviewType(typeName: "TestModule.ModuleFeatures_TestPreview2", preivewProvider: ModuleFeatures_TestPreview2.self)
-        ]
-      )
-    )
-  }
-}
-
-private struct ModuleFeatures_TestPreview: PreviewProvider {
-  static var previews: some View {
-    Text("Hello world")
-    Text("Hello world2")
-    Text("Hello world3")
-  }
-}
-
-private struct ModuleFeatures_TestPreview2: PreviewProvider {
-  static var previews: some View {
-    VStack {
-      Text("Hello world")
-      Text("Hello world2")
-      Text("Hello world3")
-    }
-  }
-}
-#endif

@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import SnapshotPreviewsCore
 
 struct ModulePreviews: View {
   let module: String
