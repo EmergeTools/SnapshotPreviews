@@ -48,39 +48,3 @@ struct ModulePreviews: View {
     }
   }
 }
-
-#if DEBUG
-struct ModulePreviews_Preview: PreviewProvider {
-  static var previews: some View {
-    let testData = PreviewData(
-      previews: [
-        PreviewType(typeName: "TestModule.ModulePreviews_TestPreview1", preivewProvider: ModulePreviews_TestPreview1.self),
-        PreviewType(typeName: "TestModule.ModulePreviews_TestPreview2", preivewProvider: ModulePreviews_TestPreview2.self),
-      ]
-    )
-    ModulePreviews(module: "TestModule", data: testData)
-  }
-}
-
-private struct ModulePreviews_TestPreview1: PreviewProvider {
-  static var previews: some View {
-    VStack {
-      Text("Hello world")
-      Text("Hello world2")
-      Text("Hello world3")
-    }
-    .previewLayout(.sizeThatFits)
-  }
-}
-
-private struct ModulePreviews_TestPreview2: PreviewProvider {
-  static var previews: some View {
-    VStack {
-      Text("Hello world")
-      Text("Hello world2")
-      Text("Hello world3")
-    }
-    .previewLayout(.sizeThatFits)
-  }
-}
-#endif
