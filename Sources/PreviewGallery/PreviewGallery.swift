@@ -18,6 +18,7 @@ struct PreviewCellView: View {
         title: preview.displayName,
         subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")"
       )
+      .padding(EdgeInsets(top: 12, leading: 16, bottom: 6, trailing: 16))
       
       PreviewCell(preview: preview.previews[0])
     }

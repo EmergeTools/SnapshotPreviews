@@ -32,13 +32,14 @@ struct ModulePreviews: View {
               TitleSubtitleRow(
                 title: "Screens",
                 subtitle: "\(featureProviders.count) Preview\(featureProviders.count != 1 ? "s" : "")")
-              .background(Color.white)
+              .padding(16)
+              .background(Color(uiColor: UIColor.secondarySystemGroupedBackground))
             }
           }
           ForEach(componentProviders) { preview in
             NavigationLink(destination: PreviewsDetail(previewType: preview)) {
               PreviewCellView(preview: preview)
-                .background(Color.white)
+                .background(Color(uiColor: UIColor.secondarySystemGroupedBackground))
                 .allowsHitTesting(false)
             }
             .frame(width: UIScreen.main.bounds.width)

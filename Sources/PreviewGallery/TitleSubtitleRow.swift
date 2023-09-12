@@ -27,7 +27,6 @@ struct TitleSubtitleRow: View {
       Image(systemName: "chevron.right")
         .foregroundColor(Color.secondary)
     }
-    .padding(EdgeInsets(top: 12, leading: 16, bottom: 6, trailing: 16))
   }
 }
 
