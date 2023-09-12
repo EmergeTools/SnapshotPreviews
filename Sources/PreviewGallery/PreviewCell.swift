@@ -33,6 +33,6 @@ struct PreviewCell: View {
 }
 
 private extension Color {
-  static let lightChecker = Color(uiColor: UIColor(red: 187 / 255.0, green: 187 / 255.0, blue: 187 / 255.0, alpha: 48 / 255.0))
-  static let slate100 = Color(uiColor: UIColor(red: 241 / 255.0, green: 245 / 255.0, blue: 249 / 255.0, alpha: 1))
+  static let lightChecker = Color(#colorLiteral(red: 0.7333333333, green: 0.7333333333, blue: 0.7333333333, alpha: 0.18))
+  static let slate100 = Color(#colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9764705882, alpha: 1))
 }
