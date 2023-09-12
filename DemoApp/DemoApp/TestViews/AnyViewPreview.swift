@@ -13,7 +13,9 @@ struct AnyView_Previews: PreviewProvider {
     AnyView(
       Group {
         Text("Hello")
+          .previewDisplayName("Hello")
         Text("World")
+          .previewDisplayName("World")
       })
     .environment(\.sizeCategory, .accessibilityExtraExtraLarge)
   }

@@ -10,25 +10,27 @@ import SwiftUI
 import SnapshotPreviewsCore
 
 struct PreviewsDetail: View {
-
+  
   let previewType: PreviewType
-
+  
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 12) {
         ForEach(previewType.previews) { preview in
-          VStack {
+          VStack(alignment: .center) {
             Text(preview.displayName ?? "Preview")
               .font(.headline)
               .foregroundStyle(Color(UIColor.label))
-              .padding(.leading, 8)
             PreviewCell(preview: preview)
-            Divider()
           }
+          .padding(.vertical, 16)
+          .frame(width: UIScreen.main.bounds.width)
+          .background(Color(uiColor: UIColor.secondarySystemGroupedBackground))
         }
       }
     }
+    .background(Color(uiColor: UIColor.systemGroupedBackground))
     .navigationTitle(previewType.displayName)
   }
-
+  
 }
