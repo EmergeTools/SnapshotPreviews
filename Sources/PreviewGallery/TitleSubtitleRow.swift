@@ -23,12 +23,11 @@ struct TitleSubtitleRow: View {
           .font(.subheadline)
           .foregroundStyle(Color.secondary)
       }
-      .padding(.leading, 8)
       Spacer()
       Image(systemName: "chevron.right")
         .foregroundColor(Color.secondary)
-        .padding(.trailing, 8)
     }
+    .padding(.horizontal, 16)
   }
 }
 

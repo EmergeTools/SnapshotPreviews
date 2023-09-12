@@ -34,7 +34,7 @@ struct ModulePreviews: View {
             NavigationLink(destination: ModuleScreens(module: module, data: data), label: {})
                 .opacity(0)
           )
-          .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
+          .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
         }
         ForEach(componentProviders) { preview in
           PreviewCellView(preview: preview)

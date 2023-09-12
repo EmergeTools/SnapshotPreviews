@@ -16,13 +16,14 @@ struct PreviewCellView: View {
     VStack(alignment: .center, spacing: 10) {
       TitleSubtitleRow(
         title: preview.displayName,
-        subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")")
-      .padding(.horizontal, 8)
+        subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")"
+      )
+      
       PreviewCell(preview: preview.previews[0])
     }
     .background(
       NavigationLink(destination: PreviewsDetail(previewType: preview), label: {})
-          .opacity(0)
+        .opacity(0)
     )
     .padding(.bottom, 8)
   }
