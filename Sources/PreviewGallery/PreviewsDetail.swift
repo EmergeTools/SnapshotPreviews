@@ -28,7 +28,6 @@ struct PreviewsDetail: View {
           .background(Color(uiColor: UIColor.secondarySystemGroupedBackground))
         }
       }
-      .padding(.top, 8)
     }
     .background(Color(uiColor: UIColor.systemGroupedBackground))
     .navigationTitle(previewType.displayName)
