@@ -13,7 +13,7 @@ struct PreviewCellView: View {
   let preview: PreviewType
   
   var body: some View {
-    VStack(alignment: .center, spacing: 10) {
+    VStack(alignment: .center) {
       TitleSubtitleRow(
         title: preview.displayName,
         subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")"
@@ -21,10 +21,6 @@ struct PreviewCellView: View {
       
       PreviewCell(preview: preview.previews[0])
     }
-    .background(
-      NavigationLink(destination: PreviewsDetail(previewType: preview), label: {})
-        .opacity(0)
-    )
     .padding(.bottom, 8)
   }
 }
@@ -43,7 +39,8 @@ public struct PreviewGallery: View {
         ForEach(Array(data.modules).sorted(), id: \.self) { module in
           ModulePreviews(module: module, data: data)
         }
-      }.navigationTitle("Modules")
+      }
+      .navigationTitle("Modules")
     } else {
       ScrollView {
         LazyVStack(alignment: .leading) {
