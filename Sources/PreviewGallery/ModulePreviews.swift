@@ -1,6 +1,6 @@
 //
 //  ModulePreviews.swift
-//  
+//
 //
 //  Created by Noah Martin on 7/3/23.
 //
@@ -12,7 +12,7 @@ import SnapshotPreviewsCore
 struct ModulePreviews: View {
   let module: String
   let data: PreviewData
-
+  
   var body: some View {
     let componentProviders = data.previews(in: module).filter { provider in
       return provider.previews.contains { preview in
@@ -24,29 +24,26 @@ struct ModulePreviews: View {
         return preview.requiresFullScreen
       }
     }
-      return NavigationLink(module) {
-        ScrollView {
-          LazyVStack(alignment: .leading) {
-            if !featureProviders.isEmpty {
-              NavigationLink {
-                ModuleScreens(module: module, data: data)
-              } label: {
-                VStack {
-                  TitleSubtitleRow(
-                    title: "Screens",
-                    subtitle: "\(featureProviders.count) Preview\(featureProviders.count != 1 ? "s" : "")")
-                  Divider()
-                }
-              }
-            }
-            ForEach(componentProviders) { preview in
-              PreviewCellView(preview: preview)
-            }
-          }
-          .padding(.top, 8)
+    return NavigationLink(module) {
+      List {
+        if !featureProviders.isEmpty {
+          TitleSubtitleRow(
+            title: "Screens",
+            subtitle: "\(featureProviders.count) Preview\(featureProviders.count != 1 ? "s" : "")")
+          .background(
+            NavigationLink(destination: ModuleScreens(module: module, data: data), label: {})
+                .opacity(0)
+          )
+          .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
         }
-        .navigationTitle(module)
+        ForEach(componentProviders) { preview in
+          PreviewCellView(preview: preview)
+            .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+        }
       }
+      .listStyle(.plain)
+      .navigationTitle(module)
+    }
   }
 }
 

@@ -29,7 +29,6 @@ struct PreviewCell: View {
         .preferredColorScheme(nil)
         .colorScheme(try! preview.colorScheme() ?? colorScheme)
     }
-    .background(Color(UIColor.systemBackground))
   }
 
 }

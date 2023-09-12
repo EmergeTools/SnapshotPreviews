@@ -25,7 +25,9 @@ struct PreviewsDetail: View {
               PreviewCell(preview: preview)
             }
             .padding(.vertical, 8)
+            
             Divider()
+              .padding(.leading, 16)
           }
         }
       }
