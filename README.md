@@ -1,5 +1,9 @@
 # 📸 SnapshotPreviews
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
+
+
 An all-in-one iOS snapshot testing solution.
 
 Emerge handles the heavy lifting of generating, diffing and hosting the snapshots for each build, allowing you to focus on building beautiful UI components.
