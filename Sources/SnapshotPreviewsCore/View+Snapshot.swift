@@ -27,6 +27,9 @@ extension View {
       transaction.disablesAnimations = true
     }
     let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout, supportsExpansion: supportsExpansion)
+    if #available(iOS 16, *) {
+      controller.sizingOptions = .intrinsicContentSize
+    }
     controller._disableSafeArea = true
     let view = controller.view!
     view.translatesAutoresizingMaskIntoConstraints = false

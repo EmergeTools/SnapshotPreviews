@@ -54,8 +54,8 @@ public final class ExpandingViewController<Content: View>: UIHostingController<C
       view.heightAnchor.constraint(equalToConstant: height).isActive = true
     default:
       let fittingSize = view.sizeThatFits(UIScreen.main.bounds.size)
-      view.widthAnchor.constraint(equalToConstant: fittingSize.width).isActive = true
-      heightAnchor = view.heightAnchor.constraint(equalToConstant: fittingSize.height)
+      view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width).isActive = true
+      heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
       heightAnchor?.isActive = true
     }
   }
