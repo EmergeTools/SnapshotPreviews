@@ -62,10 +62,9 @@ NSString* getDylibPath(NSString* dylibName) {
   }
   assert(path != nil);
 
-  NSMutableDictionary *launchEnvironment = [@{
-    @"EMERGE_IS_RUNNING_FOR_SNAPSHOTS": @"1",
-    @"DYLD_INSERT_LIBRARIES": path
-  } mutableCopy];
+  NSMutableDictionary *launchEnvironment = [app.launchEnvironment mutableCopy];
+  launchEnvironment[@"EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] = @"1";
+  launchEnvironment[@"DYLD_INSERT_LIBRARIES"] = path;
   NSArray *previews = [self snapshotPreviews];
   if (previews) {
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:previews options:nil error:nil];
