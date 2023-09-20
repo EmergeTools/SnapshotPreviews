@@ -49,7 +49,7 @@ class Snapshots {
   static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   static let resultsDir = documentsURL.appendingPathComponent("EMGSnapshots")
 
-  func saveSnapshots(completion: @escaping () -> Void) {
+  @MainActor func saveSnapshots(completion: @escaping () -> Void) {
     try? FileManager.default.removeItem(at: Self.resultsDir)
     try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
 
@@ -95,7 +95,7 @@ class Snapshots {
     "\(typeName)-\(preview.previewId).png"
   }
 
-  private func generateSnapshot() {
+  @MainActor private func generateSnapshot() {
     guard !previews.isEmpty else {
       writeResults()
       return

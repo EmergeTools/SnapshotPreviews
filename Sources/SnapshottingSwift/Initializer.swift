@@ -12,7 +12,7 @@ import UIKit
 public class Initializer: NSObject {
 
   @objc
-  public func start() {
+  @MainActor public func start() {
     let snapshots = Snapshots()
     snapshots.saveSnapshots {
       snapshots.window.rootViewController = CompletedViewController()

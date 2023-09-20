@@ -45,13 +45,13 @@ public struct Preview: Identifiable {
       }
     }
     self.layout = layout
-    _colorScheme = { nil }
     displayName = preview.descendant("displayName") as? String
     let source = Mirror(reflecting: preview.descendant("source")!)
     let sourceType = source.subjectType
+    let _view: @MainActor () throws -> AnyView
     if (String(describing: sourceType) == "ViewPreviewSource") {
       _view = {
-        let makeView = source.descendant("makeView") as! () -> any SwiftUI.View
+        let makeView = source.descendant("makeView") as! @MainActor () -> any SwiftUI.View
         return AnyView(makeView())
       }
     } else if (String(describing: sourceType) == "UIViewPreviewSource") {
@@ -67,6 +67,12 @@ public struct Preview: Identifiable {
     } else {
       return nil
     }
+
+    self._view = _view
+    _colorScheme = {
+      let v = try _view()
+      return ViewInspection.preferredColorScheme(of: v)
+    }
   }
 #endif
 
@@ -76,12 +82,12 @@ public struct Preview: Identifiable {
   public let displayName: String?
   public let device: PreviewDevice?
   public let layout: PreviewLayout
-  private let _colorScheme: () throws -> ColorScheme?
-  public func colorScheme() throws -> ColorScheme? {
+  private let _colorScheme: @MainActor () throws -> ColorScheme?
+  @MainActor public func colorScheme() throws -> ColorScheme? {
     try _colorScheme()
   }
-  private let _view: () throws -> AnyView
-  public func view() throws -> AnyView {
+  private let _view: @MainActor () throws -> AnyView
+  @MainActor public func view() throws -> AnyView {
     try _view()
   }
 }
