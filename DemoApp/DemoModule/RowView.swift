@@ -45,9 +45,15 @@ public struct RowView: View {
     }
 }
 
-//#Preview {
-//  RowView(imageName: "product-image", productName: "New Preview test", ratings: 4.2)
-//}
+#if swift(>=5.9)
+#Preview("New test") {
+  RowView(
+    imageName: "product-image",
+    productName: "New Preview test",
+    ratings: 4.2)
+  .preferredColorScheme(.dark)
+}
+#endif
 
 struct RowView_Previews: PreviewProvider {
   static var previews: some View {
