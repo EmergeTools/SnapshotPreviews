@@ -59,4 +59,24 @@ Note that there are no test functions; they are automatically added at runtime b
 
 ![Screenshot of Xcode test output](images/testOutput.png)
 
+### Accessibility Audits
+
+Xcode 15 [accessibility audits](https://developer.apple.com/documentation/xctest/xcuiapplication/4191487-performaccessibilityaudit) can also be run locally on any preview. By default they will use all audit types. To customize the behavior you can override the following functions in your test:
+
+```
+  override func enableAccessibilityAudit() -> Bool {
+    true
+  }
+
+  @available(iOS 17.0, *)
+  override func auditType() -> XCUIAccessibilityAuditType {
+    return .all
+  }
+
+  @available(iOS 17.0, *)
+  override func handle(_ issue: XCUIAccessibilityAuditIssue) -> Bool {
+    return false
+  }
+```
+
 See the demo app for a full example.
