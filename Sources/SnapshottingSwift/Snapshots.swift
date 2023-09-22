@@ -9,6 +9,7 @@ import Foundation
 import SnapshotPreviewsCore
 import SwiftUI
 import UIKit
+import Vapor
 
 enum SnapshotError: Error {
   case pngData
@@ -25,6 +26,8 @@ extension SnapshotError: LocalizedError {
 
 class Snapshots {
 
+  let app = try! Application(.detect())
+
   public init() {
     let windowScene = UIApplication.shared
       .connectedScenes
@@ -33,9 +36,47 @@ class Snapshots {
 
     let window = UIWindow(windowScene: windowScene as! UIWindowScene)
     window.windowLevel = .statusBar + 1
-    window.backgroundColor = .red
+    window.backgroundColor = UIColor.systemBackground
     window.makeKeyAndVisible()
     self.window = window
+
+    app.get("display", ":class", ":id") { [weak self] req -> EventLoopFuture in
+      let typeName = req.parameters.get("class")!
+      let id = req.parameters.get("id")!
+      let promise = req.eventLoop.makePromise(of: [String: String].self)
+      DispatchQueue.main.async {
+        self?.display(typeName: typeName, id: id) { imageResult, preview in
+          var result: [String: String] = [:]
+          if let displayName = preview.displayName {
+            result["displayName"] = displayName
+          }
+          let fileName = Self.fileName(typeName: typeName, previewId: id)
+          let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
+          do {
+            let image = try imageResult.get()
+            if let pngData = image.pngData() {
+              try pngData.write(to: file)
+              result["imagePath"] = file.path
+              promise.succeed(result)
+            } else {
+              print("Could not generate PNG data for \(file)")
+              result["error"] = SnapshotError.pngData.localizedDescription
+              promise.succeed(result)
+            }
+          } catch {
+            print("Failed to write \(file)")
+            print(error)
+            result["error"] = error.localizedDescription
+            promise.succeed(result)
+          }
+        }
+      }
+      return promise.futureResult;
+    }
+    app.get("file") { req in
+      return Self.resultsDir.path
+    }
+    try! app.start()
   }
 
   let window: UIWindow
@@ -49,11 +90,38 @@ class Snapshots {
   static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   static let resultsDir = documentsURL.appendingPathComponent("EMGSnapshots")
 
-  @MainActor func saveSnapshots(completion: @escaping () -> Void) {
+  @MainActor func display(typeName: String, id: String, completion: @escaping (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) -> Void) {
+    let previewTypes = findPreviews { name in
+      return name == typeName
+    }
+
+    let provider = previewTypes[0]
+    let preview = provider.previews.filter { $0.previewId == id }[0]
+    try! display(preview: preview) { imageResult in
+      completion(imageResult, preview)
+    }
+  }
+
+  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>) -> Void) throws {
+    var view = try preview.view()
+    let supportsExpansion = ViewInspection.shouldExpand(view)
+    let renderingMode = ViewInspection.renderingMode(of: view)
+    if let colorScheme = try preview.colorScheme() {
+      view = AnyView(view.colorScheme(colorScheme))
+    }
+    view.snapshot(
+      layout: preview.layout,
+      window: window,
+      supportsExpansion: supportsExpansion,
+      renderingMode: renderingMode,
+      async: false,
+      completion: completion)
+  }
+
+  @MainActor func writeClassNames() {
     try? FileManager.default.removeItem(at: Self.resultsDir)
     try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
 
-    self.completion = completion
     let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"];
     var previewsSet: Set<String>? = nil
     if let snapshotPreviews {
@@ -65,72 +133,17 @@ class Snapshots {
 
       return previewsSet.contains(name)
     }
-    previews = previewTypes.flatMap { preview in preview.previews.map { ($0, preview.typeName) } }
-
-    generateSnapshot()
-  }
-
-  private func writeResults() {
-    var previewMetadata: [String: [String: String]] = [:]
-    previews.forEach { (preview, typeName) in
-      if let displayName = preview.displayName {
-        previewMetadata[fileName(typeName: typeName, preview: preview)] = [
-          "displayName": displayName
-        ]
-      }
+    let json = previewTypes.map { preview in
+      [
+        "typeName": preview.typeName,
+        "numPreviews": preview.previews.count,
+      ]
     }
-    errors.forEach { (preview, typeName, error) in
-      let name = fileName(typeName: typeName, preview: preview)
-      var metadata = previewMetadata[name] ?? [:]
-      metadata["error"] = error.localizedDescription
-      previewMetadata[name] = metadata
-    }
-    let data = try! JSONEncoder().encode(previewMetadata)
+    let data = try! JSONSerialization.data(withJSONObject: json)
     try! data.write(to: Self.resultsDir.appendingPathComponent("metadata.json", isDirectory: false))
-
-    completion?()
   }
 
-  private func fileName(typeName: String, preview: SnapshotPreviewsCore.Preview) -> String {
-    "\(typeName)-\(preview.previewId).png"
-  }
-
-  @MainActor private func generateSnapshot() {
-    guard !previews.isEmpty else {
-      writeResults()
-      return
-    }
-
-    let (preview, typeName) = previews.removeFirst()
-    do {
-      var view = try preview.view()
-      let supportsExpansion = ViewInspection.shouldExpand(view)
-      let renderingMode = ViewInspection.renderingMode(of: view)
-      if let colorScheme = try preview.colorScheme() {
-        view = AnyView(view.colorScheme(colorScheme))
-      }
-      let fileName = fileName(typeName: typeName, preview: preview)
-      let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
-      print(file)
-      view.snapshot(layout: preview.layout, window: window, supportsExpansion: supportsExpansion, renderingMode: renderingMode, async: false) { imageResult in
-        do {
-          let image = try imageResult.get()
-          if let pngData = image.pngData() {
-            try pngData.write(to: file)
-          } else {
-            print("Could not generate PNG data for \(file)")
-            self.errors.append((preview, typeName, SnapshotError.pngData))
-          }
-        } catch {
-          print("Failed to write \(file)")
-          print(error)
-          self.errors.append((preview, typeName, error))
-        }
-        self.generateSnapshot()
-      }
-    } catch {
-      generateSnapshot()
-      errors.append((preview, typeName, error))
-    }
+  private static func fileName(typeName: String, previewId: String) -> String {
+    "\(typeName)-\(previewId).png"
   }
 }

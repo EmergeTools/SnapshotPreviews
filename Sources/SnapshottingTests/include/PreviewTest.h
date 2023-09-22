@@ -19,6 +19,12 @@
 // Elements should be the type name of the preview, like "MyModule.MyView_Previews"
 - (nullable NSArray<NSString *> *)snapshotPreviews;
 
+- (BOOL)enableAccessibilityAudit;
+
+- (XCUIAccessibilityAuditType)auditType API_AVAILABLE(ios(17.0));
+
+- (BOOL)handleIssue:(nonnull XCUIAccessibilityAuditIssue *)issue API_AVAILABLE(ios(17.0));
+
 @end
 
 
