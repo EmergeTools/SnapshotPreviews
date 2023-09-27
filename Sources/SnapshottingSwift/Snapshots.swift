@@ -9,7 +9,7 @@ import Foundation
 import SnapshotPreviewsCore
 import SwiftUI
 import UIKit
-import Vapor
+import FlyingFox
 
 enum SnapshotError: Error {
   case pngData
@@ -25,8 +25,7 @@ extension SnapshotError: LocalizedError {
 }
 
 class Snapshots {
-
-  let app = try! Application(.detect())
+  let server = HTTPServer(port: 8080)
 
   public init() {
     let windowScene = UIApplication.shared
@@ -39,44 +38,10 @@ class Snapshots {
     window.backgroundColor = UIColor.systemBackground
     window.makeKeyAndVisible()
     self.window = window
-
-    app.get("display", ":class", ":id") { [weak self] req -> EventLoopFuture in
-      let typeName = req.parameters.get("class")!
-      let id = req.parameters.get("id")!
-      let promise = req.eventLoop.makePromise(of: [String: String].self)
-      DispatchQueue.main.async {
-        self?.display(typeName: typeName, id: id) { imageResult, preview in
-          var result: [String: String] = [:]
-          if let displayName = preview.displayName {
-            result["displayName"] = displayName
-          }
-          let fileName = Self.fileName(typeName: typeName, previewId: id)
-          let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
-          do {
-            let image = try imageResult.get()
-            if let pngData = image.pngData() {
-              try pngData.write(to: file)
-              result["imagePath"] = file.path
-              promise.succeed(result)
-            } else {
-              print("Could not generate PNG data for \(file)")
-              result["error"] = SnapshotError.pngData.localizedDescription
-              promise.succeed(result)
-            }
-          } catch {
-            print("Failed to write \(file)")
-            print(error)
-            result["error"] = error.localizedDescription
-            promise.succeed(result)
-          }
-        }
-      }
-      return promise.futureResult;
+    
+    Task {
+      try await startServer()
     }
-    app.get("file") { req in
-      return Self.resultsDir.path
-    }
-    try! app.start()
   }
 
   let window: UIWindow
@@ -89,33 +54,79 @@ class Snapshots {
 
   static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   static let resultsDir = documentsURL.appendingPathComponent("EMGSnapshots")
+    
+  func startServer() async throws {
+    await server.appendRoute("GET /display/*") { [weak self] request in
+      let pathComponents = request.path.components(separatedBy: "/")
+      guard let self, pathComponents.count > 3 else {
+        return HTTPResponse(statusCode: .badRequest)
+      }
 
-  @MainActor func display(typeName: String, id: String, completion: @escaping (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) -> Void) {
+      let typeName = pathComponents[2]
+      let id = pathComponents[3]
+
+      var result: [String: String] = [:]
+      let (imageResult, preview) = await self.display(typeName: typeName, id: id)
+
+      if let displayName = preview.displayName {
+        result["displayName"] = displayName
+      }
+
+      let fileName = Self.fileName(typeName: typeName, previewId: id)
+      let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
+      do {
+        let image = try imageResult.get()
+        if let pngData = image.pngData() {
+          try pngData.write(to: file)
+          result["imagePath"] = file.path
+        } else {
+          print("Could not generate PNG data for \(file)")
+          result["error"] = SnapshotError.pngData.localizedDescription
+        }
+      } catch {
+        print("Failed to write \(file)")
+        print(error)
+        result["error"] = error.localizedDescription
+      }
+
+      return HTTPResponse(statusCode: .ok, body: try JSONEncoder().encode(result))
+    }
+        
+    await server.appendRoute("GET /file") { request in
+      return HTTPResponse(statusCode: .ok, body: Self.resultsDir.path.data(using: .utf8)!)
+    }
+
+    try await server.start()
+  }
+
+  @MainActor func display(typeName: String, id: String) async -> (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) {
     let previewTypes = findPreviews { name in
       return name == typeName
     }
 
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
-    try! display(preview: preview) { imageResult in
-      completion(imageResult, preview)
-    }
+    return (try! await display(preview: preview), preview)
   }
 
-  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>) -> Void) throws {
+  @MainActor func display(preview: SnapshotPreviewsCore.Preview) async throws -> Result<UIImage, Error> {
     var view = try preview.view()
     let supportsExpansion = ViewInspection.shouldExpand(view)
     let renderingMode = ViewInspection.renderingMode(of: view)
     if let colorScheme = try preview.colorScheme() {
       view = AnyView(view.colorScheme(colorScheme))
     }
-    view.snapshot(
-      layout: preview.layout,
-      window: window,
-      supportsExpansion: supportsExpansion,
-      renderingMode: renderingMode,
-      async: false,
-      completion: completion)
+      
+    return await withCheckedContinuation({ (continuation: CheckedContinuation<Result<UIImage, Error>, Never>) in
+      view.snapshot(
+        layout: preview.layout,
+        window: window,
+        supportsExpansion: supportsExpansion,
+        renderingMode: renderingMode,
+        async: false) { result in
+          continuation.resume(returning: result)
+        }
+    })
   }
 
   @MainActor func writeClassNames() {
