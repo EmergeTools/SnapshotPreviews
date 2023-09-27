@@ -27,7 +27,7 @@ let package = Package(
           targets: ["Snapshotting"]),
     ],
     dependencies: [
-      .package(url: "https://github.com/vapor/vapor", exact: "4.80.0"),
+      .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.12.2"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -39,7 +39,7 @@ let package = Package(
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
         // Swift code in the inserted dylib
-        .target(name: "SnapshottingSwift", dependencies: ["SnapshotPreviewsCore", .product(name: "Vapor", package: "Vapor")]),
+        .target(name: "SnapshottingSwift", dependencies: ["SnapshotPreviewsCore", .product(name: "FlyingFox", package: "FlyingFox")]),
         .target(name: "PreviewGallery", dependencies: ["SnapshotPreviewsCore"]),
         .testTarget(
             name: "SnapshotPreviewsTests",
