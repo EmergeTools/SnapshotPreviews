@@ -43,12 +43,6 @@ struct PreviewVariants: View {
   private let views: [PreviewView]
 }
 
-extension View {
-  fileprivate func applyModifier<M: ViewModifier>(_ mod: M) -> any View {
-    return modifier(mod)
-  }
-}
-
 struct NamedViewModifier {
   var name: String
   var value: (any View) -> any View
