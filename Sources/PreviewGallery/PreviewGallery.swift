@@ -35,7 +35,7 @@ public struct PreviewGallery: View {
   }
   
   public var body: some View {
-    if data.modules.count > 1 {
+    if data.modules.count > 0 {
       List {
         ForEach(Array(data.modules).sorted(), id: \.self) { module in
           ModulePreviews(module: module, data: data)
@@ -43,13 +43,7 @@ public struct PreviewGallery: View {
       }
       .navigationTitle("Modules")
     } else {
-      ScrollView {
-        LazyVStack(alignment: .leading) {
-          ForEach(data.previews(in: data.modules.first!)) { preview in
-            PreviewCellView(preview: preview)
-          }
-        }
-      }
+      Text("No previews found")
     }
   }
 }
