@@ -31,8 +31,7 @@ struct PreviewVariants: View {
           .filter { !$0.isEmpty }
           .joined(separator: ", ")
 
-        view.value
-          .modifier(modifier.value)
+        AnyView(view.value.applyModifier(modifier.value))
           .previewDisplayName(displayName)
           .previewLayout(layout)
       }
@@ -44,24 +43,15 @@ struct PreviewVariants: View {
   private let views: [PreviewView]
 }
 
-struct AnyViewModifier: ViewModifier {
-  func body(content: Content) -> some View {
-    modifier(content)
+extension View {
+  fileprivate func applyModifier<M: ViewModifier>(_ mod: M) -> any View {
+    return modifier(mod)
   }
-
-  init(modifier: @escaping (Content) -> any View) {
-    self.modifier = {
-      AnyView(modifier($0))
-    }
-  }
-
-  let modifier: (Content) -> AnyView
-  
 }
 
 struct NamedViewModifier {
   var name: String
-  var value: AnyViewModifier
+  var value: any ViewModifier
 }
 
 extension NamedViewModifier: Identifiable {
@@ -70,15 +60,15 @@ extension NamedViewModifier: Identifiable {
 
 extension NamedViewModifier {
   static var unmodified: NamedViewModifier {
-    .init(name: "", value: .init { $0 })
+    .init(name: "", value: EmptyModifier())
   }
 
   static var darkMode: NamedViewModifier {
-    .init(name: "Dark mode", value: .init { $0.environment(\.colorScheme, .dark) })
+    .init(name: "Dark mode", value: _PreferenceWritingModifier<PreferredColorSchemeKey>(value: .dark))
   }
 
   static var xxlTextSize: NamedViewModifier {
-    .init(name: "XXL Text Size", value: .init { $0.dynamicTypeSize(.xxxLarge) })
+    .init(name: "XXL Text Size", value: _EnvironmentKeyWritingModifier<DynamicTypeSize>(keyPath: \.dynamicTypeSize, value: .xxxLarge))
   }
 }
 
