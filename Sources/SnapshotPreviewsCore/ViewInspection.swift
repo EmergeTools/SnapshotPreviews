@@ -68,7 +68,8 @@ public enum ViewInspection {
   }
 
   private static func getModifier<T>(of view: some View, parseModifier: (Any) -> T?) -> T? {
-    let typeName = String(reflecting: type(of: view))
+    let viewType = type(of: view)
+    let typeName = String(reflecting: viewType)
     if typeName.starts(with: "SwiftUI.ModifiedContent") {
       let modifier = Self.attribute(label: "modifier", value: view)!
       if let result = parseModifier(modifier) {
@@ -80,6 +81,16 @@ public enum ViewInspection {
       let storage = Self.attribute(label: "storage", value: view)!
       let storageView = Self.attribute(label: "view", value: storage) as! any View
       return getModifier(of: storageView, parseModifier: parseModifier)
+    } else if typeName.starts(with: "SwiftUI.Tuple") {
+      return getModifier(of: tupleChildren(view)[0], parseModifier: parseModifier)
+    } else if typeName.starts(with: "SwiftUI.Group") {
+      let content = Self.attribute(label: "content", value: view) as! any View
+      return getModifier(of: content, parseModifier: parseModifier)
+    } else if typeName.starts(with: "SwiftUI.ForEach"), let provider = view as? ViewsProvider {
+      return getModifier(of: provider.views()[0], parseModifier: parseModifier)
+    }
+    if viewType.Body != Never.self && !typeName.starts(with: "SwiftUI.") {
+      return getModifier(of: view.body, parseModifier: parseModifier)
     }
     return nil
   }
