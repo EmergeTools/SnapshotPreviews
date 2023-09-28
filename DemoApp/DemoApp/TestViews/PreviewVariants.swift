@@ -31,7 +31,7 @@ struct PreviewVariants: View {
           .filter { !$0.isEmpty }
           .joined(separator: ", ")
 
-        AnyView(view.value.applyModifier(modifier.value))
+        AnyView(modifier.value(view.value))
           .previewDisplayName(displayName)
           .previewLayout(layout)
       }
@@ -51,7 +51,7 @@ extension View {
 
 struct NamedViewModifier {
   var name: String
-  var value: any ViewModifier
+  var value: (any View) -> any View
 }
 
 extension NamedViewModifier: Identifiable {
@@ -60,15 +60,15 @@ extension NamedViewModifier: Identifiable {
 
 extension NamedViewModifier {
   static var unmodified: NamedViewModifier {
-    .init(name: "", value: EmptyModifier())
+    .init(name: "", value: { $0 })
   }
 
   static var darkMode: NamedViewModifier {
-    .init(name: "Dark mode", value: _PreferenceWritingModifier<PreferredColorSchemeKey>(value: .dark))
+    .init(name: "Dark mode", value: { $0.preferredColorScheme(.dark).environment(\.colorScheme, .dark)})
   }
 
   static var xxlTextSize: NamedViewModifier {
-    .init(name: "XXL Text Size", value: _EnvironmentKeyWritingModifier<DynamicTypeSize>(keyPath: \.dynamicTypeSize, value: .xxxLarge))
+    .init(name: "XXL Text Size", value: { $0.dynamicTypeSize(.xxxLarge) })
   }
 }
 
