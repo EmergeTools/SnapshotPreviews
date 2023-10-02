@@ -20,8 +20,18 @@ struct EmptyViewTest: View {
   }
 }
 
+struct EmptyIfTest: View {
+  var body: some View {
+    if true {
+      EmptyView()
+    }
+    Text("Hello World")
+  }
+}
+
 struct EmptyViewTest_Previews: PreviewProvider {
   static var previews: some View {
     EmptyViewTest()
+    EmptyIfTest()
   }
 }

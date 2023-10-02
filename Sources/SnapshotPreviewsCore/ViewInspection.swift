@@ -31,7 +31,11 @@ public enum ViewInspection {
   private static func children(of view: some View) -> [(any View, [any ViewModifier])] {
     let viewType = type(of: view)
     let typeName = String(reflecting: viewType)
-    if typeName.starts(with: "SwiftUI._ConditionalContent") {
+    if typeName.starts(with: "Swift.Optional<") {
+      if let child = Mirror(reflecting: view).children.first?.value as? any View {
+        return children(of: child)
+      }
+    } else if typeName.starts(with: "SwiftUI._ConditionalContent") {
       let storage = Self.attribute(label: "storage", value: view)!
       if let trueContent = Self.attribute(label: "trueContent", value: storage) as? any View {
         return childrenIfMultiple(of: trueContent)
