@@ -1,14 +1,13 @@
 //
-//  File.swift
-//  
+//  MetadataTypes.swift
+//
 //
 //  Created by Noah Martin on 7/3/23.
 //
 
 import Foundation
 
-
-// https://github.com/apple/swift/blob/main/include/swift/ABI/Metadata.h#L2472-L2643
+// https://github.com/apple/swift/blob/f13167d9d162e69d1aac6ce022b19f6a80c62aba/include/swift/ABI/Metadata.h#L2472-L2643
 struct ProtocolConformanceDescriptor {
   let protocolDescriptor: Int32
   var nominalTypeDescriptor: Int32
@@ -16,7 +15,7 @@ struct ProtocolConformanceDescriptor {
   let conformanceFlags: ConformanceFlags
 }
 
-// https://github.com/apple/swift/blob/main/include/swift/ABI/Metadata.h#L3139-L3222
+// https://github.com/apple/swift/blob/f13167d9d162e69d1aac6ce022b19f6a80c62aba/include/swift/ABI/Metadata.h#L3139-L3222
 struct ProtocolDescriptor {
   let flags: UInt32
   let parent: Int32
@@ -56,7 +55,7 @@ struct TargetModuleContextDescriptor {
   let accessFunction: Int32
 }
 
-// https://github.com/apple/swift/blob/main/include/swift/ABI/MetadataValues.h#L372-L398
+// https://github.com/apple/swift/blob/f13167d9d162e69d1aac6ce022b19f6a80c62aba/include/swift/ABI/MetadataValues.h#L372-L398
 enum TypeReferenceKind: UInt32 {
   case DirectTypeDescriptor = 0
   case IndirectTypeDescriptor = 1
@@ -64,7 +63,7 @@ enum TypeReferenceKind: UInt32 {
   case IndirectObjCClass = 3
 }
 
-// https://github.com/apple/swift/blob/main/include/swift/ABI/MetadataValues.h#L582-L687
+// https://github.com/apple/swift/blob/f13167d9d162e69d1aac6ce022b19f6a80c62aba/include/swift/ABI/MetadataValues.h#L582-L687
 struct ConformanceFlags {
 
   private let rawFlags: UInt32
