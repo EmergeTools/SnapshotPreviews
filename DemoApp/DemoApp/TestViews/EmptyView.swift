@@ -22,6 +22,23 @@ struct EmptyViewTest: View {
 
 struct EmptyViewTest_Previews: PreviewProvider {
   static var previews: some View {
-    EmptyViewTest()
+    Text("Hi").multiplyingModifier()
   }
+}
+
+
+struct MultipliyinModifier: ViewModifier {
+
+    func body(content: Content) -> some View {
+      Group {
+        content
+        content.dynamicTypeSize(.xLarge)
+      }
+    }
+}
+
+extension View {
+    func multiplyingModifier() -> some View {
+        self.modifier(MultipliyinModifier())
+    }
 }
