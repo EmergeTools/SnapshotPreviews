@@ -46,14 +46,12 @@ public final class ExpandingViewController<Content: View>: UIHostingController<A
 
   private var didCall = false
   private var previousHeight: CGFloat?
-  private let supportsExpansion: Bool
 
   private var heightAnchor: NSLayoutConstraint?
 
   var expansionSettled: ((EmergeRenderingMode?, Float?) -> Void)?
 
-  init(rootView: Content, layout: PreviewLayout, supportsExpansion: Bool) {
-    self.supportsExpansion = supportsExpansion
+  init(rootView: Content, layout: PreviewLayout) {
     let newView = finder?(rootView)
     super.init(rootView: newView != nil ? AnyView(newView!) : AnyView(rootView))
 
@@ -94,9 +92,7 @@ public final class ExpandingViewController<Content: View>: UIHostingController<A
       return
     }
 
-    let expansionPreference = stateMirror?.descendant("expansionPreference") as? Bool
-
-    let supportsExpansion = expansionPreference ?? self.supportsExpansion
+    let supportsExpansion = stateMirror?.descendant("expansionPreference") as? Bool ?? true
     let scrollView = view.firstScrollView
     if let scrollView, supportsExpansion {
       let diff = Int(scrollView.contentSize.height - scrollView.visibleContentHeight)

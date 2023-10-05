@@ -7,21 +7,14 @@ extension View {
 }
 
 public struct Preview: Identifiable {
-  init<P>(preview: SwiftUI._Preview, extraction: PreviewProviderExtraction<P>) {
+  init<P: SwiftUI.PreviewProvider>(preview: _Preview, type: P.Type) {
     previewId = "\(preview.id)"
     orientation = preview.interfaceOrientation
     displayName = preview.displayName
     device = preview.device
     layout = preview.layout
     _view = {
-      let children = try extraction.previews.get()
-
-      let (v, modifiers) = children[preview.id]
-      var result = v
-      for mod in modifiers {
-        result = result.applyModifier(mod)
-      }
-      return AnyView(result)
+      AnyView(P.previews.selectSubview(preview.id))
     }
   }
 
@@ -43,7 +36,7 @@ public struct Preview: Identifiable {
     displayName = preview.descendant("displayName") as? String
     let source = Mirror(reflecting: preview.descendant("source")!)
     let sourceType = source.subjectType
-    let _view: @MainActor () throws -> AnyView
+    let _view: @MainActor () -> AnyView
     if (String(describing: sourceType) == "ViewPreviewSource") {
       _view = {
         let makeView = source.descendant("makeView") as! @MainActor () -> any SwiftUI.View
@@ -63,9 +56,9 @@ public struct Preview: Identifiable {
   public let displayName: String?
   public let device: PreviewDevice?
   public let layout: PreviewLayout
-  private let _view: @MainActor () throws -> AnyView
-  @MainActor public func view() throws -> AnyView {
-    try _view()
+  private let _view: @MainActor () -> AnyView
+  @MainActor public func view() -> AnyView {
+    _view()
   }
 }
 
@@ -74,8 +67,7 @@ public struct PreviewType: Hashable, Identifiable {
   init<A: PreviewProvider>(typeName: String, preivewProvider: A.Type) {
     self.typeName = typeName
     self.fileID = nil
-    let extraction = PreviewProviderExtraction<A>()
-    self.previews = A._allPreviews.map { Preview(preview: $0, extraction: extraction) }
+    self.previews = A._allPreviews.map { Preview(preview: $0, type: A.self) }
     self.platform = A.platform
   }
 
