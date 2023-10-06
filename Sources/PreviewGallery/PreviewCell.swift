@@ -13,6 +13,7 @@ struct PreviewCell: View {
 
   let preview: SnapshotPreviewsCore.Preview
 
+  @State var preferredColorScheme: ColorScheme? = nil
   @Environment(\.colorScheme) var colorScheme
 
   var body: some View {
@@ -25,8 +26,11 @@ struct PreviewCell: View {
             .foregroundStyle(Color.lightChecker)
             .background(Color.dynamicBackground)
         }
+        .onPreferenceChange(PreferredColorSchemeKey.self, perform: { value in
+          preferredColorScheme = value
+        })
+        .environment(\.colorScheme, preferredColorScheme ?? colorScheme)
         .preferredColorScheme(nil)
-        .colorScheme(try! preview.colorScheme() ?? colorScheme)
     }
   }
 
