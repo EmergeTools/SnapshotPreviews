@@ -38,7 +38,7 @@ class Snapshots {
     window.backgroundColor = UIColor.systemBackground
     window.makeKeyAndVisible()
     self.window = window
-    
+
     Task {
       try await startServer()
     }
@@ -66,7 +66,7 @@ class Snapshots {
       let id = pathComponents[3]
 
       var result: [String: String] = [:]
-      let (imageResult, preview) = await self.display(typeName: typeName, id: id)
+      let (imageResult, preview) = await display(typeName: typeName, id: id)
 
       if let displayName = preview.displayName {
         result["displayName"] = displayName
@@ -91,7 +91,7 @@ class Snapshots {
 
       return HTTPResponse(statusCode: .ok, body: try JSONEncoder().encode(result))
     }
-        
+
     await server.appendRoute("GET /file") { request in
       return HTTPResponse(statusCode: .ok, body: Self.resultsDir.path.data(using: .utf8)!)
     }
@@ -100,33 +100,39 @@ class Snapshots {
   }
 
   @MainActor func display(typeName: String, id: String) async -> (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) {
+    await withCheckedContinuation { continuation in
+      display(typeName: typeName, id: id) { result, preview in
+        continuation.resume(returning: (result, preview))
+      }
+    }
+  }
+
+  @MainActor func display(typeName: String, id: String, completion: @escaping (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) -> Void) {
     let previewTypes = findPreviews { name in
       return name == typeName
     }
 
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
-    return (try! await display(preview: preview), preview)
+    try! display(preview: preview) { imageResult in
+      completion(imageResult, preview)
+    }
   }
 
-  @MainActor func display(preview: SnapshotPreviewsCore.Preview) async throws -> Result<UIImage, Error> {
+  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>) -> Void) throws {
     var view = try preview.view()
     let supportsExpansion = ViewInspection.shouldExpand(view)
     let renderingMode = ViewInspection.renderingMode(of: view)
     if let colorScheme = try preview.colorScheme() {
       view = AnyView(view.colorScheme(colorScheme))
     }
-      
-    return await withCheckedContinuation({ (continuation: CheckedContinuation<Result<UIImage, Error>, Never>) in
-      view.snapshot(
-        layout: preview.layout,
-        window: window,
-        supportsExpansion: supportsExpansion,
-        renderingMode: renderingMode,
-        async: false) { result in
-          continuation.resume(returning: result)
-        }
-    })
+    view.snapshot(
+      layout: preview.layout,
+      window: window,
+      supportsExpansion: supportsExpansion,
+      renderingMode: renderingMode,
+      async: false,
+      completion: completion)
   }
 
   @MainActor func writeClassNames() {
