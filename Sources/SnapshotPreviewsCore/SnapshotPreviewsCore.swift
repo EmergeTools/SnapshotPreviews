@@ -54,16 +54,6 @@ public struct Preview: Identifiable {
         let makeView = source.descendant("makeView") as! @MainActor () -> any SwiftUI.View
         return AnyView(makeView())
       }
-    } else if (String(describing: sourceType) == "UIViewPreviewSource") {
-      _view = {
-        let makeView = source.descendant("makeView") as! () -> UIView
-        return AnyView(UIViewWrapper(makeView))
-      }
-    } else if (String(describing: sourceType) == "UIViewControllerPreviewSource") {
-      _view = {
-        let makeViewController = source.descendant("makeViewController") as! () -> UIViewController
-        return AnyView(UIViewControllerWrapper(makeViewController))
-      }
     } else {
       return nil
     }
