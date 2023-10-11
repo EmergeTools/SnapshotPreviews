@@ -13,7 +13,7 @@ public struct Preview: Identifiable {
     displayName = preview.displayName
     device = preview.device
     layout = preview.layout
-    let _view = {
+    _view = {
       let children = try extraction.previews.get()
 
       let (v, modifiers) = children[preview.id]
@@ -23,7 +23,6 @@ public struct Preview: Identifiable {
       }
       return AnyView(result)
     }
-    self._view = _view
   }
 
 #if swift(>=5.9)

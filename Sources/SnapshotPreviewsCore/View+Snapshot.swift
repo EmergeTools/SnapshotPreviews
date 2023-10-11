@@ -17,16 +17,16 @@ extension View {
   public func snapshot(
     layout: PreviewLayout,
     window: UIWindow,
-    supportsExpansion: Bool,
-    renderingMode: EmergeRenderingMode?,
+    legacySupportsExpansion: Bool,
+    legacyRenderingMode: EmergeRenderingMode?,
     async: Bool,
-    completion: @escaping (Result<UIImage, Error>) -> Void)
+    completion: @escaping (Result<UIImage, Error>, Float?) -> Void)
   {
     UIView.setAnimationsEnabled(false)
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
     }
-    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout, supportsExpansion: supportsExpansion)
+    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout, supportsExpansion: legacySupportsExpansion)
     if #available(iOS 16, *) {
       controller.sizingOptions = .intrinsicContentSize
     }
@@ -37,14 +37,14 @@ extension View {
 
     let (windowRootVC, containerVC) = Self.setupRootVC(subVC: controller)
     window.rootViewController = windowRootVC
-    controller.expansionSettled = {
+    controller.expansionSettled = { renderingMode, precision in
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller))
+          completion(Self.takeSnapshot(layout: layout, renderingMode: legacyRenderingMode ?? renderingMode, rootVC: containerVC, controller: controller), precision)
         }
       } else {
         DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller))
+          completion(Self.takeSnapshot(layout: layout, renderingMode: legacyRenderingMode ?? renderingMode, rootVC: containerVC, controller: controller), precision)
         }
       }
     }

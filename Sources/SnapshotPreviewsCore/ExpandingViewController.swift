@@ -34,7 +34,15 @@ extension UIView {
   }
 }
 
-public final class ExpandingViewController<Content: View>: UIHostingController<Content> {
+let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
+let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
+let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
+let stateMirror = modifierState != nil ? Mirror(
+  reflecting: modifierState!
+    .perform(NSSelectorFromString("shared"))
+    .takeUnretainedValue()) : nil
+
+public final class ExpandingViewController<Content: View>: UIHostingController<AnyView> {
 
   private var didCall = false
   private var previousHeight: CGFloat?
@@ -42,11 +50,12 @@ public final class ExpandingViewController<Content: View>: UIHostingController<C
 
   private var heightAnchor: NSLayoutConstraint?
 
-  var expansionSettled: (() -> Void)?
+  var expansionSettled: ((EmergeRenderingMode?, Float?) -> Void)?
 
   init(rootView: Content, layout: PreviewLayout, supportsExpansion: Bool) {
     self.supportsExpansion = supportsExpansion
-    super.init(rootView: rootView)
+    let newView = finder?(rootView)
+    super.init(rootView: newView != nil ? AnyView(newView!) : AnyView(rootView))
 
     switch layout {
     case let .fixed(width: width, height: height):
@@ -63,12 +72,14 @@ public final class ExpandingViewController<Content: View>: UIHostingController<C
   @MainActor required dynamic init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   private func runCallback() {
     guard !didCall else { return }
 
     didCall = true
-    expansionSettled?()
+    let renderingMode = stateMirror?.descendant("renderingMode") as? EmergeRenderingMode.RawValue
+    let emergeRenderingMode = renderingMode != nil ? EmergeRenderingMode(rawValue: renderingMode!) : nil
+    expansionSettled?(emergeRenderingMode, stateMirror?.descendant("precision") as? Float)
   }
 
   public override func viewDidLayoutSubviews() {
@@ -83,6 +94,9 @@ public final class ExpandingViewController<Content: View>: UIHostingController<C
       return
     }
 
+    let expansionPreference = stateMirror?.descendant("expansionPreference") as? Bool
+
+    let supportsExpansion = expansionPreference ?? self.supportsExpansion
     let scrollView = view.firstScrollView
     if let scrollView, supportsExpansion {
       let diff = Int(scrollView.contentSize.height - scrollView.visibleContentHeight)

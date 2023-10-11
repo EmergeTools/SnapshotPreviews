@@ -16,6 +16,12 @@ let package = Package(
         .library(
           name: "SnapshottingTests",
           targets: ["SnapshottingTests"]),
+        // Link the main app to this target to use custom snapshot settings
+        // This lib does not get inserted when running tests to avoid
+        // duplicate symbols.
+        .library(
+          name: "SnapshotPreferences",
+          targets: ["SnapshotPreferences"]),
         // Core functionality for snapshotting exported from the internal package
         .library(
           name: "SnapshotPreviewsCore",
@@ -36,11 +42,12 @@ let package = Package(
         .target(name: "SnapshottingTests"),
         // Core functionality
         .target(name: "SnapshotPreviewsCore"),
+        .target(name: "SnapshotPreferences", dependencies: ["SnapshotPreviewsCore"]),
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
         // Swift code in the inserted dylib
         .target(name: "SnapshottingSwift", dependencies: ["SnapshotPreviewsCore", .product(name: "FlyingFox", package: "FlyingFox")]),
-        .target(name: "PreviewGallery", dependencies: ["SnapshotPreviewsCore"]),
+        .target(name: "PreviewGallery", dependencies: ["SnapshotPreviewsCore", "SnapshotPreferences"]),
         .testTarget(
             name: "SnapshotPreviewsTests",
             dependencies: ["SnapshotPreviewsCore"]),

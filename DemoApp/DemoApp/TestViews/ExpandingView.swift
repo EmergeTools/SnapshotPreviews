@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SnapshotPreferences
 
 struct ExpandingView: View {
   var body: some View {
