@@ -99,17 +99,6 @@ public enum ViewInspection {
     return nil
   }
 
-  public static func preferredColorScheme(of view: some View) -> ColorScheme? {
-    return getModifier(of: view) { modifier in
-      if let colorSchemePreference = modifier as? _PreferenceWritingModifier<PreferredColorSchemeKey> {
-        return colorSchemePreference.value
-      } else if let colorScheme = modifier as? _EnvironmentKeyWritingModifier<ColorScheme> {
-        return colorScheme.value
-      }
-      return nil
-    }
-  }
-
   public static func precision(of view: some View) -> Float? {
     return getModifier(of: view) { modifier in
       let typeName = String(reflecting: modifier)

@@ -14,15 +14,18 @@ public struct PreferredColorSchemeWrapper<Content: View>: View {
   @Environment(\.colorScheme) var colorScheme
 
   let content: Content
+  let colorSchemeUpdater: ((ColorScheme?) -> Void)?
 
-  public init(@ViewBuilder _ content: () -> Content) {
+  public init(@ViewBuilder _ content: () -> Content, colorSchemeUpdater: ((ColorScheme?) -> Void)? = nil) {
     self.content = content()
+    self.colorSchemeUpdater = colorSchemeUpdater
   }
 
   public var body: some View {
     content
       .onPreferenceChange(PreferredColorSchemeKey.self, perform: { value in
         preferredColorScheme = value
+        colorSchemeUpdater?(value)
       })
       .environment(\.colorScheme, preferredColorScheme ?? colorScheme)
       .preferredColorScheme(nil)

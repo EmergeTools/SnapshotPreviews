@@ -24,10 +24,6 @@ public struct Preview: Identifiable {
       return AnyView(result)
     }
     self._view = _view
-    _colorScheme = {
-      let v = try _view()
-      return ViewInspection.preferredColorScheme(of: v)
-    }
   }
 
 #if swift(>=5.9)
@@ -59,10 +55,6 @@ public struct Preview: Identifiable {
     }
 
     self._view = _view
-    _colorScheme = {
-      let v = try _view()
-      return ViewInspection.preferredColorScheme(of: v)
-    }
   }
 #endif
 
@@ -72,10 +64,6 @@ public struct Preview: Identifiable {
   public let displayName: String?
   public let device: PreviewDevice?
   public let layout: PreviewLayout
-  private let _colorScheme: @MainActor () throws -> ColorScheme?
-  @MainActor public func colorScheme() throws -> ColorScheme? {
-    try _colorScheme()
-  }
   private let _view: @MainActor () throws -> AnyView
   @MainActor public func view() throws -> AnyView {
     try _view()

@@ -123,9 +123,7 @@ class Snapshots {
     var view = try preview.view()
     let supportsExpansion = ViewInspection.shouldExpand(view)
     let renderingMode = ViewInspection.renderingMode(of: view)
-    if let colorScheme = try preview.colorScheme() {
-      view = AnyView(view.colorScheme(colorScheme))
-    }
+    view = AnyView(PreferredColorSchemeWrapper { view })
     view.snapshot(
       layout: preview.layout,
       window: window,
