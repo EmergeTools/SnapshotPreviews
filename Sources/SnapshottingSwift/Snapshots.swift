@@ -114,12 +114,12 @@ class Snapshots {
 
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
-    try! display(preview: preview) { imageResult in
+    try! display(preview: preview) { imageResult, _ in
       completion(imageResult, preview)
     }
   }
 
-  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>) -> Void) throws {
+  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>, Float?) -> Void) throws {
     var view = try preview.view()
     let supportsExpansion = ViewInspection.shouldExpand(view)
     let renderingMode = ViewInspection.renderingMode(of: view)
@@ -127,8 +127,8 @@ class Snapshots {
     view.snapshot(
       layout: preview.layout,
       window: window,
-      supportsExpansion: supportsExpansion,
-      renderingMode: renderingMode,
+      legacySupportsExpansion: supportsExpansion,
+      legacyRenderingMode: renderingMode,
       async: false,
       completion: completion)
   }
