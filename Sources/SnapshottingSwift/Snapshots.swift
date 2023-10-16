@@ -120,15 +120,11 @@ class Snapshots {
   }
 
   @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>, Float?) -> Void) throws {
-    var view = try preview.view()
-    let supportsExpansion = ViewInspection.shouldExpand(view)
-    let renderingMode = ViewInspection.renderingMode(of: view)
+    var view = preview.view()
     view = AnyView(PreferredColorSchemeWrapper { view })
     view.snapshot(
       layout: preview.layout,
       window: window,
-      legacySupportsExpansion: supportsExpansion,
-      legacyRenderingMode: renderingMode,
       async: false,
       completion: completion)
   }

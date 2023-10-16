@@ -17,8 +17,6 @@ extension View {
   public func snapshot(
     layout: PreviewLayout,
     window: UIWindow,
-    legacySupportsExpansion: Bool,
-    legacyRenderingMode: EmergeRenderingMode?,
     async: Bool,
     completion: @escaping (Result<UIImage, Error>, Float?) -> Void)
   {
@@ -26,7 +24,7 @@ extension View {
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
     }
-    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout, supportsExpansion: legacySupportsExpansion)
+    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout)
     if #available(iOS 16, *) {
       controller.sizingOptions = .intrinsicContentSize
     }
@@ -40,11 +38,11 @@ extension View {
     controller.expansionSettled = { renderingMode, precision in
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: legacyRenderingMode ?? renderingMode, rootVC: containerVC, controller: controller), precision)
+          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
         }
       } else {
         DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: legacyRenderingMode ?? renderingMode, rootVC: containerVC, controller: controller), precision)
+          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
         }
       }
     }

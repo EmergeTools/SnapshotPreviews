@@ -25,12 +25,12 @@ struct ModuleScreens: View {
         let featurePreviews = provider.previews.filter { $0.requiresFullScreen }
         NavigationLink {
           if featurePreviews.count == 1 {
-            try! featurePreviews[0].view()
+            featurePreviews[0].view()
           } else {
             List {
               ForEach(featurePreviews) { preview in
                 NavigationLink(preview.displayName ?? provider.displayName) {
-                  try! preview.view()
+                  preview.view()
                 }
               }
             }.navigationTitle(provider.displayName)
