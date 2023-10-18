@@ -26,3 +26,5 @@ public struct UIViewControllerPreviewSource {
   public var makeViewController: @_Concurrency.MainActor () -> UIKit.UIViewController
 }
 ```
+
+In order to link the xcframework without having made the system library modifications, the extensions need to be deleted from the xcframework's .swiftinterface files.

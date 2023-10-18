@@ -263,18 +263,6 @@
       },
       {
         "kind": "TypeDecl",
-        "name": "Testing",
-        "printedName": "Testing",
-        "declKind": "Struct",
-        "usr": "s:15PreviewsSupport7TestingV",
-        "mangledName": "$s15PreviewsSupport7TestingV",
-        "moduleName": "PreviewsSupport",
-        "declAttributes": [
-          "AccessControl"
-        ]
-      },
-      {
-        "kind": "TypeDecl",
         "name": "UIViewPreviewSource",
         "printedName": "UIViewPreviewSource",
         "declKind": "Struct",

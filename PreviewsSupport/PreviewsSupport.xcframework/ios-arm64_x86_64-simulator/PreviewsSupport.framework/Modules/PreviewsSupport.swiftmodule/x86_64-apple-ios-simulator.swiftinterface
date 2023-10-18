@@ -18,14 +18,3 @@ public protocol MakeUIViewProvider {
 public protocol MakeViewControllerProvider {
   var makeViewController: @_Concurrency.MainActor () -> UIKit.UIViewController { get }
 }
-public struct Testing {
-}
-@available(iOS 17.0, *)
-extension UIKit.UIViewPreviewSource : PreviewsSupport.MakeUIViewProvider {
-}
-@available(iOS 17.0, *)
-extension UIKit.UIViewControllerPreviewSource : PreviewsSupport.MakeViewControllerProvider {
-}
-@available(iOS 17.0, *)
-extension SwiftUI.ViewPreviewSource : PreviewsSupport.MakeViewProvider {
-}

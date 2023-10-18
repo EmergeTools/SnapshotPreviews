@@ -38,7 +38,7 @@ public struct Preview: Identifiable {
     self.orientation = orientation
     self.layout = layout
     displayName = preview.descendant("displayName") as? String
-    let source = Mirror(reflecting: preview.descendant("source")!)
+    let source = preview.descendant("source")!
     let _view: @MainActor () -> AnyView
     if let source = source as? MakeViewProvider {
       _view = {

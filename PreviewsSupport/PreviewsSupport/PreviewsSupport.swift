@@ -20,8 +20,6 @@ public protocol MakeViewControllerProvider {
   var makeViewController: @MainActor () -> UIViewController { get }
 }
 
-public struct Testing { }
-
 @available(iOS 17.0, *)
 extension UIViewPreviewSource: MakeUIViewProvider { }
 
