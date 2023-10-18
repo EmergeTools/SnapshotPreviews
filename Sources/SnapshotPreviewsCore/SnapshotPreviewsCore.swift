@@ -1,10 +1,5 @@
 import SwiftUI
-
-extension View {
-  fileprivate func applyModifier<M: ViewModifier>(_ mod: M) -> any View {
-    return modifier(mod)
-  }
-}
+import PreviewsSupport
 
 public struct Preview: Identifiable {
   init<P: SwiftUI.PreviewProvider>(preview: _Preview, type: P.Type) {
@@ -43,13 +38,19 @@ public struct Preview: Identifiable {
     self.orientation = orientation
     self.layout = layout
     displayName = preview.descendant("displayName") as? String
-    let source = Mirror(reflecting: preview.descendant("source")!)
-    let sourceType = source.subjectType
+    let source = preview.descendant("source")!
     let _view: @MainActor () -> AnyView
-    if (String(describing: sourceType) == "ViewPreviewSource") {
+    if let source = source as? MakeViewProvider {
       _view = {
-        let makeView = source.descendant("makeView") as! @MainActor () -> any SwiftUI.View
-        return AnyView(makeView())
+        return AnyView(source.makeView())
+      }
+    } else if let source = source as? MakeUIViewProvider {
+      _view = {
+        return AnyView(UIViewWrapper(source.makeView))
+      }
+    } else if let source = source as? MakeViewControllerProvider {
+      _view = {
+        return AnyView(UIViewControllerWrapper(source.makeViewController))
       }
     } else {
       return nil
