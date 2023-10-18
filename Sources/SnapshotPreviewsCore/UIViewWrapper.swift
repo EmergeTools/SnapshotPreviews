@@ -10,9 +10,9 @@ import UIKit
 import SwiftUI
 
 struct UIViewControllerWrapper: UIViewControllerRepresentable {
-  let builder: () -> UIViewController
+  let builder: @MainActor () -> UIViewController
 
-  init(_ builder: @escaping () -> UIViewController) {
+  init(_ builder: @escaping @MainActor () -> UIViewController) {
     self.builder = builder
   }
 
@@ -25,9 +25,9 @@ struct UIViewControllerWrapper: UIViewControllerRepresentable {
 
 struct UIViewWrapper: UIViewRepresentable {
 
-  let builder: () -> UIView
+  let builder: @MainActor () -> UIView
 
-  init(_ builder: @escaping () -> UIView) {
+  init(_ builder: @escaping @MainActor () -> UIView) {
     self.builder = builder
   }
 
