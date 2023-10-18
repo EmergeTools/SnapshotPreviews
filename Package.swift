@@ -41,13 +41,16 @@ let package = Package(
         // Target that provides the XCTest
         .target(name: "SnapshottingTests"),
         // Core functionality
-        .target(name: "SnapshotPreviewsCore"),
+        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport"]),
         .target(name: "SnapshotPreferences", dependencies: ["SnapshotPreviewsCore"]),
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
         // Swift code in the inserted dylib
         .target(name: "SnapshottingSwift", dependencies: ["SnapshotPreviewsCore", .product(name: "FlyingFox", package: "FlyingFox")]),
         .target(name: "PreviewGallery", dependencies: ["SnapshotPreviewsCore", "SnapshotPreferences"]),
+        .binaryTarget(
+          name: "PreviewsSupport",
+          path: "PreviewsSupport/PreviewsSupport.xcframework"),
         .testTarget(
             name: "SnapshotPreviewsTests",
             dependencies: ["SnapshotPreviewsCore"]),
