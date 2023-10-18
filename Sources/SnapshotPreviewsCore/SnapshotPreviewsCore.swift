@@ -22,16 +22,25 @@ public struct Preview: Identifiable {
   @available(iOS 17.0, *)
   init?(preview: DeveloperToolsSupport.Preview) {
     previewId = "0"
-    orientation = nil
+    var orientation: InterfaceOrientation = .portrait
     device = nil
     let preview = Mirror(reflecting: preview)
     let traits = preview.descendant("traits")! as! [Any]
     var layout = PreviewLayout.device
     for t in traits {
-      if let value = Mirror(reflecting: t).descendant("value") as? PreviewLayout {
-        layout = value
+      if let value = Mirror(reflecting: t).descendant("value") {
+        if let value = value as? PreviewLayout {
+          layout = value
+        } else if String(describing: value).hasSuffix(".portraitUpsideDown") {
+          orientation = .portraitUpsideDown
+        } else if String(describing: value).hasSuffix(".landscapeLeft") {
+          orientation = .landscapeLeft
+        } else if String(describing: value).hasSuffix(".landscapeRight") {
+          orientation = .landscapeRight
+        }
       }
     }
+    self.orientation = orientation
     self.layout = layout
     displayName = preview.descendant("displayName") as? String
     let source = Mirror(reflecting: preview.descendant("source")!)
@@ -52,7 +61,7 @@ public struct Preview: Identifiable {
 
   public let id = UUID()
   public let previewId: String
-  public let orientation: InterfaceOrientation?
+  public let orientation: InterfaceOrientation
   public let displayName: String?
   public let device: PreviewDevice?
   public let layout: PreviewLayout
