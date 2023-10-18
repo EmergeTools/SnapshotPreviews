@@ -1,0 +1,349 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "PreviewsSupport"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MakeViewProvider",
+        "printedName": "MakeViewProvider",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "makeView",
+            "printedName": "makeView",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> SwiftUI.View",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "View",
+                    "printedName": "SwiftUI.View",
+                    "usr": "s:7SwiftUI4ViewP"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvp",
+            "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> SwiftUI.View",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "View",
+                        "printedName": "SwiftUI.View",
+                        "usr": "s:7SwiftUI4ViewP"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvg",
+                "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeViewProvider>",
+                "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeViewProvider>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:15PreviewsSupport16MakeViewProviderP",
+        "mangledName": "$s15PreviewsSupport16MakeViewProviderP",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "AccessControl"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MakeUIViewProvider",
+        "printedName": "MakeUIViewProvider",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "makeView",
+            "printedName": "makeView",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> UIKit.UIView",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIView",
+                    "printedName": "UIKit.UIView",
+                    "usr": "c:objc(cs)UIView"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvp",
+            "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> UIKit.UIView",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIView",
+                        "printedName": "UIKit.UIView",
+                        "usr": "c:objc(cs)UIView"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvg",
+                "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeUIViewProvider>",
+                "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeUIViewProvider>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:15PreviewsSupport18MakeUIViewProviderP",
+        "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "AccessControl"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MakeViewControllerProvider",
+        "printedName": "MakeViewControllerProvider",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "makeViewController",
+            "printedName": "makeViewController",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> UIKit.UIViewController",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIViewController",
+                    "printedName": "UIKit.UIViewController",
+                    "usr": "c:objc(cs)UIViewController"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvp",
+            "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> UIKit.UIViewController",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIViewController",
+                        "printedName": "UIKit.UIViewController",
+                        "usr": "c:objc(cs)UIViewController"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvg",
+                "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeViewControllerProvider>",
+                "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeViewControllerProvider>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:15PreviewsSupport26MakeViewControllerProviderP",
+        "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "AccessControl"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Testing",
+        "printedName": "Testing",
+        "declKind": "Struct",
+        "usr": "s:15PreviewsSupport7TestingV",
+        "mangledName": "$s15PreviewsSupport7TestingV",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "AccessControl"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "UIViewPreviewSource",
+        "printedName": "UIViewPreviewSource",
+        "declKind": "Struct",
+        "usr": "s:5UIKit19UIViewPreviewSourceV",
+        "mangledName": "$s5UIKit19UIViewPreviewSourceV",
+        "moduleName": "UIKit",
+        "intro_iOS": "17.0",
+        "declAttributes": [
+          "Available"
+        ],
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "MakeUIViewProvider",
+            "printedName": "MakeUIViewProvider",
+            "usr": "s:15PreviewsSupport18MakeUIViewProviderP",
+            "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "UIViewControllerPreviewSource",
+        "printedName": "UIViewControllerPreviewSource",
+        "declKind": "Struct",
+        "usr": "s:5UIKit29UIViewControllerPreviewSourceV",
+        "mangledName": "$s5UIKit29UIViewControllerPreviewSourceV",
+        "moduleName": "UIKit",
+        "intro_iOS": "17.0",
+        "declAttributes": [
+          "Available"
+        ],
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "MakeViewControllerProvider",
+            "printedName": "MakeViewControllerProvider",
+            "usr": "s:15PreviewsSupport26MakeViewControllerProviderP",
+            "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ViewPreviewSource",
+        "printedName": "ViewPreviewSource",
+        "declKind": "Struct",
+        "usr": "s:7SwiftUI17ViewPreviewSourceV",
+        "mangledName": "$s7SwiftUI17ViewPreviewSourceV",
+        "moduleName": "SwiftUI",
+        "intro_iOS": "17.0",
+        "declAttributes": [
+          "Available"
+        ],
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "MakeViewProvider",
+            "printedName": "MakeViewProvider",
+            "usr": "s:15PreviewsSupport16MakeViewProviderP",
+            "mangledName": "$s15PreviewsSupport16MakeViewProviderP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": []
+}
