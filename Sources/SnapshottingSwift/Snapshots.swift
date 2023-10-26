@@ -26,6 +26,7 @@ extension SnapshotError: LocalizedError {
 
 class Snapshots {
   let server = HTTPServer(port: 8080)
+  let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
 
   public init() {
     let windowScene = UIApplication.shared
@@ -66,6 +67,7 @@ class Snapshots {
       let id = pathComponents[3]
 
       var result: [String: String] = [:]
+      testHandler?.perform(NSSelectorFromString("setup"))
       let (imageResult, preview) = await display(typeName: typeName, id: id)
 
       if let displayName = preview.displayName {
