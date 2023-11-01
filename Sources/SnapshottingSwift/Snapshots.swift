@@ -39,6 +39,10 @@ class Snapshots {
     window.backgroundColor = UIColor.systemBackground
     window.makeKeyAndVisible()
     self.window = window
+    let windowRootVC = UIViewController()
+    windowRootVC.view.bounds = UIScreen.main.bounds
+    windowRootVC.view.backgroundColor = .clear
+    window.rootViewController = windowRootVC
 
     Task {
       try await startServer()

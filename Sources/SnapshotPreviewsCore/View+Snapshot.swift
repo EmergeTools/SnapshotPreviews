@@ -33,8 +33,7 @@ extension View {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .clear
 
-    let (windowRootVC, containerVC) = Self.setupRootVC(subVC: controller)
-    window.rootViewController = windowRootVC
+    let containerVC = Self.setupRootVC(windowRootVC: window.rootViewController!, subVC: controller)
     controller.expansionSettled = { renderingMode, precision in
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -48,11 +47,12 @@ extension View {
     }
   }
 
-  private static func setupRootVC(subVC: UIViewController) -> (UIViewController, UIViewController) {
-    let windowRootVC = UIViewController()
-    windowRootVC.view.bounds = UIScreen.main.bounds
-    windowRootVC.view.backgroundColor = .clear
-
+  private static func setupRootVC(windowRootVC: UIViewController, subVC: UIViewController) -> UIViewController {
+    for c in windowRootVC.children {
+      c.willMove(toParent: nil)
+      c.view.removeFromSuperview()
+      c.removeFromParent()
+    }
     let containerVC = UIViewController()
     containerVC.view.backgroundColor = .clear
     containerVC.view.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +73,7 @@ extension View {
     subVC.view.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width).isActive = true
     containerVC.view.heightAnchor.constraint(greaterThanOrEqualTo: subVC.view.heightAnchor, multiplier: 1).isActive = true
 
-    return (windowRootVC, containerVC)
+    return containerVC
   }
 
   private static func takeSnapshot(
