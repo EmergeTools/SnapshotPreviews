@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 public protocol MakeViewProvider {
   var makeView: @MainActor () -> any View { get }
 }
 
+#if canImport(UIKit)
 public protocol MakeUIViewProvider {
   var makeView: @MainActor () -> UIView { get }
 }
@@ -28,3 +31,4 @@ extension UIViewControllerPreviewSource: MakeViewControllerProvider { }
 
 @available(iOS 17.0, *)
 extension ViewPreviewSource: MakeViewProvider { }
+#endif
