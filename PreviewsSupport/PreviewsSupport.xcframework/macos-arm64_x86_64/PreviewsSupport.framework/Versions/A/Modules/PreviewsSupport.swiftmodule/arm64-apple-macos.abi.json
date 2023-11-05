@@ -1,0 +1,101 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "MakeViewProvider",
+        "printedName": "MakeViewProvider",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "makeView",
+            "printedName": "makeView",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> SwiftUI.View",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "View",
+                    "printedName": "SwiftUI.View",
+                    "usr": "s:7SwiftUI4ViewP"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvp",
+            "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> SwiftUI.View",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "View",
+                        "printedName": "SwiftUI.View",
+                        "usr": "s:7SwiftUI4ViewP"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvg",
+                "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeViewProvider>",
+                "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeViewProvider>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:15PreviewsSupport16MakeViewProviderP",
+        "mangledName": "$s15PreviewsSupport16MakeViewProviderP",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "AccessControl"
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": []
+}
