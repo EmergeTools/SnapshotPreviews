@@ -19,6 +19,10 @@ class MyPreviewTest: PreviewTest {
   override func snapshotPreviews() -> [String]? {
     return nil
   }
+    
+  override func excludedSnapshotPreviews() -> [String]? {
+    return nil
+  }
 
   override func enableAccessibilityAudit() -> Bool {
     true

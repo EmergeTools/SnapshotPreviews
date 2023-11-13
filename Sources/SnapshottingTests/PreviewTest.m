@@ -48,6 +48,10 @@ NSString* getDylibPath(NSString* dylibName) {
   return NULL;
 }
 
+- (NSArray<NSString *> *)excludedSnapshotPreviews {
+  return NULL;
+}
+
 - (BOOL)enableAccessibilityAudit {
   return YES;
 }
@@ -82,6 +86,13 @@ NSString* getDylibPath(NSString* dylibName) {
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:previews options:nil error:nil];
     launchEnvironment[@"SNAPSHOT_PREVIEWS"] = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   }
+    
+  NSArray *excludedPreviews = [self excludedSnapshotPreviews];
+  if (excludedPreviews) {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:excludedPreviews options:nil error:nil];
+    launchEnvironment[@"EXCLUDED_SNAPSHOT_PREVIEWS"] = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  }
+    
   app.launchEnvironment = launchEnvironment;
   [app launch];
 
