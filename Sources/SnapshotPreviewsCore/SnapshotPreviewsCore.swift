@@ -115,7 +115,7 @@ public struct PreviewType: Hashable, Identifiable {
       .dropFirst()
       .flatMap { $0.split(separator: "_") }
       .joined(separator: " ")
-      .splitBefore(separator: { $0.isUpperCase })
+      .splitBefore(separator: { $0.isUpperCase && !($1?.isUpperCase ?? true) })
       .map{ String($0).trimmingCharacters(in: .whitespaces) }
       .filter { $0.count > 0 }
     if components.last == "Previews" {
@@ -160,14 +160,16 @@ public func findPreviews(
 
 extension Sequence {
     func splitBefore(
-        separator isSeparator: (Iterator.Element) throws -> Bool
+        separator isSeparator: (Iterator.Element, Iterator.Element?) throws -> Bool
     ) rethrows -> [AnySequence<Iterator.Element>] {
         var result: [AnySequence<Iterator.Element>] = []
         var subSequence: [Iterator.Element] = []
 
         var iterator = self.makeIterator()
-        while let element = iterator.next() {
-            if try isSeparator(element) {
+        var currentElement = iterator.next()
+        while let element = currentElement {
+          let nextElement = iterator.next()
+          if try isSeparator(element, nextElement) {
                 if !subSequence.isEmpty {
                     result.append(AnySequence(subSequence))
                 }
@@ -176,6 +178,7 @@ extension Sequence {
             else {
                 subSequence.append(element)
             }
+          currentElement = nextElement
         }
         result.append(AnySequence(subSequence))
         return result
