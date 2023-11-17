@@ -19,8 +19,6 @@
 // Elements should be the type name of the preview, like "MyModule.MyView_Previews"
 - (nullable NSArray<NSString *> *)snapshotPreviews;
 
-- (BOOL)handleSnapshotPreviewsAsRegex;
-
 - (nullable NSArray<NSString *> *)excludedSnapshotPreviews;
 
 - (BOOL)enableAccessibilityAudit;

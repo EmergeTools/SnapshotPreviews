@@ -130,22 +130,20 @@ class Snapshots {
       async: false,
       completion: completion)
   }
-  
+
   @MainActor func writeClassNames() {
     try? FileManager.default.removeItem(at: Self.resultsDir)
     try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
-    
+
     let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"];
     let excludedSnapshotPreviews = ProcessInfo.processInfo.environment["EXCLUDED_SNAPSHOT_PREVIEWS"];
-    
+
     var previewsSet: Set<String>? = nil
     if let snapshotPreviews {
       let previewsList = try! JSONDecoder().decode([String].self, from: snapshotPreviews.data(using: .utf8)!)
       previewsSet = Set(previewsList)
     }
-    let snapshotPreviewRegexVal = ProcessInfo.processInfo.environment["HANDLE_SNAPSHOT_PREVIEWS_AS_REGEX"];
-    let handleSnapshotPreviewsAsRegex = (snapshotPreviewRegexVal! as NSString).boolValue
-    
+
     var excludedPreviewsSet: Set<String>? = nil
     if let excludedSnapshotPreviews {
       let excludedPreviewsList = try! JSONDecoder().decode([String].self, from: excludedSnapshotPreviews.data(using: .utf8)!)
@@ -172,7 +170,6 @@ class Snapshots {
       }
 
       guard let previewsSet else { return true }
-      guard handleSnapshotPreviewsAsRegex else { return previewsSet.contains(name) }
 
       for preview in previewsSet {
         do {

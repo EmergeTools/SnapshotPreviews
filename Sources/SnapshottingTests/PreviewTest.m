@@ -48,10 +48,6 @@ NSString* getDylibPath(NSString* dylibName) {
   return NULL;
 }
 
-- (BOOL)handleSnapshotPreviewsAsRegex {
-  return NO;
-}
-
 - (NSArray<NSString *> *)excludedSnapshotPreviews {
   return NULL;
 }
@@ -90,7 +86,6 @@ NSString* getDylibPath(NSString* dylibName) {
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:previews options:nil error:nil];
     launchEnvironment[@"SNAPSHOT_PREVIEWS"] = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   }
-  launchEnvironment[@"HANDLE_SNAPSHOT_PREVIEWS_AS_REGEX"] = [self handleSnapshotPreviewsAsRegex] ? @"1" : @"0";
     
   NSArray *excludedPreviews = [self excludedSnapshotPreviews];
   if (excludedPreviews) {
