@@ -162,26 +162,9 @@ void dynamicTestMethod(id self, SEL _cmd) {
   NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:8080/display/%@/%d", typeName, previewId.intValue]];
   NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
+  __block NSData *resultData;
   NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-      if (data) {
-        NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
-        if (jsonResult[@"error"]) {
-          XCTFail(@"%@", jsonResult[@"error"]);
-        } else {
-          NSString *imagePath = jsonResult[@"imagePath"];
-          UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
-          NSData *imageData = UIImagePNGRepresentation(image);
-          if (imageData) {
-            NSString *displayName = @"Rendered Preview";
-            if (jsonResult[@"displayName"]) {
-              displayName = jsonResult[@"displayName"];
-            }
-            XCTAttachment *attachment = [XCTAttachment attachmentWithUniformTypeIdentifier:@"public.png" name:displayName payload:imageData userInfo:nil];
-              attachment.lifetime = XCTAttachmentLifetimeKeepAlways;
-              [self addAttachment:attachment];
-          }
-        }
-      }
+      resultData = data;
       [expectation fulfill];
   }];
 
@@ -192,6 +175,30 @@ void dynamicTestMethod(id self, SEL _cmd) {
       NSLog(@"Test timed out with error: %@", error);
     }
   }];
+
+  if (resultData) {
+    NSDictionary *jsonResult = [NSJSONSerialization JSONObjectWithData:resultData options:nil error:nil];
+    if (jsonResult[@"error"]) {
+      NSException* myException = [NSException
+              exceptionWithName:@"SnapshotError"
+              reason:jsonResult[@"error"]
+              userInfo:nil];
+      @throw myException;
+    } else {
+      NSString *imagePath = jsonResult[@"imagePath"];
+      UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+      NSData *imageData = UIImagePNGRepresentation(image);
+      if (imageData) {
+        NSString *displayName = @"Rendered Preview";
+        if (jsonResult[@"displayName"]) {
+          displayName = jsonResult[@"displayName"];
+        }
+        XCTAttachment *attachment = [XCTAttachment attachmentWithUniformTypeIdentifier:@"public.png" name:displayName payload:imageData userInfo:nil];
+          attachment.lifetime = XCTAttachmentLifetimeKeepAlways;
+          [self addAttachment:attachment];
+      }
+    }
+  }
 
   if (@available(iOS 17.0, *)) {
     if ([self enableAccessibilityAudit]) {
