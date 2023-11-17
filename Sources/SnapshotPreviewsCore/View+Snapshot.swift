@@ -41,9 +41,7 @@ extension View {
           completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
         }
       } else {
-        DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
-        }
+        completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
       }
     }
   }
@@ -123,20 +121,20 @@ extension View {
 
 extension UIView {
   func render(size: CGSize, mode: EmergeRenderingMode?, context: CGContext) -> Bool {
-    switch mode {
-    case .coreAnimation:
-      layer.layerForSnapshot.render(in: context)
+    //switch mode {
+    //case .coreAnimation:
+    layer.layerForSnapshot.render(in: context)
       return true
-    case .uiView:
-      return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
-    case .none:
-      if size.height < UIScreen.main.bounds.size.height * 2 {
-        return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
-      } else {
-        layer.layerForSnapshot.render(in: context)
-        return true
-      }
-    }
+//    case .uiView:
+      //return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
+//    case .none:
+//      if size.height < UIScreen.main.bounds.size.height * 2 {
+//        return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
+//      } else {
+//        layer.layerForSnapshot.render(in: context)
+//        return true
+//      }
+    //}
   }
 }
 
