@@ -153,40 +153,39 @@ class Snapshots {
     }
     
     let previewTypes = findPreviews { name in
+      guard #available(iOS 16.0, *) else {
+        guard let previewsSet else { return true }
+        return previewsSet.contains(name)
+      }
+
       if let excludedPreviewsSet {
-        if #available(iOS 16.0, *) {
-          for excludedPreview in excludedPreviewsSet {
-            do {
-              let regex = try Regex(excludedPreview)
-              if name.firstMatch(of: regex) != nil {
-                return false
-              }
-            } catch {
-              print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
+        for excludedPreview in excludedPreviewsSet {
+          do {
+            let regex = try Regex(excludedPreview)
+            if name.firstMatch(of: regex) != nil {
+              return false
             }
+          } catch {
+            print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
           }
         }
       }
-      
-      if let previewsSet {
-        if #available(iOS 16.0, *), handleSnapshotPreviewsAsRegex {
-          for preview in previewsSet {
-            do {
-              let regex = try Regex(preview)
-              if name.firstMatch(of: regex) != nil {
-                return true
-              }
-            } catch {
-              print("Error trying to unwrap regex for snapshotPreview (\(preview)): \(error)")
-            }
+
+      guard let previewsSet else { return true }
+      guard handleSnapshotPreviewsAsRegex else { return previewsSet.contains(name) }
+
+      for preview in previewsSet {
+        do {
+          let regex = try Regex(preview)
+          if name.firstMatch(of: regex) != nil {
+            return true
           }
-          return false
-        } else {
-          return previewsSet.contains(name)
+        } catch {
+          print("Error trying to unwrap regex for snapshotPreview (\(preview)): \(error)")
         }
-      } else {
-        return true
       }
+
+      return false
     }
     let json = previewTypes.map { preview in
       [
