@@ -148,27 +148,37 @@ class Snapshots {
       let excludedPreviewsList = try! JSONDecoder().decode([String].self, from: excludedSnapshotPreviews.data(using: .utf8)!)
       excludedPreviewsSet = Set(excludedPreviewsList)
     }
-      
-      let previewTypes = findPreviews { name in
-          if let previewsSet {
-              return previewsSet.contains(name)
-          } else if let excludedPreviewsSet {
-              if #available(iOS 16.0, *) {
-                  for excludedPreview in excludedPreviewsSet {
-                      do {
-                          let regex = try Regex(excludedPreview)
-                          if name.firstMatch(of: regex) != nil {
-                              return false
-                          }
-                      } catch {
-                          print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
-                      }
-                  }
-              }
+    
+    let previewTypes = findPreviews { name in
+      guard #available(iOS 16.0, *) else { return true }
 
+      if let excludedPreviewsSet {
+        for excludedPreview in excludedPreviewsSet {
+          do {
+            let regex = try Regex(excludedPreview)
+            if name.firstMatch(of: regex) != nil {
+              return false
+            }
+          } catch {
+            print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
           }
-          return true
+        }
       }
+
+      guard let previewsSet else { return true }
+      for preview in previewsSet {
+        do {
+          let regex = try Regex(preview)
+          if name.firstMatch(of: regex) != nil {
+            return true
+          }
+        } catch {
+          print("Error trying to unwrap regex for snapshotPreview (\(preview)): \(error)")
+        }
+      }
+
+      return false
+    }
     let json = previewTypes.map { preview in
       [
         "typeName": preview.typeName,
