@@ -150,10 +150,7 @@ class Snapshots {
     }
     
     let previewTypes = findPreviews { name in
-      guard #available(iOS 16.0, *) else {
-        guard let previewsSet else { return true }
-        return previewsSet.contains(name)
-      }
+      guard #available(iOS 16.0, *) else { return true }
 
       if let excludedPreviewsSet {
         for excludedPreview in excludedPreviewsSet {
