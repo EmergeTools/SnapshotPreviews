@@ -130,45 +130,64 @@ class Snapshots {
       async: false,
       completion: completion)
   }
-
+  
   @MainActor func writeClassNames() {
     try? FileManager.default.removeItem(at: Self.resultsDir)
     try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
-
+    
     let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"];
     let excludedSnapshotPreviews = ProcessInfo.processInfo.environment["EXCLUDED_SNAPSHOT_PREVIEWS"];
-
+    
     var previewsSet: Set<String>? = nil
     if let snapshotPreviews {
       let previewsList = try! JSONDecoder().decode([String].self, from: snapshotPreviews.data(using: .utf8)!)
       previewsSet = Set(previewsList)
     }
+    let snapshotPreviewRegexVal = ProcessInfo.processInfo.environment["HANDLE_SNAPSHOT_PREVIEWS_AS_REGEX"];
+    let handleSnapshotPreviewsAsRegex = (snapshotPreviewRegexVal! as NSString).boolValue
+    
     var excludedPreviewsSet: Set<String>? = nil
     if let excludedSnapshotPreviews {
       let excludedPreviewsList = try! JSONDecoder().decode([String].self, from: excludedSnapshotPreviews.data(using: .utf8)!)
       excludedPreviewsSet = Set(excludedPreviewsList)
     }
-      
-      let previewTypes = findPreviews { name in
-          if let previewsSet {
-              return previewsSet.contains(name)
-          } else if let excludedPreviewsSet {
-              if #available(iOS 16.0, *) {
-                  for excludedPreview in excludedPreviewsSet {
-                      do {
-                          let regex = try Regex(excludedPreview)
-                          if name.firstMatch(of: regex) != nil {
-                              return false
-                          }
-                      } catch {
-                          print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
-                      }
-                  }
+    
+    let previewTypes = findPreviews { name in
+      if let excludedPreviewsSet {
+        if #available(iOS 16.0, *) {
+          for excludedPreview in excludedPreviewsSet {
+            do {
+              let regex = try Regex(excludedPreview)
+              if name.firstMatch(of: regex) != nil {
+                return false
               }
-
+            } catch {
+              print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
+            }
           }
-          return true
+        }
       }
+      
+      if let previewsSet {
+        if #available(iOS 16.0, *), handleSnapshotPreviewsAsRegex {
+          for preview in previewsSet {
+            do {
+              let regex = try Regex(preview)
+              if name.firstMatch(of: regex) != nil {
+                return true
+              }
+            } catch {
+              print("Error trying to unwrap regex for snapshotPreview (\(preview)): \(error)")
+            }
+          }
+          return false
+        } else {
+          return previewsSet.contains(name)
+        }
+      } else {
+        return true
+      }
+    }
     let json = previewTypes.map { preview in
       [
         "typeName": preview.typeName,
