@@ -143,7 +143,6 @@ class Snapshots {
       let previewsList = try! JSONDecoder().decode([String].self, from: snapshotPreviews.data(using: .utf8)!)
       previewsSet = Set(previewsList)
     }
-
     var excludedPreviewsSet: Set<String>? = nil
     if let excludedSnapshotPreviews {
       let excludedPreviewsList = try! JSONDecoder().decode([String].self, from: excludedSnapshotPreviews.data(using: .utf8)!)
