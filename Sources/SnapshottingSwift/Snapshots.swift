@@ -166,7 +166,6 @@ class Snapshots {
       }
 
       guard let previewsSet else { return true }
-
       for preview in previewsSet {
         do {
           let regex = try Regex(preview)
