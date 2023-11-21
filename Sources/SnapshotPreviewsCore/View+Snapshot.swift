@@ -35,7 +35,9 @@ extension View {
 
     let (windowRootVC, containerVC) = Self.setupRootVC(subVC: controller)
     window.rootViewController = windowRootVC
-    controller.expansionSettled = { renderingMode, precision in
+    controller.expansionSettled = { [weak containerVC, weak controller] renderingMode, precision in
+      guard let containerVC, let controller else { return }
+
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
           completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
