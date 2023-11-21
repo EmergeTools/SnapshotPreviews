@@ -10,11 +10,7 @@ import SwiftUI
 fileprivate struct ViewSelector: _VariadicView_MultiViewRoot {
   let position: Int
     func body(children: _VariadicView.Children) -> some View {
-      ForEach(Array(children.enumerated()), id: \.0) { count, item in
-        if count == position {
-          item
-        }
-      }
+      children[position]
     }
 }
 
