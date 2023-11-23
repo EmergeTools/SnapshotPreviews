@@ -59,9 +59,24 @@ struct ConversationCellView_Previews: PreviewProvider {
         ConversationCellView(conversation: Conversation(
           contactName: "John Doe",
           messagePreview: "Hey, how are you?",
-          timestamp: Date(),
+          timestamp: Date.current,
           unreadCount: 3
         ))
         .previewLayout(.sizeThatFits)
     }
+}
+
+extension Date {
+  static var current: Date {
+    if ProcessInfo.processInfo.isPreviews {
+      return Date(timeIntervalSince1970: 682070400)
+    }
+    return Date()
+  }
+}
+
+extension ProcessInfo {
+  var isPreviews: Bool {
+    self.environment["EMG_PREVIEWS"] == "1" || self.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+  }
 }
