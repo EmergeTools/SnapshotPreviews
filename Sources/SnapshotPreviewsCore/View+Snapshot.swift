@@ -13,6 +13,24 @@ enum RenderingError: Error {
   case failedRendering
 }
 
+func size(for layout: PreviewLayout, in controller: UIViewController) -> CGSize {
+  let view = controller.view!
+  let targetSize: CGSize
+  switch layout {
+  case .fixed(width: let width, height: let height):
+    targetSize = CGSize(width: width, height: height)
+  case .sizeThatFits:
+    targetSize = view.bounds.size
+  case .device:
+    fallthrough
+  default:
+    let viewSize = view.bounds.size
+
+    targetSize = CGSize(width: UIScreen.main.bounds.size.width, height: max(viewSize.height, UIScreen.main.bounds.size.height))
+  }
+  return targetSize
+}
+
 extension View {
   public func snapshot(
     layout: PreviewLayout,
@@ -38,14 +56,25 @@ extension View {
     controller.expansionSettled = { [weak containerVC, weak controller] renderingMode, precision in
       guard let containerVC, let controller else { return }
 
+      let size = size(for: layout, in: controller)
+
+      let mode = renderingMode ?? (size.height < UIScreen.main.bounds.size.height * 2 ? .uiView : .coreAnimation)
+      let snapshot = {
+        completion(
+          Self.takeSnapshot(layout: layout, renderingMode: mode, size: size, rootVC: containerVC, controller: controller),
+          precision)
+      }
+
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
+          snapshot()
+        }
+      } else if mode == .uiView {
+        DispatchQueue.main.async {
+          snapshot()
         }
       } else {
-        DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
-        }
+        snapshot()
       }
     }
   }
@@ -80,7 +109,8 @@ extension View {
 
   private static func takeSnapshot(
     layout: PreviewLayout,
-    renderingMode: EmergeRenderingMode?,
+    renderingMode: EmergeRenderingMode,
+    size: CGSize,
     rootVC: UIViewController,
     controller: UIViewController) -> Result<UIImage, Error>
   {
@@ -89,30 +119,20 @@ extension View {
 
     CATransaction.commit()
 
-    let targetSize: CGSize
     var success = false
     switch layout {
-    case .fixed(width: let width, height: let height):
-      targetSize = CGSize(width: width, height: height)
+    case .fixed, .sizeThatFits:
       drawCode = { ctx in
-        success = view.render(size: targetSize, mode: renderingMode, context: ctx)
-      }
-    case .sizeThatFits:
-      targetSize = view.bounds.size
-      drawCode = { ctx in
-        success = view.render(size: targetSize, mode: renderingMode, context: ctx)
+        success = view.render(size: size, mode: renderingMode, context: ctx)
       }
     case .device:
       fallthrough
     default:
-      let viewSize = view.bounds.size
-
-      targetSize = CGSize(width: UIScreen.main.bounds.size.width, height: max(viewSize.height, UIScreen.main.bounds.size.height))
       drawCode = { ctx in
-        success = rootVC.view.render(size: targetSize, mode: renderingMode, context: ctx)
+        success = rootVC.view.render(size: size, mode: renderingMode, context: ctx)
       }
     }
-    let renderer = UIGraphicsImageRenderer(size: targetSize)
+    let renderer = UIGraphicsImageRenderer(size: size)
     let image = renderer.image { context in
       drawCode(context.cgContext)
     }
@@ -124,20 +144,13 @@ extension View {
 }
 
 extension UIView {
-  func render(size: CGSize, mode: EmergeRenderingMode?, context: CGContext) -> Bool {
+  func render(size: CGSize, mode: EmergeRenderingMode, context: CGContext) -> Bool {
     switch mode {
     case .coreAnimation:
       layer.layerForSnapshot.render(in: context)
       return true
     case .uiView:
       return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
-    case .none:
-      if size.height < UIScreen.main.bounds.size.height * 2 {
-        return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
-      } else {
-        layer.layerForSnapshot.render(in: context)
-        return true
-      }
     }
   }
 }
