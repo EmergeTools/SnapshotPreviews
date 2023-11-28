@@ -109,9 +109,14 @@ NSString* getDylibPath(NSString* dylibName) {
   }];
 
   [task resume];
-  [self waitForExpectationsWithTimeout:5 handler:^(NSError *error) {
+  [self waitForExpectationsWithTimeout:25 handler:^(NSError *error) {
     if (error) {
       NSLog(@"Test timed out with error: %@", error);
+      NSException* myException = [NSException
+              exceptionWithName:@"SnapshotError"
+              reason:@"Did not receive metadata file"
+              userInfo:nil];
+      @throw myException;
     }
   }];
 

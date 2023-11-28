@@ -42,7 +42,7 @@ let stateMirror = modifierState != nil ? Mirror(
     .perform(NSSelectorFromString("shared"))
     .takeUnretainedValue()) : nil
 
-public final class ExpandingViewController<Content: View>: UIHostingController<AnyView> {
+public final class ExpandingViewController: UIHostingController<AnyView> {
 
   private var didCall = false
   private var previousHeight: CGFloat?
@@ -51,7 +51,7 @@ public final class ExpandingViewController<Content: View>: UIHostingController<A
 
   var expansionSettled: ((EmergeRenderingMode?, Float?) -> Void)?
 
-  init(rootView: Content, layout: PreviewLayout) {
+  init<Content: View>(rootView: Content, layout: PreviewLayout) {
     let newView = finder?(rootView)
     super.init(rootView: newView != nil ? AnyView(newView!) : AnyView(rootView))
 
