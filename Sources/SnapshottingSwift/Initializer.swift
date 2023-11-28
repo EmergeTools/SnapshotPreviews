@@ -16,11 +16,6 @@ public class Initializer: NSObject {
 
   let snapshots = Snapshots()
 
-  @objc
-  @MainActor public func start() {
-    snapshots.writeClassNames()
-  }
-
 }
 
 private class CompletedViewController: UIViewController {

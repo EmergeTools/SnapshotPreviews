@@ -55,7 +55,7 @@ class Snapshots {
 
   static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   static let resultsDir = documentsURL.appendingPathComponent("EMGSnapshots")
-    
+
   func startServer() async throws {
     await server.appendRoute("GET /display/*") { [weak self] request in
       let pathComponents = request.path.components(separatedBy: "/")
@@ -95,6 +95,7 @@ class Snapshots {
     }
 
     await server.appendRoute("GET /file") { request in
+      await Self.writeClassNames()
       return HTTPResponse(statusCode: .ok, body: Self.resultsDir.path.data(using: .utf8)!)
     }
 
@@ -131,7 +132,7 @@ class Snapshots {
       completion: completion)
   }
 
-  @MainActor func writeClassNames() {
+  @MainActor static func writeClassNames() {
     try? FileManager.default.removeItem(at: Self.resultsDir)
     try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
 
