@@ -40,12 +40,19 @@ class Snapshots {
     window.makeKeyAndVisible()
     self.window = window
 
+    expandingVC = ExpandingViewController(rootView: AnyView(EmptyView()))
+    let (windowRootVC, containerVC) = setupRootVC(subVC: expandingVC)
+    window.rootViewController = windowRootVC
+    self.containerVC = containerVC
+
     Task {
       try await startServer()
     }
   }
 
   let window: UIWindow
+  let expandingVC: ExpandingViewController
+  let containerVC: UIViewController
 
   var previews: [(SnapshotPreviewsCore.Preview, String)] = []
 
@@ -127,7 +134,8 @@ class Snapshots {
     view = AnyView(PreferredColorSchemeWrapper { view })
     view.snapshot(
       layout: preview.layout,
-      window: window,
+      controller: expandingVC,
+      containerVC: containerVC,
       async: false,
       completion: completion)
   }

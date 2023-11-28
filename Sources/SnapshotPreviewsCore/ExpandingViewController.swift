@@ -48,23 +48,40 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
   private var previousHeight: CGFloat?
 
   private var heightAnchor: NSLayoutConstraint?
+  private var widthAnchor: NSLayoutConstraint?
+  private var isFixed = false
 
   var expansionSettled: ((EmergeRenderingMode?, Float?) -> Void)?
 
-  init<Content: View>(rootView: Content, layout: PreviewLayout) {
-    let newView = finder?(rootView)
-    super.init(rootView: newView != nil ? AnyView(newView!) : AnyView(rootView))
+  override public init(rootView: AnyView) {
+    super.init(rootView: rootView)
+  }
 
+  func configure<Content: View>(rootView: Content, layout: PreviewLayout) {
+    let newView = finder?(rootView)
+    presentedViewController?.dismiss(animated: false)
+    self.rootView = AnyView(EmptyView())
+    self.view.layoutSubviews()
+    self.rootView = newView != nil ? AnyView(newView!) : AnyView(rootView)
+    self.view.invalidateIntrinsicContentSize()
+
+    previousHeight = nil
+    didCall = false
+    widthAnchor?.isActive = false
+    heightAnchor?.isActive = false
     switch layout {
     case let .fixed(width: width, height: height):
-      view.widthAnchor.constraint(equalToConstant: width).isActive = true
-      view.heightAnchor.constraint(equalToConstant: height).isActive = true
+      widthAnchor = view.widthAnchor.constraint(equalToConstant: width)
+      heightAnchor = view.heightAnchor.constraint(equalToConstant: height)
+      isFixed = true
     default:
       let fittingSize = view.sizeThatFits(UIScreen.main.bounds.size)
-      view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width).isActive = true
+      widthAnchor = view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
       heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
-      heightAnchor?.isActive = true
+      isFixed = false
     }
+    widthAnchor?.isActive = true
+    heightAnchor?.isActive = true
   }
   
   @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -86,8 +103,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
   }
 
   func updateScrollViewHeight() {
-    // If heightAnchor isn't set, this was a fixed size and we don't expand the scroll view
-    guard let heightAnchor else {
+    guard let heightAnchor, !isFixed else {
       runCallback()
       return
     }
