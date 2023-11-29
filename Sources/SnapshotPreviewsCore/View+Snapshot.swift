@@ -28,7 +28,6 @@ extension View {
     if #available(iOS 16, *) {
       controller.sizingOptions = .intrinsicContentSize
     }
-    controller._disableSafeArea = true
     let view = controller.view!
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .clear
