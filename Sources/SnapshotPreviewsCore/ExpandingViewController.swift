@@ -54,16 +54,17 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
   var expansionSettled: ((EmergeRenderingMode?, Float?) -> Void)?
 
   override public init(rootView: AnyView) {
-    super.init(rootView: rootView)
+    let newView = finder?(rootView)
+    super.init(rootView: newView != nil ? AnyView(newView!) : rootView)
   }
 
   func configure<Content: View>(rootView: Content, layout: PreviewLayout) {
-    let newView = finder?(rootView)
-    presentedViewController?.dismiss(animated: false)
-    self.rootView = AnyView(EmptyView())
-    self.view.layoutSubviews()
-    self.rootView = newView != nil ? AnyView(newView!) : AnyView(rootView)
-    self.view.invalidateIntrinsicContentSize()
+    //let newView = finder?(rootView)
+    //presentedViewController?.dismiss(animated: false)
+    //self.rootView = AnyView(EmptyView())
+    //self.view.layoutSubviews()
+    //self.rootView = newView != nil ? AnyView(newView!) : AnyView(rootView)
+    //self.view.invalidateIntrinsicContentSize()
 
     previousHeight = nil
     didCall = false

@@ -44,7 +44,6 @@ public func setupRootVC(subVC: UIViewController) -> (UIViewController, UIViewCon
 extension View {
   public func snapshot(
     layout: PreviewLayout,
-    controller: ExpandingViewController,
     containerVC: UIViewController,
     async: Bool,
     completion: @escaping (Result<UIImage, Error>, Float?) -> Void)
@@ -53,6 +52,7 @@ extension View {
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
     }
+    let controller = ExpandingViewController(rootView: AnyView(animationDisabledView))
     controller.configure(rootView: animationDisabledView, layout: layout)
     if #available(iOS 16, *) {
       controller.sizingOptions = .intrinsicContentSize
