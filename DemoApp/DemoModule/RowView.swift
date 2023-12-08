@@ -45,7 +45,7 @@ public struct RowView: View {
     }
 }
 
-#if swift(>=5.9)
+#if compiler(>=5.9)
 #Preview("New test") {
   RowView(
     imageName: "product-image",

@@ -13,7 +13,7 @@ public struct Preview: Identifiable {
     }
   }
 
-#if swift(>=5.9)
+#if compiler(>=5.9)
   @available(iOS 17.0, *)
   init?(preview: DeveloperToolsSupport.Preview) {
     previewId = "0"
@@ -81,7 +81,7 @@ public struct PreviewType: Hashable, Identifiable {
     self.platform = A.platform
   }
 
-#if swift(>=5.9)
+#if compiler(>=5.9)
   @available(iOS 17.0, *)
   init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
     self.typeName = typeName
@@ -145,7 +145,7 @@ public func findPreviews(
         let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
         return PreviewType(typeName: name, preivewProvider: previewProvider)
       case "PreviewRegistry":
-  #if swift(>=5.9)
+  #if compiler(>=5.9)
         if #available(iOS 17.0, *) {
           let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
           return PreviewType(typeName: name, registry: previewRegistry)
