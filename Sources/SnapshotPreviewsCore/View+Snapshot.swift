@@ -5,6 +5,7 @@
 //  Created by Noah Martin on 12/22/22.
 //
 
+#if canImport(UIKit)
 import Foundation
 import SwiftUI
 import UIKit
@@ -164,3 +165,4 @@ extension CALayer {
     return false
   }
 }
+#endif

@@ -5,6 +5,7 @@
 //  Created by Noah Martin on 7/3/23.
 //
 
+#if canImport(UIKit)
 import Foundation
 import UIKit
 import SwiftUI
@@ -37,3 +38,4 @@ struct UIViewWrapper: UIViewRepresentable {
 
   func updateUIView(_ uiView: UIView, context: Context) { }
 }
+#endif

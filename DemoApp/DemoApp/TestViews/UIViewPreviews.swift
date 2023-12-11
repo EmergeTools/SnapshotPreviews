@@ -5,6 +5,7 @@
 //  Created by Noah Martin on 10/9/23.
 //
 
+#if canImport(UIKit)
 import Foundation
 import UIKit
 
@@ -30,3 +31,5 @@ class TestViewController: UIViewController {
 #Preview(body: {
   return TestViewController() as UIViewController
 })
+
+#endif

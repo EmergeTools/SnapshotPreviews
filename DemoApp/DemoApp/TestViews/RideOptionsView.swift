@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DemoModule
 
 struct RideOptionView: View {
     var title: String
@@ -19,23 +20,23 @@ struct RideOptionView: View {
                     .font(.headline)
 
                 Text(description)
-                .foregroundColor(Color(uiColor: UIColor.systemGray))
+                .foregroundColor(Color(PlatformColor.systemGray))
                     .font(.subheadline)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(2)
 
                 Text("$\(price, specifier: "%.2f")")
                     .font(.headline)
-                    .foregroundColor(Color(uiColor: UIColor.systemBlue))
+                    .foregroundColor(Color(PlatformColor.systemBlue))
             }
 
             Spacer()
 
             Image(systemName: "chevron.right")
-            .foregroundColor(Color(uiColor: UIColor.systemGray))
+            .foregroundColor(Color(PlatformColor.systemGray))
         }
         .padding()
-        .background(Color(uiColor: UIColor.systemBackground))
+        .background(Color(PlatformColor.systemBackground))
         .cornerRadius(12)
         .shadow(color: .gray, radius: 3, x: 0, y: 2)
     }

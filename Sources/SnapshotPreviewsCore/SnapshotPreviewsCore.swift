@@ -14,7 +14,7 @@ public struct Preview: Identifiable {
   }
 
 #if compiler(>=5.9)
-  @available(iOS 17.0, *)
+  @available(iOS 17.0, macOS 14.0, *)
   init?(preview: DeveloperToolsSupport.Preview) {
     previewId = "0"
     var orientation: InterfaceOrientation = .portrait
@@ -44,16 +44,22 @@ public struct Preview: Identifiable {
       _view = {
         return AnyView(source.makeView())
       }
-    } else if let source = source as? MakeUIViewProvider {
-      _view = {
-        return AnyView(UIViewWrapper(source.makeView))
-      }
-    } else if let source = source as? MakeViewControllerProvider {
-      _view = {
-        return AnyView(UIViewControllerWrapper(source.makeViewController))
-      }
     } else {
+      #if canImport(UIKit)
+      if let source = source as? MakeUIViewProvider {
+        _view = {
+          return AnyView(UIViewWrapper(source.makeView))
+        }
+      } else if let source = source as? MakeViewControllerProvider {
+        _view = {
+          return AnyView(UIViewControllerWrapper(source.makeViewController))
+        }
+      } else {
+        return nil
+      }
+      #else
       return nil
+      #endif
     }
 
     self._view = _view
@@ -82,7 +88,7 @@ public struct PreviewType: Hashable, Identifiable {
   }
 
 #if compiler(>=5.9)
-  @available(iOS 17.0, *)
+  @available(iOS 17.0, macOS 14.0, *)
   init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
     self.typeName = typeName
     self.fileID = A.fileID
@@ -146,7 +152,7 @@ public func findPreviews(
         return PreviewType(typeName: name, preivewProvider: previewProvider)
       case "PreviewRegistry":
   #if compiler(>=5.9)
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, macOS 14.0, *) {
           let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
           return PreviewType(typeName: name, registry: previewRegistry)
         }

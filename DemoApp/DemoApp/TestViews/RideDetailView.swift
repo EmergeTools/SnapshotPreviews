@@ -84,7 +84,9 @@ struct RideDetailView: View {
             }
             .padding()
         }
+      #if os(iOS)
         .navigationBarTitle(ride.name, displayMode: .inline)
+      #endif
     }
 }
 

@@ -28,7 +28,7 @@ struct ProductCardView: View {
                 .foregroundColor(.secondary)
         }
         .padding()
-        .background(Color(UIColor.systemBackground))
+        .background(Color(PlatformColor.systemBackground))
         .cornerRadius(10)
         .shadow(color: .secondary, radius: 3, x: 0, y: 2)
     }
