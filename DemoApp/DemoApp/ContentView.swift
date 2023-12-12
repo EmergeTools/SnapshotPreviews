@@ -11,7 +11,7 @@ import PreviewGallery
 
 struct ContentView: View {
   var body: some View {
-    NavigationView {
+    NavigationStack {
       VStack {
         NavigationLink("Open Gallery") {
           LazyView(PreviewGallery())

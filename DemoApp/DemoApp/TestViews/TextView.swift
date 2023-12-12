@@ -5,6 +5,7 @@
 //  Created by Noah Martin on 9/1/23.
 //
 
+#if canImport(UIKit)
 import Foundation
 import SwiftUI
 
@@ -23,3 +24,4 @@ struct TextView_Previews: PreviewProvider {
     TextView()
   }
 }
+#endif

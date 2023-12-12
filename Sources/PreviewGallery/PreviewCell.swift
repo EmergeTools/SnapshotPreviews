@@ -35,11 +35,20 @@ private extension Color {
   static let slate100 = Color(#colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9764705882, alpha: 1))
 
   static let dynamicBackground = {
+    #if canImport(UIKit)
     Color(UIColor { traitCollection in
       if traitCollection.userInterfaceStyle == .dark {
         return UIColor(Color.black)
       }
       return UIColor(Color.slate100)
     })
+    #else
+    Color(NSColor(name: nil, dynamicProvider: { appearance in
+      if appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua {
+        return NSColor(Color.black)
+      }
+      return NSColor(Color.slate100)
+    }))
+    #endif
   }()
 }

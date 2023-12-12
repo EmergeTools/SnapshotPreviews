@@ -14,7 +14,7 @@ struct RatingView: View {
         HStack(spacing: 4) {
             ForEach(0..<5) { index in
                 Image(systemName: rating >= Double(index + 1) ? "star.fill" : "star")
-                .foregroundColor(Color(UIColor.systemYellow))
+                .foregroundColor(Color(PlatformColor.systemYellow))
                     .font(.body)
             }
         }

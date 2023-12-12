@@ -6,8 +6,20 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 import SwiftUI
+
+let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
+let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
+let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
+let stateMirror = modifierState != nil ? Mirror(
+  reflecting: modifierState!
+    .perform(NSSelectorFromString("shared"))
+    .takeUnretainedValue()) : nil
+
+#if canImport(UIKit)
 
 extension UIScrollView {
   var visibleContentHeight: CGFloat {
@@ -33,14 +45,6 @@ extension UIView {
     return nil
   }
 }
-
-let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
-let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
-let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
-let stateMirror = modifierState != nil ? Mirror(
-  reflecting: modifierState!
-    .perform(NSSelectorFromString("shared"))
-    .takeUnretainedValue()) : nil
 
 public final class ExpandingViewController: UIHostingController<AnyView> {
 
@@ -120,3 +124,4 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
   }
 
 }
+#endif

@@ -39,12 +39,12 @@ struct ModuleScreens: View {
           VStack(alignment: .leading) {
             Text(provider.displayName)
               .font(.headline)
-              .foregroundStyle(Color(UIColor.label))
+              .foregroundStyle(Color(PlatformColor.label))
               .padding(.leading, 8)
             
             Text("\(featurePreviews.count) Preview\(featurePreviews.count != 1 ? "s" : "")")
               .font(.subheadline)
-              .foregroundStyle(Color(UIColor.secondaryLabel))
+              .foregroundStyle(Color(PlatformColor.secondaryLabel))
               .padding(.leading, 8)
           }
         }

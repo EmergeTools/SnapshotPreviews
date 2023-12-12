@@ -20,16 +20,18 @@ struct PreviewsDetail: View {
           VStack(alignment: .center) {
             Text(preview.displayName ?? "Preview")
               .font(.headline)
-              .foregroundStyle(Color(UIColor.label))
+              .foregroundStyle(Color(PlatformColor.label))
             PreviewCell(preview: preview)
           }
           .padding(.vertical, 16)
+          #if canImport(UIKit)
           .frame(width: UIScreen.main.bounds.width)
-          .background(Color(uiColor: UIColor.secondarySystemGroupedBackground))
+          #endif
+          .background(Color(PlatformColor.secondarySystemGroupedBackground))
         }
       }
     }
-    .background(Color(uiColor: UIColor.systemGroupedBackground))
+    .background(Color(PlatformColor.systemGroupedBackground))
     .navigationTitle(previewType.displayName)
   }
   

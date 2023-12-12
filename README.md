@@ -35,6 +35,8 @@ import PreviewGallery
 NavigationLink("Open Gallery") { PreviewGallery() }
 ```
 
+The gallery also supports macOS. However, snapshotting does not support macOS.
+
 ## Local Debugging
 
 Use this Swift Package for locally debugging your views snapshots. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:

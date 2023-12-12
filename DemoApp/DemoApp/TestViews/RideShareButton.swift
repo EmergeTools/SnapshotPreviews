@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DemoModule
 
 struct RideShareButtonView: View {
     var title: String
@@ -15,10 +16,10 @@ struct RideShareButtonView: View {
         Button(action: action) {
             Text(title)
                 .font(.headline)
-                .foregroundColor(Color(UIColor.systemBackground))
+                .foregroundColor(Color(PlatformColor.systemBackground))
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(Color(UIColor.label))
+                .background(Color(PlatformColor.label))
                 .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
