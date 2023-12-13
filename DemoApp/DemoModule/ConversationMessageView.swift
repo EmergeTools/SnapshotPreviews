@@ -77,6 +77,6 @@ extension Date {
 
 extension ProcessInfo {
   var isPreviews: Bool {
-    self.environment["EMG_PREVIEWS"] == "1" || self.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+    self.environment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] == "1" || self.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
   }
 }
