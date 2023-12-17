@@ -53,7 +53,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
 
   private var heightAnchor: NSLayoutConstraint?
 
-  var expansionSettled: ((EmergeRenderingMode?, Float?) -> Void)?
+  var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?) -> Void)?
 
   init<Content: View>(rootView: Content, layout: PreviewLayout) {
     let newView = finder?(rootView)
@@ -81,7 +81,8 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
     didCall = true
     let renderingMode = stateMirror?.descendant("renderingMode") as? EmergeRenderingMode.RawValue
     let emergeRenderingMode = renderingMode != nil ? EmergeRenderingMode(rawValue: renderingMode!) : nil
-    expansionSettled?(emergeRenderingMode, stateMirror?.descendant("precision") as? Float)
+    let accessibilityEnabled = stateMirror?.descendant("accessibilityEnabled") as? Bool
+    expansionSettled?(emergeRenderingMode, stateMirror?.descendant("precision") as? Float, accessibilityEnabled)
   }
 
   public override func viewDidLayoutSubviews() {

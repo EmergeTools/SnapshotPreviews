@@ -34,6 +34,7 @@ let package = Package(
     ],
     dependencies: [
       .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.12.2"),
+      .package(url: "https://github.com/EmergeTools/AccessibilitySnapshot.git", exact: "1.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -41,7 +42,7 @@ let package = Package(
         // Target that provides the XCTest
         .target(name: "SnapshottingTests"),
         // Core functionality
-        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport"]),
+        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot")]),
         .target(name: "SnapshotPreferences", dependencies: ["SnapshotPreviewsCore"]),
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),

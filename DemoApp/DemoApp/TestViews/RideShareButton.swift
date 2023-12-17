@@ -45,5 +45,14 @@ struct RideShareButtonView_Previews: PreviewProvider {
       .preferredColorScheme(.dark)
       .previewLayout(.sizeThatFits)
       .padding()
+
+      RideShareButtonView(title: "Request Ride") {
+          print("Button tapped")
+      }
+      .previewLayout(.sizeThatFits)
+      .padding()
+      .previewDisplayName("Ride Share Button View - Light")
+      .emergeRenderingMode(.coreAnimation)
+      .emergeAccessibility(true)
     }
 }
