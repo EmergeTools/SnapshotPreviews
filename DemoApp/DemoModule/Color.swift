@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import UIKit
 
 #if canImport(UIKit)
+import UIKit
 public typealias PlatformColor = UIColor
 #else
 import AppKit
