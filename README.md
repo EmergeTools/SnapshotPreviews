@@ -4,23 +4,17 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
 
 
-An all-in-one iOS snapshot testing solution.
+An all-in-one iOS snapshot testing solution built on Xcode previews. Automatic browsable gallery of previews, and no-code snapshot generation with XCTest. Supports SwiftUI and UIKit previews using `PreviewProvider` and `#Preview`.
 
-Emerge handles the heavy lifting of generating, diffing and hosting the snapshots for each build, allowing you to focus on building beautiful UI components.
+# Installation
 
-## Features
- - Automatically generate snapshots of SwiftUI previews.
- - Support for color scheme/orientation.
- - Swift package for easy local validation.
+Add the package dependency to your Xcode project using the URL of this repository (https://github.com/EmergeTools/SnapshotPreviews-iOS). Link your app to `PreviewGallery` and (optionally) your XCTest target to `Snapshotting` and `SnapshottingTests`.
 
-## Generating Snapshots
-
-See [the documentation](https://docs.emergetools.com/docs/snapshot-testing) for how to set up snapshot testing for your app.
+# Features
 
 ## Preview Gallery
 
-`PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your SwiftUI previews into a gallery of components and features you can access from your application. Xcode is not required to view the previews. You can use it to preview individual components (buttons/rows/icons/etc)
-or even entire interactive features.
+`PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your Xcode previews into a gallery of components and features you can access from your application. Xcode is not required to view the previews. You can use it to preview individual components (buttons/rows/icons/etc) or even entire interactive features.
 
 <p align="center">
   <img src="./images/image1.png" />
@@ -37,9 +31,9 @@ NavigationLink("Open Gallery") { PreviewGallery() }
 
 The gallery also supports macOS. However, snapshotting does not support macOS.
 
-## Local Debugging
+## Local Snapshot Generation
 
-Use this Swift Package for locally debugging your views snapshots. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:
+The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) automatically handles hosting and diffing your snapshot tests. This Swift Package can be used for locally debugging the snapshots by generating images for each preview as part of a XCTest. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:
 
 ```
 import Snapshotting
