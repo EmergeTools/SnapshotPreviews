@@ -23,12 +23,12 @@ public protocol MakeViewControllerProvider {
   var makeViewController: @MainActor () -> UIViewController { get }
 }
 
-@available(iOS 17.0, *)
+@available(iOS 17.0, macOS 14.0, *)
 extension UIViewPreviewSource: MakeUIViewProvider { }
 
-@available(iOS 17.0, *)
+@available(iOS 17.0, macOS 14.0, *)
 extension UIViewControllerPreviewSource: MakeViewControllerProvider { }
-
-@available(iOS 17.0, *)
-extension ViewPreviewSource: MakeViewProvider { }
 #endif
+
+@available(iOS 17.0, macOS 14.0, *)
+extension ViewPreviewSource: MakeViewProvider { }

@@ -93,6 +93,31 @@
         "declAttributes": [
           "AccessControl"
         ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ViewPreviewSource",
+        "printedName": "ViewPreviewSource",
+        "declKind": "Struct",
+        "usr": "s:7SwiftUI17ViewPreviewSourceV",
+        "mangledName": "$s7SwiftUI17ViewPreviewSourceV",
+        "moduleName": "SwiftUI",
+        "intro_Macosx": "14.0",
+        "intro_iOS": "17.0",
+        "declAttributes": [
+          "Available",
+          "Available"
+        ],
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "MakeViewProvider",
+            "printedName": "MakeViewProvider",
+            "usr": "s:15PreviewsSupport16MakeViewProviderP",
+            "mangledName": "$s15PreviewsSupport16MakeViewProviderP"
+          }
+        ]
       }
     ],
     "json_format_version": 8
