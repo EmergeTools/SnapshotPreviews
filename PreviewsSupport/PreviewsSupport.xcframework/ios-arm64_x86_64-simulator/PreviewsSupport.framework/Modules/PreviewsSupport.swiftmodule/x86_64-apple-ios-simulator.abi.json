@@ -269,8 +269,10 @@
         "usr": "s:5UIKit19UIViewPreviewSourceV",
         "mangledName": "$s5UIKit19UIViewPreviewSourceV",
         "moduleName": "UIKit",
+        "intro_Macosx": "14.0",
         "intro_iOS": "17.0",
         "declAttributes": [
+          "Available",
           "Available"
         ],
         "isExternal": true,
@@ -292,8 +294,10 @@
         "usr": "s:5UIKit29UIViewControllerPreviewSourceV",
         "mangledName": "$s5UIKit29UIViewControllerPreviewSourceV",
         "moduleName": "UIKit",
+        "intro_Macosx": "14.0",
         "intro_iOS": "17.0",
         "declAttributes": [
+          "Available",
           "Available"
         ],
         "isExternal": true,
@@ -315,8 +319,10 @@
         "usr": "s:7SwiftUI17ViewPreviewSourceV",
         "mangledName": "$s7SwiftUI17ViewPreviewSourceV",
         "moduleName": "SwiftUI",
+        "intro_Macosx": "14.0",
         "intro_iOS": "17.0",
         "declAttributes": [
+          "Available",
           "Available"
         ],
         "isExternal": true,
