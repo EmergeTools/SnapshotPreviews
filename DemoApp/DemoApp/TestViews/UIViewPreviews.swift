@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 @available(iOS 17.0, *)
-#Preview {
+#Preview("View test") {
   let label = UILabel()
   label.text = "Hello world"
   return label
@@ -30,7 +30,7 @@ class TestViewController: UIViewController {
 }
 
 @available(iOS 17.0, *)
-#Preview(body: {
+#Preview("View controller test", body: {
   return TestViewController() as UIViewController
 })
 
