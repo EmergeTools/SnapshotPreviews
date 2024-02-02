@@ -102,7 +102,7 @@ class Snapshots {
     try await server.start()
   }
 
-  @MainActor func display(typeName: String, id: String) async -> (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) {
+  @MainActor func display(typeName: String, id: String) async -> (Result<UIImage, RenderingError>, SnapshotPreviewsCore.Preview) {
     await withCheckedContinuation { continuation in
       display(typeName: typeName, id: id) { result, preview in
         continuation.resume(returning: (result, preview))
@@ -110,7 +110,7 @@ class Snapshots {
     }
   }
 
-  @MainActor func display(typeName: String, id: String, completion: @escaping (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) -> Void) {
+  @MainActor func display(typeName: String, id: String, completion: @escaping (Result<UIImage, RenderingError>, SnapshotPreviewsCore.Preview) -> Void) {
     let previewTypes = findPreviews { name in
       return name == typeName
     }
@@ -122,7 +122,7 @@ class Snapshots {
     }
   }
 
-  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>, Float?) -> Void) throws {
+  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, RenderingError>, Float?) -> Void) throws {
     var view = preview.view()
     view = AnyView(PreferredColorSchemeWrapper { view })
     view.snapshot(
