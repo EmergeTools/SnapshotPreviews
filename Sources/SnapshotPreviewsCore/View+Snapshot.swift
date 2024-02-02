@@ -10,8 +10,8 @@ import Foundation
 import SwiftUI
 import UIKit
 
-enum RenderingError: Error {
-  case failedRendering
+public enum RenderingError: Error {
+  case failedRendering(CGSize)
 }
 
 extension View {
@@ -19,7 +19,7 @@ extension View {
     layout: PreviewLayout,
     window: UIWindow,
     async: Bool,
-    completion: @escaping (Result<UIImage, Error>, Float?) -> Void)
+    completion: @escaping (Result<UIImage, RenderingError>, Float?) -> Void)
   {
     UIView.setAnimationsEnabled(false)
     let animationDisabledView = self.transaction { transaction in
@@ -82,7 +82,7 @@ extension View {
     layout: PreviewLayout,
     renderingMode: EmergeRenderingMode?,
     rootVC: UIViewController,
-    controller: UIViewController) -> Result<UIImage, Error>
+    controller: UIViewController) -> Result<UIImage, RenderingError>
   {
     let view = controller.view!
     let drawCode: (CGContext) -> Void
@@ -117,7 +117,7 @@ extension View {
       drawCode(context.cgContext)
     }
     if !success {
-      return .failure(RenderingError.failedRendering)
+      return .failure(RenderingError.failedRendering(targetSize))
     }
     return .success(image)
   }
