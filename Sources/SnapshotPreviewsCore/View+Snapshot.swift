@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import UIKit
+import AccessibilitySnapshotCore
 
 public enum RenderingError: Error {
   case failedRendering(CGSize)
@@ -35,16 +36,38 @@ extension View {
 
     let (windowRootVC, containerVC) = Self.setupRootVC(subVC: controller)
     window.rootViewController = windowRootVC
-    controller.expansionSettled = { [weak containerVC, weak controller] renderingMode, precision in
+    controller.expansionSettled = { [weak containerVC, weak controller] renderingMode, precision, accessibilityEnabled in
       guard let containerVC, let controller else { return }
 
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
+          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view), precision)
         }
       } else {
         DispatchQueue.main.async {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, controller: controller), precision)
+          if let accessibilityEnabled, accessibilityEnabled {
+            let containedView: UIView
+            switch layout {
+            case .device:
+              containedView = containerVC.view
+            default:
+              containedView = view
+            }
+            let a11yView = AccessibilitySnapshotView(
+              containedView: containedView,
+              viewRenderingMode: renderingMode?.a11yRenderingMode ?? .drawHierarchyInRect,
+              activationPointDisplayMode: .never,
+              showUserInputLabels: true)
+
+            a11yView.center = window.center
+            window.addSubview(a11yView)
+
+            try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
+            a11yView.sizeToFit()
+            completion(Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView), precision)
+          } else {
+            completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: view), precision)
+          }
         }
       }
     }
@@ -82,9 +105,9 @@ extension View {
     layout: PreviewLayout,
     renderingMode: EmergeRenderingMode?,
     rootVC: UIViewController,
-    controller: UIViewController) -> Result<UIImage, RenderingError>
+    targetView: UIView) -> Result<UIImage, RenderingError>
   {
-    let view = controller.view!
+    let view = targetView
     let drawCode: (CGContext) -> Void
 
     CATransaction.commit()
@@ -142,6 +165,16 @@ extension UIView {
   }
 }
 
+extension EmergeRenderingMode {
+  var a11yRenderingMode: AccessibilitySnapshotView.ViewRenderingMode {
+    switch self {
+    case .coreAnimation:
+      return .renderLayerInContext
+    case .uiView:
+      return .drawHierarchyInRect
+    }
+  }
+}
 
 extension CALayer {
 

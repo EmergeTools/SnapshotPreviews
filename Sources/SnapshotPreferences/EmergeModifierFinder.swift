@@ -23,11 +23,13 @@ class EmergeModifierState: NSObject {
     expansionPreference = nil
     renderingMode = nil
     precision = nil
+    accessibilityEnabled = nil
   }
 
   var expansionPreference: Bool?
   var renderingMode: EmergeRenderingMode.RawValue?
   var precision: Float?
+  var accessibilityEnabled: Bool?
 }
 
 @objc(EmergeModifierFinder)
@@ -43,6 +45,9 @@ class EmergeModifierFinder: NSObject {
       })
       .onPreferenceChange(PrecisionPreferenceKey.self, perform: { value in
         EmergeModifierState.shared.precision = value
+      })
+      .onPreferenceChange(AccessibilityPreferenceKey.self, perform: { value in
+        EmergeModifierState.shared.accessibilityEnabled = value
       })
   }
 }

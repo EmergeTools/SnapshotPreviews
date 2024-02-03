@@ -64,11 +64,15 @@ extension NamedViewModifier {
   static var xxlTextSize: NamedViewModifier {
     .init(name: "XXL Text Size", value: { $0.dynamicTypeSize(.xxxLarge) })
   }
+
+  static var accessibility: NamedViewModifier {
+    .init(name: "Accessibility", value: { $0.emergeAccessibility(true) })
+  }
 }
 
 extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
   static var previewDefault: [NamedViewModifier] {
-    [.unmodified, .darkMode, .xxlTextSize]
+    [.unmodified, .darkMode, .xxlTextSize, .accessibility]
   }
 }
