@@ -53,9 +53,10 @@ extension View {
             default:
               containedView = view
             }
+            let mode = view.bounds.size.requiresCoreAnimationSnapshot ? AccessibilitySnapshotView.ViewRenderingMode.renderLayerInContext : renderingMode?.a11yRenderingMode
             let a11yView = AccessibilitySnapshotView(
               containedView: containedView,
-              viewRenderingMode: renderingMode?.a11yRenderingMode ?? .drawHierarchyInRect,
+              viewRenderingMode: mode ?? .drawHierarchyInRect,
               activationPointDisplayMode: .never,
               showUserInputLabels: true)
 
@@ -146,6 +147,12 @@ extension View {
   }
 }
 
+extension CGSize {
+  var requiresCoreAnimationSnapshot: Bool {
+    height >= UIScreen.main.bounds.size.height * 2
+  }
+}
+
 extension UIView {
   func render(size: CGSize, mode: EmergeRenderingMode?, context: CGContext) -> Bool {
     switch mode {
@@ -155,7 +162,7 @@ extension UIView {
     case .uiView:
       return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
     case .none:
-      if size.height < UIScreen.main.bounds.size.height * 2 {
+      if !size.requiresCoreAnimationSnapshot {
         return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
       } else {
         layer.layerForSnapshot.render(in: context)

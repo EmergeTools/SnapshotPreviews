@@ -34,7 +34,7 @@ let package = Package(
     ],
     dependencies: [
       .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.12.2"),
-      .package(url: "https://github.com/EmergeTools/AccessibilitySnapshot.git", exact: "1.0.0"),
+      .package(url: "https://github.com/EmergeTools/AccessibilitySnapshot.git", exact: "1.0.1"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
