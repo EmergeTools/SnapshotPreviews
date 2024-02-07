@@ -65,7 +65,9 @@ extension View {
 
             try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
             a11yView.sizeToFit()
-            completion(Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView), precision)
+            let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
+            a11yView.removeFromSuperview()
+            completion(result, precision)
           } else {
             completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: view), precision)
           }
