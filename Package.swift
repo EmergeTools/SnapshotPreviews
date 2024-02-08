@@ -42,7 +42,7 @@ let package = Package(
         // Target that provides the XCTest
         .target(name: "SnapshottingTests"),
         // Core functionality
-        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot")]),
+        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot", condition: .when(platforms: [.iOS]))]),
         .target(name: "SnapshotPreferences", dependencies: ["SnapshotPreviewsCore"]),
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
