@@ -19,7 +19,7 @@ let stateMirror = modifierState != nil ? Mirror(
     .perform(NSSelectorFromString("shared"))
     .takeUnretainedValue()) : nil
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(visionOS)
 
 extension UIScrollView {
   var visibleContentHeight: CGFloat {
