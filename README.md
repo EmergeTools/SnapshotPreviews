@@ -76,3 +76,16 @@ Xcode 15 [accessibility audits](https://developer.apple.com/documentation/xctest
 ```
 
 See the demo app for a full example.
+
+### Accessibility Snapshots
+
+You can also add visualisations of accessibiilty elements to snapshots using the `emergeAccessibility` function. For example:
+
+```
+struct MyPreview: PreviewProvider {
+  static var previews: some View {
+    MyView()
+      .emergeAccessibility(true)
+  }
+}
+```
