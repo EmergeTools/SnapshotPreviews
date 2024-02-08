@@ -41,7 +41,7 @@ struct ModulePreviews: View {
                 .background(Color(PlatformColor.secondarySystemGroupedBackground))
                 .allowsHitTesting(false)
             }
-            #if canImport(UIKit)
+            #if canImport(UIKit) && !os(visionOS)
             .frame(width: UIScreen.main.bounds.width)
             #endif
           }

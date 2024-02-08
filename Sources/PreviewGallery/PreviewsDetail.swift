@@ -24,7 +24,7 @@ struct PreviewsDetail: View {
             PreviewCell(preview: preview)
           }
           .padding(.vertical, 16)
-          #if canImport(UIKit)
+          #if canImport(UIKit) && !os(visionOS)
           .frame(width: UIScreen.main.bounds.width)
           #endif
           .background(Color(PlatformColor.secondarySystemGroupedBackground))
