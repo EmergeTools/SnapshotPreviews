@@ -20,7 +20,7 @@ extension View {
     layout: PreviewLayout,
     window: UIWindow,
     async: Bool,
-    completion: @escaping (Result<UIImage, RenderingError>, Float?) -> Void)
+    completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void)
   {
     UIView.setAnimationsEnabled(false)
     let animationDisabledView = self.transaction { transaction in
@@ -41,7 +41,7 @@ extension View {
 
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view), precision)
+          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view), precision, accessibilityEnabled)
         }
       } else {
         DispatchQueue.main.async {
@@ -67,9 +67,9 @@ extension View {
             a11yView.sizeToFit()
             let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
             a11yView.removeFromSuperview()
-            completion(result, precision)
+            completion(result, precision, accessibilityEnabled)
           } else {
-            completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: view), precision)
+            completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: view), precision, accessibilityEnabled)
           }
         }
       }
