@@ -117,12 +117,12 @@ class Snapshots {
 
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
-    try! display(preview: preview) { imageResult, _ in
+    try! display(preview: preview) { imageResult, _, _ in
       completion(imageResult, preview)
     }
   }
 
-  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, RenderingError>, Float?) -> Void) throws {
+  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void) throws {
     var view = preview.view()
     view = AnyView(PreferredColorSchemeWrapper { view })
     view.snapshot(
