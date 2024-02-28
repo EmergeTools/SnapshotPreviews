@@ -4,12 +4,13 @@ import PreviewsSupport
 public struct Preview: Identifiable {
   init<P: SwiftUI.PreviewProvider>(preview: _Preview, type: P.Type) {
     previewId = "\(preview.id)"
+    index = preview.id
     orientation = preview.interfaceOrientation
     displayName = preview.displayName
     device = preview.device
     layout = preview.layout
     _view = {
-      AnyView(P.previews.selectSubview(preview.id))
+      P.previews.selectSubview(preview.id)
     }
   }
 
@@ -19,6 +20,7 @@ public struct Preview: Identifiable {
     previewId = "0"
     var orientation: InterfaceOrientation = .portrait
     device = nil
+    index = 0
     let preview = Mirror(reflecting: preview)
     let traits = preview.descendant("traits")! as! [Any]
     var layout = PreviewLayout.device
@@ -39,20 +41,20 @@ public struct Preview: Identifiable {
     self.layout = layout
     displayName = preview.descendant("displayName") as? String
     let source = preview.descendant("source")!
-    let _view: @MainActor () -> AnyView
+    let _view: @MainActor () -> any View
     if let source = source as? MakeViewProvider {
       _view = {
-        return AnyView(source.makeView())
+        return source.makeView()
       }
     } else {
       #if canImport(UIKit)
       if let source = source as? MakeUIViewProvider {
         _view = {
-          return AnyView(UIViewWrapper(source.makeView))
+          return UIViewWrapper(source.makeView)
         }
       } else if let source = source as? MakeViewControllerProvider {
         _view = {
-          return AnyView(UIViewControllerWrapper(source.makeViewController))
+          return UIViewControllerWrapper(source.makeViewController)
         }
       } else {
         return nil
@@ -70,17 +72,18 @@ public struct Preview: Identifiable {
   public let previewId: String
   public let orientation: InterfaceOrientation
   public let displayName: String?
+  public let index: Int
   public let device: PreviewDevice?
   public let layout: PreviewLayout
-  private let _view: @MainActor () -> AnyView
-  @MainActor public func view() -> AnyView {
+  private let _view: @MainActor () -> any View
+  @MainActor public func view() -> any View {
     _view()
   }
 }
 
 // Wraps PreviewProvider or PreviewRegistry
 public struct PreviewType: Hashable, Identifiable {
-  init<A: PreviewProvider>(typeName: String, preivewProvider: A.Type) {
+  init<A: PreviewProvider>(typeName: String, previewProvider: A.Type) {
     self.typeName = typeName
     self.fileID = nil
     self.previews = A._allPreviews.map { Preview(preview: $0, type: A.self) }
@@ -149,7 +152,7 @@ public func findPreviews(
       switch proto {
       case "PreviewProvider":
         let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
-        return PreviewType(typeName: name, preivewProvider: previewProvider)
+        return PreviewType(typeName: name, previewProvider: previewProvider)
       case "PreviewRegistry":
   #if compiler(>=5.9)
         if #available(iOS 17.0, macOS 14.0, *) {
