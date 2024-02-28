@@ -26,13 +26,8 @@ extension View {
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
     }
-    let controller = ExpandingViewController(rootView: animationDisabledView, layout: layout)
-    if #available(iOS 16, *) {
-      controller.sizingOptions = .intrinsicContentSize
-    }
-    let view = controller.view!
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = .clear
+    let controller = ExpandingViewController(rootView: animationDisabledView)
+    controller.setupView(layout: layout)
 
     let (windowRootVC, containerVC) = Self.setupRootVC(subVC: controller)
     window.rootViewController = windowRootVC
@@ -51,9 +46,9 @@ extension View {
             case .device:
               containedView = containerVC.view
             default:
-              containedView = view
+              containedView = controller.view
             }
-            let mode = view.bounds.size.requiresCoreAnimationSnapshot ? AccessibilitySnapshotView.ViewRenderingMode.renderLayerInContext : renderingMode?.a11yRenderingMode
+            let mode = controller.view.bounds.size.requiresCoreAnimationSnapshot ? AccessibilitySnapshotView.ViewRenderingMode.renderLayerInContext : renderingMode?.a11yRenderingMode
             let a11yView = AccessibilitySnapshotView(
               containedView: containedView,
               viewRenderingMode: mode ?? .drawHierarchyInRect,
@@ -69,7 +64,7 @@ extension View {
             a11yView.removeFromSuperview()
             completion(result, precision, accessibilityEnabled)
           } else {
-            completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: view), precision, accessibilityEnabled)
+            completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view), precision, accessibilityEnabled)
           }
         }
       }
