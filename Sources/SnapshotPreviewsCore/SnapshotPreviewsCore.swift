@@ -10,7 +10,9 @@ public struct Preview: Identifiable {
     device = preview.device
     layout = preview.layout
     _view = {
-      P.previews.selectSubview(preview.id)
+      ViewSelectorTree(SnapshotViewModel(index: preview.id)) {
+        P.previews
+      }
     }
   }
 
