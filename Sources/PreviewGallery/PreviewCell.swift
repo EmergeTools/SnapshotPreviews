@@ -16,7 +16,7 @@ struct PreviewCell: View {
   var body: some View {
     PreferredColorSchemeWrapper {
       VStack {
-        preview.view()
+        AnyView(preview.view())
           .padding(.vertical, 8)
           .border(Color.dynamicBackground)
           .background {

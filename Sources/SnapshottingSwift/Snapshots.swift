@@ -124,7 +124,7 @@ class Snapshots {
 
   @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void) throws {
     var view = preview.view()
-    view = AnyView(PreferredColorSchemeWrapper { view })
+    view = PreferredColorSchemeWrapper { AnyView(view) }
     view.snapshot(
       layout: preview.layout,
       window: window,
