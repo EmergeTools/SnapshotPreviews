@@ -52,27 +52,43 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
   private var previousHeight: CGFloat?
 
   private var heightAnchor: NSLayoutConstraint?
+  private var widthAnchor: NSLayoutConstraint?
 
-  var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?) -> Void)?
+  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?) -> Void)? {
+    didSet { didCall = false }
+  }
 
-  init<Content: View>(rootView: Content, layout: PreviewLayout) {
+  init<Content: View>(rootView: Content) {
     let newView = finder?(rootView)
     super.init(rootView: newView != nil ? AnyView(newView!) : AnyView(rootView))
 
+    if #available(iOS 16, *) {
+      sizingOptions = .intrinsicContentSize
+    }
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = .clear
+  }
+
+  @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  public func setupView(layout: PreviewLayout) {
+    heightAnchor?.isActive = false
+    widthAnchor?.isActive = false
     switch layout {
     case let .fixed(width: width, height: height):
-      view.widthAnchor.constraint(equalToConstant: width).isActive = true
-      view.heightAnchor.constraint(equalToConstant: height).isActive = true
+      widthAnchor = view.widthAnchor.constraint(equalToConstant: width)
+      widthAnchor?.isActive = true
+      heightAnchor = view.heightAnchor.constraint(equalToConstant: height)
+      heightAnchor?.isActive = true
     default:
       let fittingSize = view.sizeThatFits(UIScreen.main.bounds.size)
-      view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width).isActive = true
+      widthAnchor = view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
+      widthAnchor?.isActive = true
       heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
       heightAnchor?.isActive = true
     }
-  }
-  
-  @MainActor required dynamic init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   private func runCallback() {
