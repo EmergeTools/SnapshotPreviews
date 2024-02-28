@@ -125,8 +125,10 @@ class Snapshots {
   @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void) throws {
     var view = preview.view()
     view = PreferredColorSchemeWrapper { AnyView(view) }
+    let controller = view.makeExpandingView(layout: preview.layout, window: window)
     view.snapshot(
       layout: preview.layout,
+      controller: controller,
       window: window,
       async: false,
       completion: completion)

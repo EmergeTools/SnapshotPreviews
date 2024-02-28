@@ -16,12 +16,7 @@ public enum RenderingError: Error {
 }
 
 extension View {
-  public func snapshot(
-    layout: PreviewLayout,
-    window: UIWindow,
-    async: Bool,
-    completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void)
-  {
+  public func makeExpandingView(layout: PreviewLayout, window: UIWindow) -> ExpandingViewController {
     UIView.setAnimationsEnabled(false)
     let animationDisabledView = self.transaction { transaction in
       transaction.disablesAnimations = true
@@ -29,10 +24,20 @@ extension View {
     let controller = ExpandingViewController(rootView: animationDisabledView)
     controller.setupView(layout: layout)
 
-    let (windowRootVC, containerVC) = Self.setupRootVC(subVC: controller)
+    let windowRootVC = Self.setupRootVC(subVC: controller)
     window.rootViewController = windowRootVC
-    controller.expansionSettled = { [weak containerVC, weak controller] renderingMode, precision, accessibilityEnabled in
-      guard let containerVC, let controller else { return }
+    return controller
+  }
+
+  public func snapshot(
+    layout: PreviewLayout,
+    controller: ExpandingViewController,
+    window: UIWindow,
+    async: Bool,
+    completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void)
+  {
+    controller.expansionSettled = { [weak controller, weak window] renderingMode, precision, accessibilityEnabled in
+      guard let controller, let window, let containerVC = controller.parent else { return }
 
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -71,7 +76,7 @@ extension View {
     }
   }
 
-  private static func setupRootVC(subVC: UIViewController) -> (UIViewController, UIViewController) {
+  private static func setupRootVC(subVC: UIViewController) -> UIViewController {
     let windowRootVC = UIViewController()
     windowRootVC.view.bounds = UIScreen.main.bounds
     windowRootVC.view.backgroundColor = .clear
@@ -96,7 +101,7 @@ extension View {
     subVC.view.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width).isActive = true
     containerVC.view.heightAnchor.constraint(greaterThanOrEqualTo: subVC.view.heightAnchor, multiplier: 1).isActive = true
 
-    return (windowRootVC, containerVC)
+    return windowRootVC
   }
 
   private static func takeSnapshot(
