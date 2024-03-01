@@ -68,11 +68,15 @@ extension NamedViewModifier {
   static var accessibility: NamedViewModifier {
     .init(name: "Accessibility", value: { $0.emergeAccessibility(true) })
   }
+
+  static var rtl: NamedViewModifier {
+    .init(name: "RTL", value: { $0.environment(\.layoutDirection, .rightToLeft) })
+  }
 }
 
 extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
   static var previewDefault: [NamedViewModifier] {
-    [.unmodified, .darkMode, .xxlTextSize, .accessibility]
+    [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility]
   }
 }
