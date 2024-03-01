@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import SnapshotPreferences
 
 struct Location: Identifiable {
     let id = UUID()
@@ -45,5 +46,6 @@ struct HomeMapView: View {
 struct HomeMapView_Previews: PreviewProvider {
     static var previews: some View {
         HomeMapView(address: "123 Main St, San Francisco, CA")
+        .emergeSnapshotPrecision(0.9)
     }
 }

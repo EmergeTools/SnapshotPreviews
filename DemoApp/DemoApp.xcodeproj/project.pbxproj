@@ -36,6 +36,7 @@
 		FA4F5AD92A7A3E7700B268FF /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; };
 		FA4F5ADA2A7A3E7700B268FF /* Snapshotting in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA4F5AD82A7A3E7700B268FF /* Snapshotting */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA5E82972A96448A008DE3F0 /* StateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5E82962A96448A008DE3F0 /* StateView.swift */; };
+		FA7EFE132B9235D100EF534F /* SnapshotPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = FA7EFE122B9235D100EF534F /* SnapshotPreferences */; };
 		FA9C8E442A56959300DC4574 /* RatingPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C8E432A56959300DC4574 /* RatingPreviews.swift */; };
 		FAA4F4CF2B271D9C00127B63 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4F4CE2B271D9C00127B63 /* Color.swift */; };
 		FABCCD932AC39081008F4D3A /* EMGTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABCCD922AC39081008F4D3A /* EMGTestHandler.swift */; };
@@ -147,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA7EFE132B9235D100EF534F /* SnapshotPreferences in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +316,9 @@
 			dependencies = (
 			);
 			name = DemoModule;
+			packageProductDependencies = (
+				FA7EFE122B9235D100EF534F /* SnapshotPreferences */,
+			);
 			productName = DemoModule;
 			productReference = FA1671D72A5399F700A42DB0 /* DemoModule.framework */;
 			productType = "com.apple.product-type.framework";
@@ -863,6 +868,10 @@
 		FA4F5AD82A7A3E7700B268FF /* Snapshotting */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Snapshotting;
+		};
+		FA7EFE122B9235D100EF534F /* SnapshotPreferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SnapshotPreferences;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

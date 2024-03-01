@@ -74,13 +74,16 @@ struct RideDetailView: View {
             Button(action: {
                 // Action for booking the ride
             }) {
+              HStack {
+                ProgressView()
                 Text("Book Ride")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(12)
+                  .font(.headline)
+                  .foregroundColor(.white)
+                  .padding()
+              }
+              .frame(maxWidth: .infinity)
+              .background(Color.blue)
+              .cornerRadius(12)
             }
             .padding()
         }
@@ -92,46 +95,43 @@ struct RideDetailView: View {
 
 struct RideDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            RideDetailView(ride: Ride(
-                imageName: "product-image",
-                name: "Luxury Sedan",
-                description: "Experience the ultimate comfort and style in our luxury sedan.",
-                price: 39.99,
-                capacity: 4,
-                duration: 45,
-                pickupLocation: "City Center",
-                dropoffLocation: "Airport"
-            ))
-            .previewLayout(.sizeThatFits)
+      PreviewVariants(layout: .sizeThatFits) {
+          RideDetailView(ride: Ride(
+            imageName: "product-image",
+            name: "Luxury Sedan",
+            description: "Experience the ultimate comfort and style in our luxury sedan.",
+            price: 39.99,
+            capacity: 4,
+            duration: 45,
+            pickupLocation: "City Center",
+            dropoffLocation: "Airport"
+          ))
+          .previewVariant(named: "Luxury")
 
-            RideDetailView(ride: Ride(
-                imageName: "product-image",
-                name: "Economy Car",
-                description: "A budget-friendly option for your daily commutes.",
-                price: 24.99,
-                capacity: 2,
-                duration: 30,
-                pickupLocation: "Suburb",
-                dropoffLocation: "Downtown"
-            ))
-            .preferredColorScheme(.dark)
-            .previewLayout(.sizeThatFits)
+          RideDetailView(ride: Ride(
+            imageName: "product-image",
+            name: "Economy Car",
+            description: "A budget-friendly option for your daily commutes.",
+            price: 24.99,
+            capacity: 2,
+            duration: 30,
+            pickupLocation: "Suburb",
+            dropoffLocation: "Downtown"
+          ))
+          .previewVariant(named: "Economy")
 
-            RideDetailView(ride: Ride(
-                imageName: "product-image",
-                name: "SUV",
-                description: "A spacious ride for your family outings and adventures.",
-                price: 49.99,
-                capacity: 6,
-                duration: 60,
-                pickupLocation: "Beach",
-                dropoffLocation: "National Park"
-            ))
-            .environment(\.sizeCategory, .accessibilityExtraExtraLarge)
-            .previewLayout(.sizeThatFits)
-        }
-        .environment(\.layoutDirection, .rightToLeft)
+          RideDetailView(ride: Ride(
+            imageName: "product-image",
+            name: "SUV",
+            description: "A spacious ride for your family outings and adventures.",
+            price: 49.99,
+            capacity: 6,
+            duration: 60,
+            pickupLocation: "Beach",
+            dropoffLocation: "National Park"
+          ))
+          .previewVariant(named: "SUV")
+      }
     }
 }
 
