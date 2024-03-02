@@ -78,6 +78,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
     widthAnchor?.isActive = false
     heightAnchor = nil
     widthAnchor = nil
+    previousHeight = nil
   }
 
   public func setupView(layout: PreviewLayout) {
@@ -114,7 +115,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
 
   public func updateScrollViewHeight() {
     // If heightAnchor isn't set, this was a fixed size and we don't expand the scroll view
-    guard let heightAnchor else {
+    guard let heightAnchor, expansionSettled != nil else {
       runCallback()
       return
     }
