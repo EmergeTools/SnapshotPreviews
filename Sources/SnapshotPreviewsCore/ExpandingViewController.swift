@@ -73,9 +73,15 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public func setupView(layout: PreviewLayout) {
+  public func removeConstraints() {
     heightAnchor?.isActive = false
     widthAnchor?.isActive = false
+    heightAnchor = nil
+    widthAnchor = nil
+  }
+
+  public func setupView(layout: PreviewLayout) {
+    removeConstraints()
     switch layout {
     case let .fixed(width: width, height: height):
       widthAnchor = view.widthAnchor.constraint(equalToConstant: width)
@@ -83,7 +89,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
       heightAnchor = view.heightAnchor.constraint(equalToConstant: height)
       heightAnchor?.isActive = true
     default:
-      let fittingSize = view.sizeThatFits(UIScreen.main.bounds.size)
+      let fittingSize = sizeThatFits(in: UIScreen.main.bounds.size)
       widthAnchor = view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
       widthAnchor?.isActive = true
       heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
@@ -106,7 +112,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
     self.updateScrollViewHeight()
   }
 
-  func updateScrollViewHeight() {
+  public func updateScrollViewHeight() {
     // If heightAnchor isn't set, this was a fixed size and we don't expand the scroll view
     guard let heightAnchor else {
       runCallback()
