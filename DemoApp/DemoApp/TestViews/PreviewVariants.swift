@@ -58,7 +58,11 @@ extension NamedViewModifier {
   }
 
   static var darkMode: NamedViewModifier {
-    .init(name: "Dark mode", value: { $0.preferredColorScheme(.dark).environment(\.colorScheme, .dark)})
+    .init(name: "Dark mode", value: { $0.preferredColorScheme(.dark).environment(\.colorScheme, .dark) })
+  }
+
+  static var landscape: NamedViewModifier {
+    .init(name: "Landscape", value: { $0.previewInterfaceOrientation(.landscapeLeft) })
   }
 
   static var xxlTextSize: NamedViewModifier {
@@ -77,6 +81,6 @@ extension NamedViewModifier {
 extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
   static var previewDefault: [NamedViewModifier] {
-    [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility]
+    [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility, .landscape]
   }
 }
