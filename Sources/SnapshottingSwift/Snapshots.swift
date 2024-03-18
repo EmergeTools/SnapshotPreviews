@@ -130,8 +130,9 @@ class Snapshots {
       layout: preview.layout,
       controller: controller,
       window: window,
-      async: false,
-      completion: completion)
+      async: false) { result in
+        completion(result.image, result.precision, result.accessibilityEnabled)
+      }
   }
 
   @MainActor static func writeClassNames() {

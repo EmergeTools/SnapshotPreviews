@@ -15,6 +15,13 @@ public enum RenderingError: Error {
   case failedRendering(CGSize)
 }
 
+public struct SnapshotResult {
+  public let image: Result<UIImage, RenderingError>
+  public let precision: Float?
+  public let accessibilityEnabled: Bool?
+  public let accessibilityMarkers: [AccessibilityMarker]?
+}
+
 extension View {
   public func makeExpandingView(layout: PreviewLayout, window: UIWindow) -> ExpandingViewController {
     UIView.setAnimationsEnabled(false)
@@ -34,14 +41,15 @@ extension View {
     controller: ExpandingViewController,
     window: UIWindow,
     async: Bool,
-    completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void)
+    completion: @escaping (SnapshotResult) -> Void)
   {
     controller.expansionSettled = { [weak controller, weak window] renderingMode, precision, accessibilityEnabled in
       guard let controller, let window, let containerVC = controller.parent else { return }
 
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view), precision, accessibilityEnabled)
+          let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
+          completion(SnapshotResult(image: imageResult, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil))
         }
       } else {
         DispatchQueue.main.async {
@@ -63,13 +71,14 @@ extension View {
             a11yView.center = window.center
             window.addSubview(a11yView)
 
-            try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
+            let elements = try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
             a11yView.sizeToFit()
             let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
             a11yView.removeFromSuperview()
-            completion(result, precision, accessibilityEnabled)
+            completion(SnapshotResult(image: result, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: elements))
           } else {
-            completion(Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view), precision, accessibilityEnabled)
+            let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
+            completion(SnapshotResult(image: imageResult, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil))
           }
         }
       }
