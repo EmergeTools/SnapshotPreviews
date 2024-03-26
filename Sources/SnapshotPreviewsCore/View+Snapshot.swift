@@ -13,6 +13,7 @@ import AccessibilitySnapshotCore
 
 public enum RenderingError: Error {
   case failedRendering(CGSize)
+  case maxSize(CGSize)
 }
 
 public struct SnapshotResult {
@@ -117,7 +118,8 @@ extension View {
     layout: PreviewLayout,
     renderingMode: EmergeRenderingMode?,
     rootVC: UIViewController,
-    targetView: UIView) -> Result<UIImage, RenderingError>
+    targetView: UIView,
+    maxSize: Double = 1_000_000) -> Result<UIImage, RenderingError>
   {
     let view = targetView
     let drawCode: (CGContext) -> Void
@@ -146,6 +148,9 @@ extension View {
       drawCode = { ctx in
         success = rootVC.view.render(size: targetSize, mode: renderingMode, context: ctx)
       }
+    }
+    if targetSize.height > maxSize || targetSize.width > maxSize {
+      return .failure(RenderingError.maxSize(targetSize))
     }
     let renderer = UIGraphicsImageRenderer(size: targetSize)
     let image = renderer.image { context in
