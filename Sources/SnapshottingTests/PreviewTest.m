@@ -97,7 +97,7 @@ NSString* getDylibPath(NSString* dylibName) {
   [app launch];
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Waiting for network response"];
-  NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:8080/file"]];
+  NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:38824/file"]];
   NSURLRequest *request = [NSURLRequest requestWithURL:url];
   NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
       if (data) {
@@ -164,7 +164,7 @@ void dynamicTestMethod(id self, SEL _cmd) {
   NSString *typeName = typeNames[index];
   NSNumber *previewId = previewIds[index];
   XCTestExpectation *expectation = [self expectationWithDescription:@"Waiting for network response"];
-  NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:8080/display/%@/%d", typeName, previewId.intValue]];
+  NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:38824/display/%@/%d", typeName, previewId.intValue]];
   NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
   __block NSData *resultData;

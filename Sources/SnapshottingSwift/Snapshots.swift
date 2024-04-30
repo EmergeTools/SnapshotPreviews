@@ -25,7 +25,7 @@ extension SnapshotError: LocalizedError {
 }
 
 class Snapshots {
-  let server = HTTPServer(port: 8080)
+  let server = HTTPServer(port: 38824)
   let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
 
   public init() {
@@ -34,7 +34,7 @@ class Snapshots {
       .filter { $0.activationState == .foregroundActive }
       .first
 
-    let window = UIWindow(windowScene: windowScene as! UIWindowScene)
+    let window = windowScene != nil ? UIWindow(windowScene: windowScene as! UIWindowScene) : UIWindow()
     window.windowLevel = .statusBar + 1
     window.backgroundColor = UIColor.systemBackground
     window.makeKeyAndVisible()
