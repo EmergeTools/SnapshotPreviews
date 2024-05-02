@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		bF/yINCmYTc0ZmPBGKnoFv9Fop0=
+		FG4n7SNXzHg8s8DZ0VMi6+Aen4w=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.abi.json</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftmodule</key>
 		<data>
-		7pU2c1bgr30Pr4kU6GXZpnXDmjI=
+		82dVRc1TLG8b5O9uGdzKnW0aMzE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -113,11 +113,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			7pU2c1bgr30Pr4kU6GXZpnXDmjI=
+			82dVRc1TLG8b5O9uGdzKnW0aMzE=
 			</data>
 			<key>hash2</key>
 			<data>
-			54zEjiS2mNmagizzZpnmV8inZpy6wZpswrl7C6kHZDs=
+			e43XKxOFeeb4otSTkV6LZ2IjePycLLU0eDgReSQdi8E=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

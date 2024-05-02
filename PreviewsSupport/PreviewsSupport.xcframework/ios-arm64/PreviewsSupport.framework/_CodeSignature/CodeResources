@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		rV/2no404LwuAt5fCCKOylMVbbk=
+		aGABa7noKBb+a5XHVFq/iRI/5YU=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		CACXexkVblYzPwzUMUE3TrnhCI4=
+		ZJ71jk6L8iy9dFwu8LyNli11jH8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -113,11 +113,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			CACXexkVblYzPwzUMUE3TrnhCI4=
+			ZJ71jk6L8iy9dFwu8LyNli11jH8=
 			</data>
 			<key>hash2</key>
 			<data>
-			+MbHEgdfcdWW32JqEglIVlM4E016Cy9K64dN0MRkwqo=
+			VxGiYCmukNL29QynZD8ozX6WMoOhHfjNNOdMjnMTe0M=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

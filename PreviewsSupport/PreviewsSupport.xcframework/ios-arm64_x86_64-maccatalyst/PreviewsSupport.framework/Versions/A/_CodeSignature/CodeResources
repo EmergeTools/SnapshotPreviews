@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		dlXgVILaVzJi2mddg1ZZxXrUNxY=
+		32tF48nxW3M8V4KMANQyppYiha0=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -81,11 +81,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			NGS+QhNzTK6VljgMOl1VSgmN948=
+			qXWMl/94R4clsdcF5uiYrrbPg3o=
 			</data>
 			<key>hash2</key>
 			<data>
-			5RkbZuUWTrBYaRkvn5LUVNXVpOx4nTgWWMh0wMNxd3g=
+			22AiED6lE/VFw+6/RDsmGYcG/cDiH+PcNkOWoWiDaCE=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.abi.json</key>
@@ -136,11 +136,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			zUtNUqincONQ1bM2HMZYbKLfNcw=
+			RxF41cMsNNIDZvj6UVd+Jq9FA84=
 			</data>
 			<key>hash2</key>
 			<data>
-			2cxY81Q5He3uw0xAC55KowR4OGoztoCcKn3xAnok6Z4=
+			X1QxQgbMbdu0eYsgFE5jVlA64TIFWX3A/zXwoA7D8vg=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -158,11 +158,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dlXgVILaVzJi2mddg1ZZxXrUNxY=
+			32tF48nxW3M8V4KMANQyppYiha0=
 			</data>
 			<key>hash2</key>
 			<data>
-			hHoPhc70RTEDQcryBFtxRnK/yhZB7mcC3QDyk1yqaM8=
+			hhValZrGAGagPNQvtcWOuK7V5CD4DwuDWi4xE5nXLL0=
 			</data>
 		</dict>
 	</dict>
