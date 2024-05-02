@@ -12,8 +12,14 @@ extension UIKit.UIViewControllerPreviewSource : PreviewsSupport.MakeViewControll
 @available(iOS 17.0, macOS 14.0, *)
 extension SwiftUI.ViewPreviewSource : PreviewsSupport.MakeViewProvider {
 }"""
+  swift_ui_only_remove = """@available(iOS 17.0, macOS 14.0, *)
+extension SwiftUI.ViewPreviewSource : PreviewsSupport.MakeViewProvider {
+}"""
   if contents.include?(to_remove)
     contents.slice!(to_remove)
+    File.write(file_path, contents)
+  elsif contents.include?(swift_ui_only_remove)
+    contents.slice!(swift_ui_only_remove)
     File.write(file_path, contents)
   end
 end
