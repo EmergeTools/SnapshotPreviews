@@ -1,56 +1,67 @@
 {
   "images" : [
     {
+      "filename" : "Emerge-Avatar Optimized.heic",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 10.heic",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "16x16"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 9.heic",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "16x16"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 8.heic",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 7.heic",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 6.heic",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 4.heic",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 5.heic",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 3.heic",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 2.heic",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
+      "filename" : "Emerge-Avatar Optimized 1.heic",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
