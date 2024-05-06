@@ -6,28 +6,20 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		32tF48nxW3M8V4KMANQyppYiha0=
+		1vxtBBEqgEzU/CsoBcBPwt1iIXI=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>Headers/PreviewsSupport-Swift.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jfnRHcK/YdsCRKUWKzO+q0+KWHo=
-			</data>
 			<key>hash2</key>
 			<data>
-			/gg9r0OI4S3LpY5QW9aqFx5KF4WBEBSCm0DGBKVpcR0=
+			/8Pw5v4y/vKdF/KKMICDv2ULcXg+hZKhQAMKl7om9pM=
 			</data>
 		</dict>
 		<key>Headers/PreviewsSupport.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			MjdrkD9mrQpaxcO6Dxp5Wv9X1Bw=
-			</data>
 			<key>hash2</key>
 			<data>
 			FjEtF7eW8SP2l+9ZzntIYeAMxyyA+lrE02xvMJW5mss=
@@ -35,120 +27,76 @@
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.abi.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dtHUJ5N/od/vEoqXNpi+wlLHUzw=
-			</data>
 			<key>hash2</key>
 			<data>
-			lnv8lEpS0Z2xPj+mlCF45DyUN4L5ooJ9inTBITaM4B4=
+			l/yVrBY/U7+zSCypAsKduT6J3Wzh+0QP4n7BfTXFUJY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.private.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			8c5xIC6eXXmTb08JwUHRURbgwLc=
-			</data>
 			<key>hash2</key>
 			<data>
-			ORWbFuwlwRjj9Wmt/MYg7PCAQRs6/fXm4OVruWII9TQ=
+			E7WtDW6XZN59zWiR7petTTDqjGJKM0LMuholn5Fma5g=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.swiftdoc</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Dz2NE5ApgRjR0ejDbVirSGK8+3E=
-			</data>
 			<key>hash2</key>
 			<data>
-			hJmVE9kTZX9D/ARBkx83Exsqd8AJgjjWIq0y3bnhVuo=
+			8BE1cyI36zhQI89GIjNc21+j1kA+usDDmSV9OWINYKw=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			90QjnVVRuEu3TCxlpGejMWyncEc=
-			</data>
 			<key>hash2</key>
 			<data>
-			FVddJNyufNnFin/Fmib/bqifvhotfRtxKnggnC1iTxs=
+			Q1N0oqvz7w6yHrbzfJwCEDYYlhCTljbqhUp3gNosIJE=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.swiftmodule</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			bXF2fFRJ+CsxWrhx6WTc11Ss8yA=
-			</data>
 			<key>hash2</key>
 			<data>
-			dimv/YnZwAMygALc3fHRgJM28KpLQV2Xw/xNi38LlWY=
+			dBsGc4cYlU29tqel1YpZ0YbH8x97ZPH9+e0KgbFfLTw=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.abi.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dtHUJ5N/od/vEoqXNpi+wlLHUzw=
-			</data>
 			<key>hash2</key>
 			<data>
-			lnv8lEpS0Z2xPj+mlCF45DyUN4L5ooJ9inTBITaM4B4=
+			l/yVrBY/U7+zSCypAsKduT6J3Wzh+0QP4n7BfTXFUJY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.private.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			fgXlYNHnG1JHSLwjM/YINfAPKvg=
-			</data>
 			<key>hash2</key>
 			<data>
-			3mp7ckR7R1ygy7CQ1hvkh3gAWmD52OKTgMsfRUuHOs8=
+			7v69/jxgrZj3GcopIxJ7ttucFT8P20/1DilhWguh608=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.swiftdoc</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			vnd5RHz6ez1vGrDI+kk1G3zIJXU=
-			</data>
 			<key>hash2</key>
 			<data>
-			+mJcMd8aFdbkrHSSjikhPcjfrjff8Gkufh/jfUymYjs=
+			klch6dPtNSZIren7DuvPuwhYCB/UDh+P1qU/gtqK6kU=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.swiftinterface</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			DFyg2RPg/snL7bx50eRsyAe1RH0=
-			</data>
 			<key>hash2</key>
 			<data>
-			V7tpzCzSyWTNBJW21E9sPLBn6rXFkHuUk3L2dgD818w=
+			JLJnr8MHTDN8MIDG61IJ4Fw/WXVmjYFvNaN8HKlr2Ew=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.swiftmodule</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			9uXDBQBWacsh52Du94hkLoztfWQ=
-			</data>
 			<key>hash2</key>
 			<data>
-			nEcFkZbYLZnsM1GjFpCKjJkG4qzW8K2UmrbF6M3Fces=
+			O1g20IGOK9DSeWV/Hw5LHcc/3kEhdQlHTtDrgK3hRH4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jGU6HBrzGnPa6YPBRpWAZVuXf90=
-			</data>
 			<key>hash2</key>
 			<data>
 			Cugo1ycpfQ8tzAoEVTAubUiqargRHvMJhqTmb5NIad0=
@@ -156,13 +104,9 @@
 		</dict>
 		<key>Resources/Info.plist</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			32tF48nxW3M8V4KMANQyppYiha0=
-			</data>
 			<key>hash2</key>
 			<data>
-			hhValZrGAGagPNQvtcWOuK7V5CD4DwuDWi4xE5nXLL0=
+			lEOGkfUWJ2Xx8BcMfzRXpMs+b8+bqSN/l6ZLwZ1jn/Q=
 			</data>
 		</dict>
 	</dict>

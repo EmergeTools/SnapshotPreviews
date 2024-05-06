@@ -34,12 +34,12 @@
               {
                 "kind": "TypeFunc",
                 "name": "Function",
-                "printedName": "() -> SwiftUI.View",
+                "printedName": "() -> any SwiftUI.View",
                 "children": [
                   {
                     "kind": "TypeNominal",
                     "name": "View",
-                    "printedName": "SwiftUI.View",
+                    "printedName": "any SwiftUI.View",
                     "usr": "s:7SwiftUI4ViewP"
                   },
                   {
@@ -64,12 +64,12 @@
                   {
                     "kind": "TypeFunc",
                     "name": "Function",
-                    "printedName": "() -> SwiftUI.View",
+                    "printedName": "() -> any SwiftUI.View",
                     "children": [
                       {
                         "kind": "TypeNominal",
                         "name": "View",
-                        "printedName": "SwiftUI.View",
+                        "printedName": "any SwiftUI.View",
                         "usr": "s:7SwiftUI4ViewP"
                       },
                       {
