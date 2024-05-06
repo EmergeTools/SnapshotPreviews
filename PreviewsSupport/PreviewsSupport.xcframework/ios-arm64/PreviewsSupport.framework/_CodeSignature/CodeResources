@@ -22,7 +22,7 @@
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		/ILvhmragVp0OhUZR+Y7pkdUMAE=
+		XvqgNnENaTvhHL6eigPkgL8KIv8=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -30,11 +30,11 @@
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		/ILvhmragVp0OhUZR+Y7pkdUMAE=
+		eND+KaE2YoYjDqqmNiv0fj08VQE=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		ZJ71jk6L8iy9dFwu8LyNli11jH8=
+		xQ3j0XK8QBzZwZt2FulPfghpJQc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -80,11 +80,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			/ILvhmragVp0OhUZR+Y7pkdUMAE=
+			XvqgNnENaTvhHL6eigPkgL8KIv8=
 			</data>
 			<key>hash2</key>
 			<data>
-			iuohKtb/Z2UYmk/bsaClkcxT5967cOmX+CiD0Oyj+cs=
+			JvTMYqpOzY13nHlFEFBePly8W2k064mV++L5LaLM69Y=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -102,22 +102,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			/ILvhmragVp0OhUZR+Y7pkdUMAE=
+			eND+KaE2YoYjDqqmNiv0fj08VQE=
 			</data>
 			<key>hash2</key>
 			<data>
-			iuohKtb/Z2UYmk/bsaClkcxT5967cOmX+CiD0Oyj+cs=
+			SqXuLC6gneiT6TvDKbFXos7g430xophGUzbKjhifd7s=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ZJ71jk6L8iy9dFwu8LyNli11jH8=
+			xQ3j0XK8QBzZwZt2FulPfghpJQc=
 			</data>
 			<key>hash2</key>
 			<data>
-			VxGiYCmukNL29QynZD8ozX6WMoOhHfjNNOdMjnMTe0M=
+			AW4vjY8OrkAKvieTR1JVo1F1JoYMsdmR7Uqo7VmR4ZE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

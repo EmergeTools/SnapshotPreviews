@@ -18,4 +18,3 @@ public protocol MakeUIViewProvider {
 public protocol MakeViewControllerProvider {
   var makeViewController: @_Concurrency.MainActor () -> UIKit.UIViewController { get }
 }
-

@@ -48,11 +48,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			AzdfCULA+yWyt3nOX3JZbjQgZE4=
+			pk2U4uGT02x2SI0UPzBMLJY3WnM=
 			</data>
 			<key>hash2</key>
 			<data>
-			Eq9FBaaVjUiXk5L+q/t/tky89wS9uZOAzn+3wzHMACw=
+			I/oRPIevAz9lOsxKGRHBHW+4vvolUIq9kAgqkcqlZx8=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.swiftdoc</key>
@@ -70,22 +70,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			AzdfCULA+yWyt3nOX3JZbjQgZE4=
+			GFW3Bqfb8swzeLVHn/w5d65rLzE=
 			</data>
 			<key>hash2</key>
 			<data>
-			Eq9FBaaVjUiXk5L+q/t/tky89wS9uZOAzn+3wzHMACw=
+			yiixxG0AEbA4C2St0Moa75Go0+BmTO1G6qwQNpbZHEw=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+6FJ/w11Dn5Q6tWggV38szUfob4=
+			c6Ujmqulwr7cCz+rxzTADYR5F6s=
 			</data>
 			<key>hash2</key>
 			<data>
-			4c0MWW60ZpIlBZSsOtYR/JO6o7eegx/tPUaPQfXGJ4w=
+			y18zHJP3oc9EHtmTo2jEdOVH1GSnuVPJ+3fpX1PxcmY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.abi.json</key>
@@ -103,11 +103,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XBwPiIp0Tp2B+qCB7iMCzVXfwZs=
+			7h/jkAcWgah3ZQM1tlrZaiom//M=
 			</data>
 			<key>hash2</key>
 			<data>
-			KobxWPfqqHF20vM5j6mQyq9JKfj9hgpv1fqLFsSIc4Y=
+			Nql4CfwFYaKbSaYnSHkjs5YTMDo+48Xhq3YuBFBvKWw=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.swiftdoc</key>
@@ -125,22 +125,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XBwPiIp0Tp2B+qCB7iMCzVXfwZs=
+			MKu8GJTY08uSTksjeZzOC0VeJu8=
 			</data>
 			<key>hash2</key>
 			<data>
-			KobxWPfqqHF20vM5j6mQyq9JKfj9hgpv1fqLFsSIc4Y=
+			tNcIt+gYXAHhZfsSM0KIIVpzjCg1HkAMqazveAENKsQ=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			v/IbJdm3mADizqgMhDq55WOuZrw=
+			8gMF0w87LUQysvTCAA7tohiSOro=
 			</data>
 			<key>hash2</key>
 			<data>
-			5V3ab/EyUXyMbyWzWXTZ4CrC+GJVJWImQGDyN5w1i38=
+			nJTCK43ycv88SsrCcTYEaVwrdkMH8ulCpltmjKY0Se0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
