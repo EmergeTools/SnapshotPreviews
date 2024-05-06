@@ -24,11 +24,14 @@ public protocol MakeViewControllerProvider {
 }
 
 @available(iOS 17.0, macOS 14.0, *)
+@_spi(Private)
 extension UIViewPreviewSource: MakeUIViewProvider { }
 
 @available(iOS 17.0, macOS 14.0, *)
+@_spi(Private)
 extension UIViewControllerPreviewSource: MakeViewControllerProvider { }
 #endif
 
 @available(iOS 17.0, macOS 14.0, *)
+@_spi(Private)
 extension ViewPreviewSource: MakeViewProvider { }
