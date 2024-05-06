@@ -8,3 +8,4 @@ DerivedData/
 .netrc
 DemoApp/DemoApp.xcodeproj/xcuserdata/
 .xcuserstate
+PreviewsSupport/PreviewsSupport.xcframework/**/*.private.swiftinterface
