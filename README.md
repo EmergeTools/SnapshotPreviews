@@ -53,6 +53,9 @@ class MyPreviewTest: PreviewTest {
 
 Note that there are no test functions; they are automatically added at runtime by `PreviewTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results. The test must be run on an iOS simulator (not device).
 
+> [!NOTE]
+> When you use Preivew macros (`#Preview("Display Name")`) the name of the snapshot uses the file path and the name, for example: "MyModule/MyFile.swift:Display Name"
+
 ![Screenshot of Xcode test output](images/testOutput.png)
 
 ### Accessibility Audits

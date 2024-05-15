@@ -143,11 +143,11 @@ public struct PreviewType: Hashable, Identifiable {
 }
 
 public func findPreviews(
-  shouldInclude: (String) -> Bool = { _ in true },
+  shouldInclude: (String, String) -> Bool = { _, _ in true },
   willAccess: (String) -> Void = { _ in }) -> [PreviewType]
 {
   return getPreviewTypes()
-    .filter { shouldInclude($0.name) }
+    .filter { shouldInclude($0.name, $0.proto) }
     .compactMap { conformance -> PreviewType? in
       let (name, accessor, proto) = conformance
       willAccess(name)

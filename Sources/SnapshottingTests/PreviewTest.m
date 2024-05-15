@@ -133,25 +133,24 @@ NSString* getDylibPath(NSString* dylibName) {
     previewIds = [NSMutableArray array];
     self.dynamicTestSelectors = [NSMutableArray array];
     NSMutableArray<NSString *> *previewTypes = [NSMutableArray array];
-    NSMutableDictionary<NSString*, NSNumber*> *typesToCount = [NSMutableDictionary dictionary];
+    int i = 0;
     for (NSDictionary *previewDetails in metadata) {
       NSString *typeName = previewDetails[@"typeName"];
+      NSString *displayName = previewDetails[@"displayName"];
       NSNumber *count = previewDetails[@"numPreviews"];
-      [previewTypes addObject:typeName];
-      typesToCount[typeName] = count;
-    }
-    NSArray *sortedPreviewTypes = [previewTypes sortedArrayUsingSelector:@selector(compare:)];
-    int i = 0;
-    for (NSString *typeName in previewTypes) {
-      for (int j = 0; j < typesToCount[typeName].intValue; j++) {
+      for (int j = 0; j < count.intValue; j++) {
         [typeNames addObject:typeName];
-        NSString *testSelectorName = [NSString stringWithFormat:@"%@-%d-%d", typeName, j, i];
+        NSString *testSelectorName = [NSString stringWithFormat:@"%@-%d-%d", displayName, j, i];
         [self.dynamicTestSelectors addObject:testSelectorName];
         [previewIds addObject:@(j)];
 
-        class_addMethod([self class], NSSelectorFromString(testSelectorName), (IMP) dynamicTestMethod, "v@:");
+        BOOL success = class_addMethod([self class], NSSelectorFromString(testSelectorName), (IMP) dynamicTestMethod, "v@:");
+        if (!success) {
+          NSLog(@"Error adding method %@", testSelectorName);
+        }
         i++;
       }
+      [previewTypes addObject:typeName];
     }
   }
 }
