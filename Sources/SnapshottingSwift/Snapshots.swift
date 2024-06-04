@@ -75,7 +75,7 @@ class Snapshots {
       }
 
       let fileName = Self.fileName(typeName: typeName, previewId: id)
-      let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
+      let file = Self.resultsDir.appendingPathComponent(UUID().uuidString, isDirectory: false)
       do {
         let image = try imageResult.get()
         if let pngData = image.pngData() {
