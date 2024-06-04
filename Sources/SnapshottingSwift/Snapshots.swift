@@ -75,6 +75,7 @@ class Snapshots {
       }
 
       let fileName = Self.fileName(typeName: typeName, previewId: id)
+      print("The results dir exists: \(FileManager.default.fileExists(atPath: Self.resultsDir.path))")
       let file = Self.resultsDir.appendingPathComponent(UUID().uuidString, isDirectory: false)
       do {
         let image = try imageResult.get()
