@@ -137,6 +137,7 @@ NSString* getDylibPath(NSString* dylibName) {
     for (NSDictionary *previewDetails in metadata) {
       NSString *typeName = previewDetails[@"typeName"];
       NSString *displayName = previewDetails[@"displayName"];
+      displayName = displayName ? displayName : typeName;
       NSNumber *count = previewDetails[@"numPreviews"];
       for (int j = 0; j < count.intValue; j++) {
         [typeNames addObject:typeName];
