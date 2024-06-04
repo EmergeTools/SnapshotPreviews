@@ -75,6 +75,7 @@ class Snapshots {
       }
 
       let fileName = Self.fileName(typeName: typeName, previewId: id)
+      try FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
       let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
       do {
         let image = try imageResult.get()
