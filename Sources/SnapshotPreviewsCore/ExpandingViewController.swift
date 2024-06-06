@@ -113,6 +113,10 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
     self.updateScrollViewHeight()
   }
 
+  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return .all
+  }
+
   public func updateScrollViewHeight() {
     // If heightAnchor isn't set, this was a fixed size and we don't expand the scroll view
     guard let heightAnchor, expansionSettled != nil else {
