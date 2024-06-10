@@ -30,8 +30,9 @@ public struct PreviewGallery: View {
   
   let data: PreviewData
   
-  public init(data: PreviewData = .default) {
-    self.data = data
+  @MainActor
+  public init(data: PreviewData? = nil) {
+    self.data = data ?? .default
   }
   
   public var body: some View {

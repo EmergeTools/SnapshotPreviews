@@ -23,7 +23,7 @@ public struct PreviewData {
     Set(previews.map { $0.module })
   }
 
-  public static var `default`: PreviewData {
+  @MainActor public static var `default`: PreviewData {
     self.init(previews: findPreviews())
   }
 }
