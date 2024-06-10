@@ -94,6 +94,7 @@ public struct PreviewType: Hashable, Identifiable {
 
 #if compiler(>=5.9)
   @available(iOS 17.0, macOS 14.0, *)
+  @MainActor
   init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
     self.typeName = typeName
     self.fileID = A.fileID
@@ -142,6 +143,7 @@ public struct PreviewType: Hashable, Identifiable {
   public let platform: PreviewPlatform?
 }
 
+@MainActor
 public func findPreviews(
   shouldInclude: (String, String) -> Bool = { _, _ in true },
   willAccess: (String) -> Void = { _ in }) -> [PreviewType]
