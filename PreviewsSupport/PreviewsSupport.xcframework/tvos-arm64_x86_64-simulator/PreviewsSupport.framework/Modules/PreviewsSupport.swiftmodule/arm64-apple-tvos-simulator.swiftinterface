@@ -1,0 +1,19 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target arm64-apple-tvos15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name PreviewsSupport
+@_exported import PreviewsSupport
+import Swift
+import SwiftUI
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public protocol MakeViewProvider {
+  var makeView: @_Concurrency.MainActor () -> any SwiftUI.View { get }
+}
+public protocol MakeUIViewProvider {
+  var makeView: @_Concurrency.MainActor () -> UIKit.UIView { get }
+}
+public protocol MakeViewControllerProvider {
+  var makeViewController: @_Concurrency.MainActor () -> UIKit.UIViewController { get }
+}

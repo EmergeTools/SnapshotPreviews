@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		YxYnh89wFupNzBAapIR3+oYepQE=
+		ktLYcCsAn8hfgDCpFvztRHH7omg=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -36,7 +36,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			h+y22ddV0WNV5UY6gFiHaejZT3Lu2/367GFpmBwDYgE=
+			X2HndxdnmzFeCB0y/3djApoyTJi6BAFqgLlhGA7C3KU=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.swiftdoc</key>
@@ -57,7 +57,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			aCl+xt0bhWjc9USxSxFtZ9IBg9swCCq4PadiSs1nAbw=
+			DRE9GXQAUUuthf20FxmmNIRfGIROBoHGgAZe+UE4MEY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.abi.json</key>
@@ -71,7 +71,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			mD9GlJ/lDTT1cdCsfIs79E8t/8D/BiyfegP16APV4co=
+			ZwzVxF7QrBdi+PsOi+mQJAw2XwYymICEUeTeGG5r44s=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.swiftdoc</key>
@@ -92,7 +92,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			oqJn9C9gqRNpiT+OZb7HFGRpUDVjUSx5MEer0tkZbGw=
+			40i/bNcpEXQRxYnyMVpDBqrOjUPnjGWSFhjTpV6IWwE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -106,7 +106,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			SBH7nIuW0fgjxARktZqIvbZPL52/cFPeqByd/RYe9iU=
+			FKPw/L89//JmNp0reVtK6VIbkc9N11hAPMNhagjPLW8=
 			</data>
 		</dict>
 	</dict>
