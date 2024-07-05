@@ -14,7 +14,7 @@ public protocol MakeViewProvider {
   var makeView: @MainActor () -> any View { get }
 }
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 public protocol MakeUIViewProvider {
   var makeView: @MainActor () -> UIView { get }
 }
@@ -23,15 +23,15 @@ public protocol MakeViewControllerProvider {
   var makeViewController: @MainActor () -> UIViewController { get }
 }
 
-@available(iOS 17.0, macOS 14.0, *)
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, *)
 @_spi(Private)
 extension UIViewPreviewSource: MakeUIViewProvider { }
 
-@available(iOS 17.0, macOS 14.0, *)
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, *)
 @_spi(Private)
 extension UIViewControllerPreviewSource: MakeViewControllerProvider { }
 #endif
 
-@available(iOS 17.0, macOS 14.0, *)
+@available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
 @_spi(Private)
 extension ViewPreviewSource: MakeViewProvider { }
