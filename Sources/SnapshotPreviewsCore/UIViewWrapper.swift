@@ -5,7 +5,7 @@
 //  Created by Noah Martin on 7/3/23.
 //
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(watchOS)
 import Foundation
 import UIKit
 import SwiftUI

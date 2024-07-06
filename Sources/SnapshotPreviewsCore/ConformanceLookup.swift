@@ -74,6 +74,12 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   return nil
 }
 
+#if os(watchOS)
+typealias mach_header_type = mach_header
+#else
+typealias mach_header_type = mach_header_64
+#endif
+
 public func getPreviewTypes() -> [LookupResult] {
   let images = _dyld_image_count()
   var types = [LookupResult]()
@@ -88,7 +94,7 @@ public func getPreviewTypes() -> [LookupResult] {
     var size: UInt = 0
     let sectStart = UnsafeRawPointer(
       getsectiondata(
-        UnsafeRawPointer(header).assumingMemoryBound(to: mach_header_64.self),
+        UnsafeRawPointer(header).assumingMemoryBound(to: mach_header_type.self),
         "__TEXT",
         "__swift5_proto",
         &size))?.assumingMemoryBound(to: Int32.self)
