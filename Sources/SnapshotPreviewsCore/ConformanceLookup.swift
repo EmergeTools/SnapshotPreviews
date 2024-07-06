@@ -74,7 +74,7 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   return nil
 }
 
-#if os(watchOS)
+#if arch(i386) || arch(arm)
 typealias mach_header_type = mach_header
 #else
 typealias mach_header_type = mach_header_64
