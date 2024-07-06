@@ -13,8 +13,6 @@ __attribute__((constructor)) static void setup(void);
 __attribute__((constructor)) static void setup(void) {
   char* str = getenv("EMERGE_IS_RUNNING_FOR_SNAPSHOTS");
   if (str && strcmp(str, "1") == 0) {
-    [NSNotificationCenter.defaultCenter addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
-      Initializer *swiftBridge = [Initializer shared];
-    }];
+    Initializer *swiftBridge = [Initializer shared];
   }
 }
