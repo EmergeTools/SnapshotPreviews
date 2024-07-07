@@ -24,28 +24,30 @@ extension SnapshotError: LocalizedError {
   }
 }
 
+protocol RenderingStrategy {
+  @MainActor func render(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>) -> Void)
+}
+
 class Snapshots {
   let server = HTTPServer(port: 38824)
   let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
 
   public init() {
-    let windowScene = UIApplication.shared
-      .connectedScenes
-      .filter { $0.activationState == .foregroundActive }
-      .first
-
-    let window = windowScene != nil ? UIWindow(windowScene: windowScene as! UIWindowScene) : UIWindow()
-    window.windowLevel = .statusBar + 1
-    window.backgroundColor = UIColor.systemBackground
-    window.makeKeyAndVisible()
-    self.window = window
-
+    #if canImport(UIKit) && !os(watchOS)
+    renderingStrategy = UIKitRenderingStrategy()
+    #else
+    if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, visionOS 1.0, *) {
+      renderingStrategy = SwiftUIRenderingStrategy()
+    } else {
+      preconditionFailure("Cannot snapshot on this device/os")
+    }
+    #endif
     Task {
       try await startServer()
     }
   }
 
-  let window: UIWindow
+  let renderingStrategy: RenderingStrategy
 
   var previews: [(SnapshotPreviewsCore.Preview, String)] = []
 
@@ -68,7 +70,7 @@ class Snapshots {
 
       var result: [String: String] = [:]
       testHandler?.perform(NSSelectorFromString("setup"))
-      let (imageResult, preview) = await display(typeName: typeName, id: id)
+      let (imageResult, preview) = await render(typeName: typeName, id: id)
 
       if let displayName = preview.displayName {
         result["displayName"] = displayName
@@ -103,37 +105,19 @@ class Snapshots {
     try await server.start()
   }
 
-  @MainActor func display(typeName: String, id: String) async -> (Result<UIImage, RenderingError>, SnapshotPreviewsCore.Preview) {
-    await withCheckedContinuation { continuation in
-      display(typeName: typeName, id: id) { result, preview in
-        continuation.resume(returning: (result, preview))
-      }
-    }
-  }
-
-  @MainActor func display(typeName: String, id: String, completion: @escaping (Result<UIImage, RenderingError>, SnapshotPreviewsCore.Preview) -> Void) {
+  @MainActor func render(typeName: String, id: String) async -> (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) {
     let previewTypes = findPreviews { name, _ in
       return name == typeName
     }
 
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
-    try! display(preview: preview) { imageResult, _, _ in
-      completion(imageResult, preview)
-    }
-  }
-
-  @MainActor func display(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, RenderingError>, Float?, Bool?) -> Void) throws {
-    var view = preview.view()
-    view = PreferredColorSchemeWrapper { AnyView(view) }
-    let controller = view.makeExpandingView(layout: preview.layout, window: window)
-    view.snapshot(
-      layout: preview.layout,
-      controller: controller,
-      window: window,
-      async: false) { result in
-        completion(result.image, result.precision, result.accessibilityEnabled)
+    let result = await withCheckedContinuation { continuation in
+      renderingStrategy.render(preview: preview) { result in
+        continuation.resume(returning: result)
       }
+    }
+    return (result, preview)
   }
 
   @available(iOS 16.0, *)

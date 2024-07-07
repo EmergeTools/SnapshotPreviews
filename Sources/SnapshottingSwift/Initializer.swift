@@ -17,9 +17,13 @@ public class Initializer: NSObject {
   override init() {
     super.init()
 
+    #if os(watchOS)
+    snapshots = Snapshots()
+    #else
     NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] notification in
       self?.snapshots = Snapshots()
     }
+    #endif
   }
   var snapshots: Snapshots?
 
