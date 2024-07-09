@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  UIKitRenderingStrategy.swift
+//
 //
 //  Created by Noah Martin on 7/5/24.
 //
@@ -8,12 +8,11 @@
 #if canImport(UIKit) && !os(watchOS)
 import Foundation
 import UIKit
-import SnapshotPreviewsCore
 import SwiftUI
 
-class UIKitRenderingStrategy: RenderingStrategy {
+public class UIKitRenderingStrategy: RenderingStrategy {
 
-  init() {
+  public init() {
     let windowScene = UIApplication.shared
       .connectedScenes
       .filter { $0.activationState == .foregroundActive }
@@ -28,7 +27,10 @@ class UIKitRenderingStrategy: RenderingStrategy {
 
   private let window: UIWindow
 
-  @MainActor func render(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, any Error>) -> Void) {
+  @MainActor public func render(
+    preview: SnapshotPreviewsCore.Preview,
+    completion: @escaping (Result<ImageType, Error>, Float?, Bool?) -> Void)
+  {
     var view = preview.view()
     view = PreferredColorSchemeWrapper { AnyView(view) }
     let controller = view.makeExpandingView(layout: preview.layout, window: window)
@@ -37,7 +39,7 @@ class UIKitRenderingStrategy: RenderingStrategy {
       controller: controller,
       window: window,
       async: false) { result in
-        completion(result.image.mapError { $0 })
+        completion(result.image.mapError { $0 }, result.precision, result.accessibilityEnabled)
       }
   }
 }

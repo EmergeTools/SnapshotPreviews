@@ -11,14 +11,6 @@ import UIKit
 #endif
 import SwiftUI
 
-let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
-let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
-let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
-let stateMirror = modifierState != nil ? Mirror(
-  reflecting: modifierState!
-    .perform(NSSelectorFromString("shared"))
-    .takeUnretainedValue()) : nil
-
 #if canImport(UIKit) && !os(visionOS) && !os(watchOS)
 
 extension UIScrollView {
@@ -46,7 +38,7 @@ extension UIView {
   }
 }
 
-public final class ExpandingViewController: UIHostingController<AnyView> {
+public final class ExpandingViewController: UIHostingController<EmergeModifierView> {
 
   private var didCall = false
   private var previousHeight: CGFloat?
@@ -59,8 +51,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
   }
 
   init<Content: View>(rootView: Content) {
-    let newView = finder?(rootView)
-    super.init(rootView: newView != nil ? AnyView(newView!) : AnyView(rootView))
+    super.init(rootView: EmergeModifierView(wrapped: rootView))
 
     if #available(iOS 16, *) {
       sizingOptions = .intrinsicContentSize
@@ -102,10 +93,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
     guard !didCall else { return }
 
     didCall = true
-    let renderingMode = stateMirror?.descendant("renderingMode") as? EmergeRenderingMode.RawValue
-    let emergeRenderingMode = renderingMode != nil ? EmergeRenderingMode(rawValue: renderingMode!) : nil
-    let accessibilityEnabled = stateMirror?.descendant("accessibilityEnabled") as? Bool
-    expansionSettled?(emergeRenderingMode, stateMirror?.descendant("precision") as? Float, accessibilityEnabled)
+    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled)
   }
 
   public override func viewDidLayoutSubviews() {
@@ -120,7 +108,7 @@ public final class ExpandingViewController: UIHostingController<AnyView> {
       return
     }
 
-    let supportsExpansion = stateMirror?.descendant("expansionPreference") as? Bool ?? true
+    let supportsExpansion = rootView.supportsExpansion
     let scrollView = view.firstScrollView
     if let scrollView, supportsExpansion {
       let diff = Int(scrollView.contentSize.height - scrollView.visibleContentHeight)
