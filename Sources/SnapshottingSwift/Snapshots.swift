@@ -108,7 +108,7 @@ class Snapshots {
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
     let result = await withCheckedContinuation { continuation in
-      renderingStrategy.render(preview: preview) { result, _, _ in
+      renderingStrategy.render(preview: preview) { result, _, _, _ in
         continuation.resume(returning: result)
       }
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 #if canImport(UIKit)
 import UIKit
@@ -19,6 +20,6 @@ public typealias ImageType = NSImage
 public protocol RenderingStrategy {
   @MainActor func render(
     preview: SnapshotPreviewsCore.Preview,
-    completion: @escaping (Result<ImageType, Error>, Float?, Bool?) -> Void)
+    completion: @escaping (Result<ImageType, Error>, Float?, Bool?, ColorScheme?) -> Void)
 }
 
