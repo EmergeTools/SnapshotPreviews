@@ -35,7 +35,9 @@ private extension Color {
   static let slate100 = Color(#colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9764705882, alpha: 1))
 
   static let dynamicBackground = {
-    #if canImport(UIKit)
+    #if os(watchOS)
+    return lightChecker
+    #elseif canImport(UIKit)
     Color(UIColor { traitCollection in
       if traitCollection.userInterfaceStyle == .dark {
         return UIColor(Color.black)

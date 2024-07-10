@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 @import SnapshottingSwift;
-@import UIKit;
 
 __attribute__((constructor)) static void setup(void);
 __attribute__((constructor)) static void setup(void) {

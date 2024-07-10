@@ -8,7 +8,6 @@
 import Foundation
 import SnapshotPreviewsCore
 import SwiftUI
-import UIKit
 import FlyingFox
 
 enum SnapshotError: Error {
@@ -29,7 +28,7 @@ class Snapshots {
   let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
 
   public init() {
-    #if canImport(UIKit) && !os(watchOS)
+    #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
     renderingStrategy = UIKitRenderingStrategy()
     #else
     if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, visionOS 1.0, *) {
@@ -101,7 +100,7 @@ class Snapshots {
     try await server.start()
   }
 
-  @MainActor func render(typeName: String, id: String) async -> (Result<UIImage, Error>, SnapshotPreviewsCore.Preview) {
+  @MainActor func render(typeName: String, id: String) async -> (Result<ImageType, Error>, SnapshotPreviewsCore.Preview) {
     let previewTypes = findPreviews { name, _ in
       return name == typeName
     }
@@ -116,7 +115,7 @@ class Snapshots {
     return (result, preview)
   }
 
-  @available(iOS 16.0, *)
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
   static func shouldInclude(name: String, excludedPreviewsSet: Set<String>?, previewsSet: Set<String>?) -> Bool {
     if let excludedPreviewsSet {
       for excludedPreview in excludedPreviewsSet {
@@ -165,7 +164,7 @@ class Snapshots {
     }
 
     let previewTypes = findPreviews { name, proto in
-      guard #available(iOS 16.0, *) else { return true }
+      guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) else { return true }
       guard proto == "PreviewProvider" else { return true }
 
       return shouldInclude(name: name, excludedPreviewsSet: excludedPreviewsSet, previewsSet: previewsSet)
@@ -175,7 +174,7 @@ class Snapshots {
         "typeName": preview.typeName,
         "numPreviews": preview.previews.count,
       ]
-      if let fileId = preview.fileID, #available(iOS 16.0, *) {
+      if let fileId = preview.fileID, #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
         var name = fileId
         if let displayName = preview.previews[0].displayName {
           name = "\(fileId):\(displayName)"
@@ -196,3 +195,17 @@ class Snapshots {
     "\(typeName)-\(previewId).png"
   }
 }
+
+#if canImport(AppKit)
+extension NSImage {
+    func pngData() -> NSData? {
+        guard let tiffData = self.tiffRepresentation,
+              let bitmapImageRep = NSBitmapImageRep(data: tiffData) else {
+            return nil
+        }
+
+        let pngData = bitmapImageRep.representation(using: .png, properties: [:])
+        return pngData as NSData?
+    }
+}
+#endif

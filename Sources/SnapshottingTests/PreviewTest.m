@@ -191,8 +191,7 @@ void dynamicTestMethod(id self, SEL _cmd) {
       @throw myException;
     } else {
       NSString *imagePath = jsonResult[@"imagePath"];
-      UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
-      NSData *imageData = UIImagePNGRepresentation(image);
+      NSData *imageData = [NSData dataWithContentsOfFile:imagePath];
       if (imageData) {
         NSString *displayName = @"Rendered Preview";
         if (jsonResult[@"displayName"]) {

@@ -10,6 +10,35 @@ import Foundation
 #if canImport(UIKit)
 import UIKit
 typealias PlatformColor = UIColor
+
+extension PlatformColor {
+  #if os(watchOS)
+  static var label: UIColor {
+    UIColor.black
+  }
+  static var secondaryLabel: UIColor {
+    UIColor.gray
+  }
+  #endif
+  #if os(tvOS) || os(watchOS)
+  static var gallerySecondaryBackground: UIColor {
+    UIColor.lightGray
+  }
+
+  static var galleryBackground: UIColor {
+    UIColor.lightGray
+  }
+  #else
+  static var gallerySecondaryBackground: UIColor {
+    UIColor.secondarySystemGroupedBackground
+  }
+
+  static var galleryBackground: UIColor {
+    UIColor.systemGroupedBackground
+  }
+  #endif
+}
+
 #else
 import AppKit
 
@@ -24,11 +53,11 @@ extension NSColor {
     NSColor.secondaryLabelColor
   }
 
-  static var secondarySystemGroupedBackground: NSColor {
+  static var gallerySecondaryBackground: NSColor {
     NSColor.controlBackgroundColor
   }
 
-  static var systemGroupedBackground: NSColor {
+  static var galleryBackground: NSColor {
     NSColor.windowBackgroundColor
   }
 }

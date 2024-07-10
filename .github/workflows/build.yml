@@ -20,3 +20,59 @@ jobs:
         run: xcodebuild build -scheme Snapshotting -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
       - name: Build SnapshottingTests
         run: xcodebuild build -scheme SnapshottingTests -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+  build-tvos:
+      runs-on: macos-14
+
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Xcode select
+        run: sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
+      - name: Build PreviewGallery
+        run: xcodebuild build -scheme PreviewGallery -sdk appletvsimulator -destination 'generic/platform=tvOS Simulator'
+      - name: Build Snapshotting
+        run: xcodebuild build -scheme Snapshotting -sdk appletvsimulator -destination 'generic/platform=tvOS Simulator'
+      - name: Build SnapshottingTests
+        run: xcodebuild build -scheme SnapshottingTests -sdk appletvsimulator -destination 'generic/platform=tvOS Simulator'
+  build-visionos:
+      runs-on: macos-14
+
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Xcode select
+        run: sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
+      - name: Build TestApp
+        run: xcodebuild build -scheme DemoApp -sdk xrsimulator -destination 'generic/platform=visionOS Simulator' -project DemoApp/DemoApp.xcodeproj
+      - name: Build Snapshotting
+        run: xcodebuild build -scheme Snapshotting -sdk xrsimulator -destination 'generic/platform=visionOS Simulator'
+      - name: Build SnapshottingTests
+        run: xcodebuild build -scheme SnapshottingTests -sdk xrsimulator -destination 'generic/platform=visionOS Simulator'
+  build-watchos:
+      runs-on: macos-14
+
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Xcode select
+        run: sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
+      - name: Build PreviewGallery
+        run: xcodebuild build -scheme PreviewGallery -sdk watchsimulator -destination 'generic/platform=watchOS Simulator'
+      - name: Build Snapshotting
+        run: xcodebuild build -scheme Snapshotting -sdk watchsimulator -destination 'generic/platform=watchOS Simulator'
+      - name: Build SnapshottingTests
+        run: xcodebuild build -scheme SnapshottingTests -sdk watchsimulator -destination 'generic/platform=watchOS Simulator'
+  build-macos:
+      runs-on: macos-14
+
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Xcode select
+        run: sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
+      - name: Build TestApp
+        run: xcodebuild build -scheme PreviewGallery -sdk macosx -destination 'generic/platform=macOS'
+      - name: Build Snapshotting
+        run: xcodebuild build -scheme Snapshotting -sdk macosx -destination 'generic/platform=macOS'
+      - name: Build SnapshottingTests
+        run: xcodebuild build -scheme SnapshottingTests -sdk macosx -destination 'generic/platform=macOS'

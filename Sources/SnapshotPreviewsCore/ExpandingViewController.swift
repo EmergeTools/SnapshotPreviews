@@ -11,7 +11,7 @@ import UIKit
 #endif
 import SwiftUI
 
-#if canImport(UIKit) && !os(visionOS) && !os(watchOS)
+#if canImport(UIKit) && !os(visionOS) && !os(watchOS) && !os(tvOS)
 
 extension UIScrollView {
   var visibleContentHeight: CGFloat {
