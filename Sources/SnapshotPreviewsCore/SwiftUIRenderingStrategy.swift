@@ -17,11 +17,20 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
 
   public init() { }
 
+  private var colorScheme: ColorScheme? = nil
+
   @MainActor public func render(
     preview: SnapshotPreviewsCore.Preview,
-    completion: @escaping (Result<ImageType, any Error>, Float?, Bool?) -> Void)
+    completion: @escaping (Result<ImageType, any Error>, Float?, Bool?, ColorScheme?) -> Void)
   {
-    let wrappedView = EmergeModifierView(wrapped: preview.view())
+    var view = preview.view()
+    colorScheme = nil
+    view = PreferredColorSchemeWrapper {
+      AnyView(view)
+    } colorSchemeUpdater: { [weak self] scheme in
+      self?.colorScheme = scheme
+    }
+    let wrappedView = EmergeModifierView(wrapped: view)
     let renderer = ImageRenderer(content: wrappedView)
     #if canImport(UIKit)
     let image = renderer.uiImage
@@ -29,9 +38,9 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
     let image = renderer.nsImage
     #endif
     if let image {
-      completion(.success(image), wrappedView.precision, wrappedView.accessibilityEnabled)
+      completion(.success(image), wrappedView.precision, wrappedView.accessibilityEnabled, colorScheme)
     } else {
-      completion(.failure(SwiftUIRenderingError.renderingError), wrappedView.precision, wrappedView.accessibilityEnabled)
+      completion(.failure(SwiftUIRenderingError.renderingError), wrappedView.precision, wrappedView.accessibilityEnabled, colorScheme)
     }
   }
 }
