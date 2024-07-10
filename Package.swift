@@ -33,7 +33,7 @@ let package = Package(
           targets: ["Snapshotting"]),
     ],
     dependencies: [
-      .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.12.2"),
+      .package(url: "https://github.com/EmergeTools/FlyingFox.git", branch: "main"),
       .package(url: "https://github.com/EmergeTools/AccessibilitySnapshot.git", exact: "1.0.2"),
     ],
     targets: [
