@@ -24,10 +24,6 @@ extension SnapshotError: LocalizedError {
   }
 }
 
-protocol RenderingStrategy {
-  @MainActor func render(preview: SnapshotPreviewsCore.Preview, completion: @escaping (Result<UIImage, Error>) -> Void)
-}
-
 class Snapshots {
   let server = HTTPServer(port: 38824)
   let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
@@ -113,7 +109,7 @@ class Snapshots {
     let provider = previewTypes[0]
     let preview = provider.previews.filter { $0.previewId == id }[0]
     let result = await withCheckedContinuation { continuation in
-      renderingStrategy.render(preview: preview) { result in
+      renderingStrategy.render(preview: preview) { result, _, _ in
         continuation.resume(returning: result)
       }
     }
