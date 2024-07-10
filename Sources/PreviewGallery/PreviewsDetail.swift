@@ -24,14 +24,14 @@ struct PreviewsDetail: View {
             PreviewCell(preview: preview)
           }
           .padding(.vertical, 16)
-          #if canImport(UIKit) && !os(visionOS)
+          #if canImport(UIKit) && !os(visionOS) && !os(watchOS)
           .frame(width: UIScreen.main.bounds.width)
           #endif
-          .background(Color(PlatformColor.secondarySystemGroupedBackground))
+          .background(Color(PlatformColor.gallerySecondaryBackground))
         }
       }
     }
-    .background(Color(PlatformColor.systemGroupedBackground))
+    .background(Color(PlatformColor.galleryBackground))
     .navigationTitle(previewType.displayName)
   }
   

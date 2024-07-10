@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
 @objc
 public class Initializer: NSObject {
@@ -17,7 +19,7 @@ public class Initializer: NSObject {
   override init() {
     super.init()
 
-    #if os(watchOS)
+    #if !canImport(UIKit) || os(watchOS)
     snapshots = Snapshots()
     #else
     NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] notification in

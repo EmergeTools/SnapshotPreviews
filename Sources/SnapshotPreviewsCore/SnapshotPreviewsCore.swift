@@ -17,7 +17,7 @@ public struct Preview: Identifiable {
   }
 
 #if compiler(>=5.9)
-  @available(iOS 17.0, macOS 14.0, watchOS 10.0, *)
+  @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
   init?(preview: DeveloperToolsSupport.Preview) {
     previewId = "0"
     var orientation: InterfaceOrientation = .portrait
@@ -93,7 +93,7 @@ public struct PreviewType: Hashable, Identifiable {
   }
 
 #if compiler(>=5.9)
-  @available(iOS 17.0, macOS 14.0, watchOS 10.0, *)
+  @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
   @MainActor
   init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
     self.typeName = typeName
@@ -159,7 +159,7 @@ public func findPreviews(
         return PreviewType(typeName: name, previewProvider: previewProvider)
       case "PreviewRegistry":
   #if compiler(>=5.9)
-        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, *) {
+        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
           let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
           return PreviewType(typeName: name, registry: previewRegistry)
         }

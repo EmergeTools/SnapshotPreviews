@@ -32,22 +32,22 @@ struct ModulePreviews: View {
                 title: "Screens",
                 subtitle: "\(featureProviders.count) Preview\(featureProviders.count != 1 ? "s" : "")")
               .padding(16)
-              .background(Color(PlatformColor.secondarySystemGroupedBackground))
+              .background(Color(PlatformColor.gallerySecondaryBackground))
             }
           }
           ForEach(componentProviders) { preview in
             NavigationLink(destination: PreviewsDetail(previewType: preview)) {
               PreviewCellView(preview: preview)
-                .background(Color(PlatformColor.secondarySystemGroupedBackground))
+                .background(Color(PlatformColor.gallerySecondaryBackground))
                 .allowsHitTesting(false)
             }
-            #if canImport(UIKit) && !os(visionOS)
+            #if canImport(UIKit) && !os(visionOS) && !os(watchOS)
             .frame(width: UIScreen.main.bounds.width)
             #endif
           }
         }
       }
-      .background(Color(PlatformColor.systemGroupedBackground))
+      .background(Color(PlatformColor.galleryBackground))
       .navigationTitle(module)
     }
   }

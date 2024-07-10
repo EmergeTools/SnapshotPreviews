@@ -74,7 +74,7 @@ private func parseConformance(conformance: UnsafePointer<ProtocolConformanceDesc
   return nil
 }
 
-#if arch(i386) || arch(arm)
+#if arch(i386) || arch(arm) || arch(arm64_32)
 typealias mach_header_type = mach_header
 #else
 typealias mach_header_type = mach_header_64
