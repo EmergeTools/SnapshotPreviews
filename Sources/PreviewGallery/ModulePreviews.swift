@@ -32,13 +32,17 @@ struct ModulePreviews: View {
                 title: "Screens",
                 subtitle: "\(featureProviders.count) Preview\(featureProviders.count != 1 ? "s" : "")")
               .padding(16)
+              #if !os(watchOS)
               .background(Color(PlatformColor.gallerySecondaryBackground))
+              #endif
             }
           }
           ForEach(componentProviders) { preview in
             NavigationLink(destination: PreviewsDetail(previewType: preview)) {
               PreviewCellView(preview: preview)
+              #if !os(watchOS)
                 .background(Color(PlatformColor.gallerySecondaryBackground))
+              #endif
                 .allowsHitTesting(false)
             }
             #if canImport(UIKit) && !os(visionOS) && !os(watchOS)
@@ -47,7 +51,9 @@ struct ModulePreviews: View {
           }
         }
       }
+      #if !os(watchOS)
       .background(Color(PlatformColor.galleryBackground))
+      #endif
       .navigationTitle(module)
     }
   }

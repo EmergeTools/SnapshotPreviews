@@ -14,7 +14,7 @@ typealias PlatformColor = UIColor
 extension PlatformColor {
   #if os(watchOS)
   static var label: UIColor {
-    UIColor.black
+    UIColor.white
   }
   static var secondaryLabel: UIColor {
     UIColor.gray

@@ -27,11 +27,15 @@ struct PreviewsDetail: View {
           #if canImport(UIKit) && !os(visionOS) && !os(watchOS)
           .frame(width: UIScreen.main.bounds.width)
           #endif
+          #if !os(watchOS)
           .background(Color(PlatformColor.gallerySecondaryBackground))
+          #endif
         }
       }
     }
+    #if !os(watchOS)
     .background(Color(PlatformColor.galleryBackground))
+    #endif
     .navigationTitle(previewType.displayName)
   }
   
