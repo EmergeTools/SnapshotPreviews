@@ -21,7 +21,7 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
 
   @MainActor public func render(
     preview: SnapshotPreviewsCore.Preview,
-    completion: @escaping (Result<ImageType, any Error>, Float?, Bool?, ColorScheme?) -> Void)
+    completion: @escaping (SnapshotResult) -> Void)
   {
     var view = preview.view()
     colorScheme = nil
@@ -38,9 +38,9 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
     let image = renderer.nsImage
     #endif
     if let image {
-      completion(.success(image), wrappedView.precision, wrappedView.accessibilityEnabled, colorScheme)
+      completion(SnapshotResult(image: .success(image), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme))
     } else {
-      completion(.failure(SwiftUIRenderingError.renderingError), wrappedView.precision, wrappedView.accessibilityEnabled, colorScheme)
+      completion(SnapshotResult(image: .failure(SwiftUIRenderingError.renderingError), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme))
     }
   }
 }

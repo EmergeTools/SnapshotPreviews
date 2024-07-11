@@ -25,27 +25,25 @@ public class UIKitRenderingStrategy: RenderingStrategy {
     self.window = window
   }
 
+  public var windowScene: UIWindowScene? {
+    window.windowScene
+  }
+
   private let window: UIWindow
-  private var colorScheme: ColorScheme? = nil
 
   @MainActor public func render(
     preview: SnapshotPreviewsCore.Preview,
-    completion: @escaping (Result<ImageType, Error>, Float?, Bool?, ColorScheme?) -> Void)
+    completion: @escaping (SnapshotResult) -> Void)
   {
-    var view = preview.view()
-    colorScheme = nil
-    view = PreferredColorSchemeWrapper {
-      AnyView(view)
-    } colorSchemeUpdater: { [weak self] scheme in
-      self?.colorScheme = scheme
-    }
+    UIView.setAnimationsEnabled(false)
+    let view = preview.view()
     let controller = view.makeExpandingView(layout: preview.layout, window: window)
     view.snapshot(
       layout: preview.layout,
       controller: controller,
       window: window,
-      async: false) { [weak self] result in
-        completion(result.image.mapError { $0 }, result.precision, result.accessibilityEnabled, self?.colorScheme)
+      async: false) { result in
+        completion(result)
       }
   }
 }
