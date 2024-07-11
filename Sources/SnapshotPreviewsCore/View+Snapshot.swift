@@ -16,20 +16,32 @@ public enum RenderingError: Error {
   case maxSize(CGSize)
 }
 
-public struct SnapshotResult {
-  public let image: Result<UIImage, RenderingError>
-  public let precision: Float?
-  public let accessibilityEnabled: Bool?
-  public let accessibilityMarkers: [AccessibilityMarker]?
+extension AccessibilityMarker: AccessibilityMark {
+  public var accessibilityShape: MarkerShape {
+    switch shape {
+    case .frame(let frame):
+      return .frame(frame)
+    case .path(let path):
+      return .path(path)
+    }
+  }
 }
+
+private var _colorScheme: ColorScheme? = nil
 
 extension View {
   public func makeExpandingView(layout: PreviewLayout, window: UIWindow) -> ExpandingViewController {
     UIView.setAnimationsEnabled(false)
-    let animationDisabledView = self.transaction { transaction in
+    var wrappedView: any View = self.transaction { transaction in
       transaction.disablesAnimations = true
     }
-    let controller = ExpandingViewController(rootView: animationDisabledView)
+    _colorScheme = nil
+    wrappedView = PreferredColorSchemeWrapper {
+      AnyView(wrappedView)
+    } colorSchemeUpdater: { scheme in
+      _colorScheme = scheme
+    }
+    let controller = ExpandingViewController(rootView: wrappedView)
     controller.setupView(layout: layout)
 
     let windowRootVC = Self.setupRootVC(subVC: controller)
@@ -50,7 +62,7 @@ extension View {
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
           let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
-          completion(SnapshotResult(image: imageResult, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil))
+          completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
         }
       } else {
         DispatchQueue.main.async {
@@ -76,10 +88,10 @@ extension View {
             a11yView.sizeToFit()
             let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
             a11yView.removeFromSuperview()
-            completion(SnapshotResult(image: result, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: elements))
+            completion(SnapshotResult(image: result.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: elements, colorScheme: _colorScheme))
           } else {
             let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
-            completion(SnapshotResult(image: imageResult, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil))
+            completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
           }
         }
       }
