@@ -35,7 +35,7 @@ The gallery also supports macOS. However, snapshotting does not support macOS.
 
 The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) automatically handles hosting and diffing your snapshot tests. This Swift Package can be used for locally debugging the snapshots by generating images for each preview as part of a XCTest. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:
 
-```
+```swift
 import Snapshotting
 import SnapshottingTests
 
@@ -62,7 +62,7 @@ Note that there are no test functions; they are automatically added at runtime b
 
 Xcode 15 [accessibility audits](https://developer.apple.com/documentation/xctest/xcuiapplication/4191487-performaccessibilityaudit) can also be run locally on any preview. By default they will use all audit types. To customize the behavior you can override the following functions in your test:
 
-```
+```swift
   override func enableAccessibilityAudit() -> Bool {
     true
   }
@@ -84,7 +84,7 @@ See the demo app for a full example.
 
 You can also add visualisations of accessibiilty elements to snapshots using the `emergeAccessibility` function. For example:
 
-```
+```swift
 struct MyPreview: PreviewProvider {
   static var previews: some View {
     MyView()
