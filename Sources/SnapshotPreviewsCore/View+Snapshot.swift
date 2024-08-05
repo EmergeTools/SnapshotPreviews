@@ -54,50 +54,102 @@ extension View {
     controller: ExpandingViewController,
     window: UIWindow,
     async: Bool,
-    completion: @escaping (SnapshotResult) -> Void)
-  {
+    completion: @escaping (SnapshotResult) -> Void
+  ) {
     controller.expansionSettled = { [weak controller, weak window] renderingMode, precision, accessibilityEnabled in
-      guard let controller, let window, let containerVC = controller.parent else { return }
+      guard let controller = controller,
+            let window = window,
+            let containerVC = controller.parent else { return }
 
       if async {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
-          completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
-        }
+        self.handleAsyncSnapshot(layout: layout, renderingMode: renderingMode, containerVC: containerVC, controller: controller, precision: precision, accessibilityEnabled: accessibilityEnabled, completion: completion)
       } else {
-        DispatchQueue.main.async {
-          if let accessibilityEnabled, accessibilityEnabled {
-            let containedView: UIView
-            switch layout {
-            case .device:
-              containedView = containerVC.view
-            default:
-              containedView = controller.view
-            }
-            let mode = controller.view.bounds.size.requiresCoreAnimationSnapshot ? AccessibilitySnapshotView.ViewRenderingMode.renderLayerInContext : renderingMode?.a11yRenderingMode
-            let a11yView = AccessibilitySnapshotView(
-              containedView: containedView,
-              viewRenderingMode: mode ?? .drawHierarchyInRect,
-              activationPointDisplayMode: .never,
-              showUserInputLabels: true)
-
-            a11yView.center = window.center
-            window.addSubview(a11yView)
-
-            let elements = try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
-            a11yView.sizeToFit()
-            let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
-            a11yView.removeFromSuperview()
-            completion(SnapshotResult(image: result.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: elements, colorScheme: _colorScheme))
-          } else {
-            let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
-            completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
-          }
-        }
+        self.handleSyncSnapshot(layout: layout, renderingMode: renderingMode, containerVC: containerVC, controller: controller, window: window, precision: precision, accessibilityEnabled: accessibilityEnabled, completion: completion)
       }
     }
   }
 
+  private func handleAsyncSnapshot(
+    layout: PreviewLayout,
+    renderingMode: EmergeRenderingMode?,
+    containerVC: UIViewController,
+    controller: ExpandingViewController,
+    precision: Float?,
+    accessibilityEnabled: Bool?,
+    completion: @escaping (SnapshotResult) -> Void
+  ) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
+      completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
+    }
+  }
+
+  private func handleSyncSnapshot(
+    layout: PreviewLayout,
+    renderingMode: EmergeRenderingMode?,
+    containerVC: UIViewController,
+    controller: ExpandingViewController,
+    window: UIWindow,
+    precision: Float?,
+    accessibilityEnabled: Bool?,
+    completion: @escaping (SnapshotResult) -> Void
+  ) {
+    DispatchQueue.main.async {
+      if let accessibilityEnabled = accessibilityEnabled, accessibilityEnabled {
+        self.handleAccessibilitySnapshot(layout: layout, renderingMode: renderingMode, containerVC: containerVC, controller: controller, window: window, precision: precision, completion: completion)
+      } else {
+        self.handleRegularSnapshot(layout: layout, renderingMode: renderingMode, containerVC: containerVC, controller: controller, precision: precision, accessibilityEnabled: accessibilityEnabled, completion: completion)
+      }
+    }
+  }
+
+  private func handleAccessibilitySnapshot(
+    layout: PreviewLayout,
+    renderingMode: EmergeRenderingMode?,
+    containerVC: UIViewController,
+    controller: ExpandingViewController,
+    window: UIWindow,
+    precision: Float?,
+    completion: @escaping (SnapshotResult) -> Void
+  ) {
+    let containedView: UIView
+    switch layout {
+    case .device:
+      containedView = containerVC.view
+    default:
+      containedView = controller.view
+    }
+    let mode = controller.view.bounds.size.requiresCoreAnimationSnapshot ? AccessibilitySnapshotView.ViewRenderingMode.renderLayerInContext : renderingMode?.a11yRenderingMode
+    let a11yView = AccessibilitySnapshotView(
+      containedView: containedView,
+      viewRenderingMode: mode ?? .drawHierarchyInRect,
+      activationPointDisplayMode: .never,
+      showUserInputLabels: true)
+
+    a11yView.center = window.center
+    window.addSubview(a11yView)
+
+    try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
+    let elements = a11yView.accessibilityElements as? [any AccessibilityMark]
+
+    a11yView.sizeToFit()
+    let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
+    a11yView.removeFromSuperview()
+    completion(SnapshotResult(image: result.mapError { $0 }, precision: precision, accessibilityEnabled: true, accessibilityMarkers: elements, colorScheme: _colorScheme))
+  }
+
+  private func handleRegularSnapshot(
+    layout: PreviewLayout,
+    renderingMode: EmergeRenderingMode?,
+    containerVC: UIViewController,
+    controller: ExpandingViewController,
+    precision: Float?,
+    accessibilityEnabled: Bool?,
+    completion: @escaping (SnapshotResult) -> Void
+  ) {
+    let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
+    completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
+  }
   private static func setupRootVC(subVC: UIViewController) -> UIViewController {
     let windowRootVC = UIViewController()
     windowRootVC.view.bounds = UIScreen.main.bounds
