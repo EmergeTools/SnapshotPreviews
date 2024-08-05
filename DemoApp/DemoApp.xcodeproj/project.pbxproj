@@ -533,6 +533,7 @@
 			);
 			mainGroup = FA1671B62A5367A800A42DB0;
 			packageReferences = (
+				C3815F152C6134EB00D42DE8 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 			);
 			productRefGroup = FA1671C02A5367A800A42DB0 /* Products */;
 			projectDirPath = "";
@@ -1180,6 +1181,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C3815F152C6134EB00D42DE8 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		FA0D85422A72A5BD002A28ED /* SnapshottingTests */ = {
