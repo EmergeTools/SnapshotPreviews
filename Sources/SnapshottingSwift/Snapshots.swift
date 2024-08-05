@@ -195,17 +195,3 @@ class Snapshots {
     "\(typeName)-\(previewId).png"
   }
 }
-
-#if canImport(AppKit)
-extension NSImage {
-    func pngData() -> NSData? {
-        guard let tiffData = self.tiffRepresentation,
-              let bitmapImageRep = NSBitmapImageRep(data: tiffData) else {
-            return nil
-        }
-
-        let pngData = bitmapImageRep.representation(using: .png, properties: [:])
-        return pngData as NSData?
-    }
-}
-#endif
