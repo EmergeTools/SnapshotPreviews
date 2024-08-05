@@ -5,7 +5,7 @@
 //  Created by Noah Martin on 8/2/24.
 //
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 
 extension NSImage {

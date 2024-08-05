@@ -35,7 +35,7 @@
 		FA309EC52C38D71C00C85FF4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA309EC42C38D71C00C85FF4 /* ContentView.swift */; };
 		FA309EC72C38D71D00C85FF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA309EC62C38D71D00C85FF4 /* Assets.xcassets */; };
 		FA309ECA2C38D71D00C85FF4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA309EC92C38D71D00C85FF4 /* Preview Assets.xcassets */; };
-		FA309ECD2C38D71D00C85FF4 /* Demo Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FA309EC02C38D71C00C85FF4 /* Demo Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA309ECD2C38D71D00C85FF4 /* Demo Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FA309EC02C38D71C00C85FF4 /* Demo Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA309EE22C38D7A900C85FF4 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = FA309EE12C38D7A900C85FF4 /* Snapshotting */; };
 		FA309EE32C38D7A900C85FF4 /* Snapshotting in Embed Frameworks */ = {isa = PBXBuildFile; productRef = FA309EE12C38D7A900C85FF4 /* Snapshotting */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA309EE62C38D7AC00C85FF4 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = FA309EE52C38D7AC00C85FF4 /* SnapshottingTests */; };
@@ -668,6 +668,7 @@
 		};
 		FA309ECC2C38D71D00C85FF4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = FA309EBF2C38D71C00C85FF4 /* Demo Watch App */;
 			targetProxy = FA309ECB2C38D71D00C85FF4 /* PBXContainerItemProxy */;
 		};
@@ -997,7 +998,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1028,7 +1029,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
