@@ -84,7 +84,8 @@ extension View {
             a11yView.center = window.center
             window.addSubview(a11yView)
 
-            let elements = try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
+            try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
+            let elements = a11yView.accessibilityElements as? [any AccessibilityMark]
             a11yView.sizeToFit()
             let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
             a11yView.removeFromSuperview()
