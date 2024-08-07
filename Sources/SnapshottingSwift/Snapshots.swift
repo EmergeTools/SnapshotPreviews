@@ -24,7 +24,7 @@ extension SnapshotError: LocalizedError {
 }
 
 class Snapshots {
-  let server = HTTPServer(port: 38824)
+  let server = HTTPServer(address: .loopback(port: 38824))
   let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
 
   public init() {
