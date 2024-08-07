@@ -19,6 +19,14 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
 
   private var colorScheme: ColorScheme? = nil
 
+  private var scale: CGFloat {
+    #if canImport(UIKit)
+    return UIScreen.main.scale
+    #else
+    return NSScreen.main?.backingScaleFactor ?? 1
+    #endif
+  }
+
   @MainActor public func render(
     preview: SnapshotPreviewsCore.Preview,
     completion: @escaping (SnapshotResult) -> Void)
@@ -32,6 +40,7 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
     }
     let wrappedView = EmergeModifierView(wrapped: view)
     let renderer = ImageRenderer(content: wrappedView)
+    renderer.scale = scale
     #if canImport(UIKit)
     let image = renderer.uiImage
     #else
