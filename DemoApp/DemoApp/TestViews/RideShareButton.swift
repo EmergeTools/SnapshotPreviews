@@ -46,7 +46,7 @@ struct RideShareButtonView_Previews: PreviewProvider {
       .previewLayout(.sizeThatFits)
       .padding()
 
-      RideShareButtonView(title: "Request Ride") {
+      RideShareButtonView(title: "Request Ride".localized) {
           print("Button tapped")
       }
       .previewLayout(.sizeThatFits)
