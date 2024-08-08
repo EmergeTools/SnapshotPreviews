@@ -76,7 +76,7 @@ class Snapshots {
       let file = Self.resultsDir.appendingPathComponent(fileName, isDirectory: false)
       do {
         let image = try imageResult.get()
-        if let pngData = image.pngData() {
+        if let pngData = image.emg.pngData() {
           try pngData.write(to: file)
           result["imagePath"] = file.path
         } else {
