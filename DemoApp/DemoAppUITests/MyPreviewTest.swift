@@ -7,14 +7,9 @@
 
 import Foundation
 import XCTest
-import Snapshotting
 import SnapshottingTests
 
 class MyPreviewTest: PreviewTest {
-
-  override func getApp() -> XCUIApplication {
-    return XCUIApplication()
-  }
 
   override func snapshotPreviews() -> [String]? {
     return nil
@@ -24,7 +19,7 @@ class MyPreviewTest: PreviewTest {
     return nil
   }
 
-  override func enableAccessibilityAudit() -> Bool {
+  override var enableAccessibilityAudit: Bool {
     true
   }
 
@@ -34,7 +29,7 @@ class MyPreviewTest: PreviewTest {
   }
 
   @available(iOS 17.0, *)
-  override func handle(_ issue: XCUIAccessibilityAuditIssue) -> Bool {
+  override func handle(issue: XCUIAccessibilityAuditIssue) -> Bool {
     return false
   }
 }
