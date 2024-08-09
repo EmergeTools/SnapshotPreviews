@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import SnapshotPreviewsCore
+import SnapshotSharedModels
 
 struct RenderingModePreferenceKey: PreferenceKey {
   static func reduce(value: inout Int?, nextValue: () -> Int?) {

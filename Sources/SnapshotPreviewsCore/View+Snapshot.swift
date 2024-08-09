@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import UIKit
 import AccessibilitySnapshotCore
+import SnapshotSharedModels
 
 public enum RenderingError: Error {
   case failedRendering(CGSize)

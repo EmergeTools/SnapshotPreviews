@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import SnapshotPreviewsCore
+import SnapshotSharedModels
 
 // Classes in this file get compiled to an app that use any of the custom preview preferences.
 // The inserted test runner code finds these classes through ObjC runtime functions (NSClassFromString)
