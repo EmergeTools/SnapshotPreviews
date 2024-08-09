@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 #endif
 import SwiftUI
+import SnapshotSharedModels
 
 #if canImport(UIKit) && !os(visionOS) && !os(watchOS) && !os(tvOS)
 

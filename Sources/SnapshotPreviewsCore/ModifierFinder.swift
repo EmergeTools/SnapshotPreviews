@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SnapshotSharedModels
 
 private let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
 private let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil

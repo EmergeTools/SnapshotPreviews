@@ -41,9 +41,10 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         // Target that provides the XCTest
         .target(name: "SnapshottingTests"),
+        .target(name: "SnapshotSharedModels"),
         // Core functionality
-        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot", condition: .when(platforms: [.iOS, .macCatalyst]))]),
-        .target(name: "SnapshotPreferences", dependencies: ["SnapshotPreviewsCore"]),
+        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", "SnapshotSharedModels", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot", condition: .when(platforms: [.iOS, .macCatalyst]))]),
+        .target(name: "SnapshotPreferences", dependencies: ["SnapshotSharedModels"]),
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
         // Swift code in the inserted dylib
