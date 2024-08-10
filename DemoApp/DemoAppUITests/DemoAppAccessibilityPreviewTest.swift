@@ -1,5 +1,5 @@
 //
-//  MultipleTests.swift
+//  DemoAppAccessibilityPreviewTest.swift
 //  DemoAppUITests
 //
 //  Created by Noah Martin on 7/14/23.
@@ -9,7 +9,8 @@ import Foundation
 import XCTest
 import SnapshottingTests
 
-class MyPreviewTest: PreviewTest {
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+class DemoAppAccessibilityPreviewTest: AccessibilityPreviewTest {
 
   override func snapshotPreviews() -> [String]? {
     return nil
@@ -17,10 +18,6 @@ class MyPreviewTest: PreviewTest {
     
   override func excludedSnapshotPreviews() -> [String]? {
     return nil
-  }
-
-  override var enableAccessibilityAudit: Bool {
-    true
   }
 
   @available(iOS 17.0, *)
