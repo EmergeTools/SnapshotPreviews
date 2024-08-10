@@ -23,6 +23,7 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
     preview: SnapshotPreviewsCore.Preview,
     completion: @escaping (SnapshotResult) -> Void)
   {
+    Self.setup()
     var view = preview.view()
     colorScheme = nil
     view = PreferredColorSchemeWrapper {

@@ -63,3 +63,11 @@ public protocol RenderingStrategy {
     completion: @escaping (SnapshotResult) -> Void)
 }
 
+private let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
+
+extension RenderingStrategy {
+  static func setup() {
+    testHandler?.perform(NSSelectorFromString("setup"))
+  }
+}
+
