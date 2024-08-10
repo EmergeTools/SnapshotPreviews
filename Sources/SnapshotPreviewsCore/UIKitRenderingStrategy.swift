@@ -36,6 +36,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
     preview: SnapshotPreviewsCore.Preview,
     completion: @escaping (SnapshotResult) -> Void
   ) {
+    Self.setup()
     let previewOrientation = preview.orientation.toInterfaceOrientation()
     if windowScene!.interfaceOrientation != previewOrientation {
       var rotationError: (any Error)? = nil
