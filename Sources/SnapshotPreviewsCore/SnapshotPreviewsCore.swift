@@ -143,31 +143,89 @@ public struct PreviewType: Hashable, Identifiable {
   public let platform: PreviewPlatform?
 }
 
-@MainActor
-public func findPreviews(
-  shouldInclude: (String, String) -> Bool = { _, _ in true },
-  willAccess: (String) -> Void = { _ in }) -> [PreviewType]
-{
-  return getPreviewTypes()
-    .filter { shouldInclude($0.name, $0.proto) }
-    .compactMap { conformance -> PreviewType? in
-      let (name, accessor, proto) = conformance
-      willAccess(name)
-      switch proto {
-      case "PreviewProvider":
-        let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
-        return PreviewType(typeName: name, previewProvider: previewProvider)
-      case "PreviewRegistry":
-  #if compiler(>=5.9)
-        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
-          let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
-          return PreviewType(typeName: name, registry: previewRegistry)
+// The enum provides a namespace
+public enum FindPreviews {
+  @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
+  private static func shouldInclude(name: String, excludedPreviewsSet: Set<String>?, previewsSet: Set<String>?) -> Bool {
+    if let excludedPreviewsSet {
+      for excludedPreview in excludedPreviewsSet {
+        do {
+          let regex = try Regex(excludedPreview)
+          if name.firstMatch(of: regex) != nil {
+            return false
+          }
+        } catch {
+          print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
         }
-  #endif
-        return nil
-      default:
-        return nil
       }
+    }
+
+    guard let previewsSet else { return true }
+    for preview in previewsSet {
+      do {
+        let regex = try Regex(preview)
+        if name.firstMatch(of: regex) != nil {
+          return true
+        }
+      } catch {
+        print("Error trying to unwrap regex for snapshotPreview (\(preview)): \(error)")
+      }
+    }
+
+    return false
+  }
+
+  @MainActor
+  public static func findPreviews(included: [String]?, excluded: [String]?) -> [PreviewType] {
+    var previewsSet = included.map { Set($0) }
+    var excludedPreviewsSet = excluded.map { Set($0) }
+
+    let previewTypes = findPreviews { name, proto in
+      guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) else { return true }
+      guard proto == "PreviewProvider" else { return true }
+
+      return shouldInclude(name: name, excludedPreviewsSet: excludedPreviewsSet, previewsSet: previewsSet)
+    }
+    return previewTypes.compactMap { preview -> PreviewType? in
+      if let fileId = preview.fileID, #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
+        var name = fileId
+        if let displayName = preview.previews[0].displayName {
+          name = "\(fileId):\(displayName)"
+        }
+        if !shouldInclude(name: name, excludedPreviewsSet: excludedPreviewsSet, previewsSet: previewsSet) {
+          return nil
+        }
+      }
+      return preview
+    }
+  }
+
+  @MainActor
+  public static func findPreviews(
+    shouldInclude: (String, String) -> Bool = { _, _ in true },
+    willAccess: (String) -> Void = { _ in }) -> [PreviewType]
+  {
+    return getPreviewTypes()
+      .filter { shouldInclude($0.name, $0.proto) }
+      .compactMap { conformance -> PreviewType? in
+        let (name, accessor, proto) = conformance
+        willAccess(name)
+        switch proto {
+        case "PreviewProvider":
+          let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
+          return PreviewType(typeName: name, previewProvider: previewProvider)
+        case "PreviewRegistry":
+    #if compiler(>=5.9)
+          if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
+            let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
+            return PreviewType(typeName: name, registry: previewRegistry)
+          }
+    #endif
+          return nil
+        default:
+          return nil
+        }
+    }
   }
 }
 

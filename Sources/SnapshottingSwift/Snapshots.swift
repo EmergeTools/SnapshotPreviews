@@ -101,7 +101,7 @@ class Snapshots {
   }
 
   @MainActor func render(typeName: String, id: String) async -> (Result<ImageType, Error>, SnapshotPreviewsCore.Preview) {
-    let previewTypes = findPreviews { name, _ in
+    let previewTypes = FindPreviews.findPreviews { name, _ in
       return name == typeName
     }
 
@@ -115,61 +115,16 @@ class Snapshots {
     return (result, preview)
   }
 
-  @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
-  static func shouldInclude(name: String, excludedPreviewsSet: Set<String>?, previewsSet: Set<String>?) -> Bool {
-    if let excludedPreviewsSet {
-      for excludedPreview in excludedPreviewsSet {
-        do {
-          let regex = try Regex(excludedPreview)
-          if name.firstMatch(of: regex) != nil {
-            return false
-          }
-        } catch {
-          print("Error trying to unwrap regex for excludedSnapshotPreview (\(excludedPreview)): \(error)")
-        }
-      }
-    }
-
-    guard let previewsSet else { return true }
-    for preview in previewsSet {
-      do {
-        let regex = try Regex(preview)
-        if name.firstMatch(of: regex) != nil {
-          return true
-        }
-      } catch {
-        print("Error trying to unwrap regex for snapshotPreview (\(preview)): \(error)")
-      }
-    }
-
-    return false
-  }
-
   @MainActor static func writeClassNames() {
     try? FileManager.default.removeItem(at: Self.resultsDir)
     try! FileManager.default.createDirectory(at: Self.resultsDir, withIntermediateDirectories: true)
 
-    let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"];
-    let excludedSnapshotPreviews = ProcessInfo.processInfo.environment["EXCLUDED_SNAPSHOT_PREVIEWS"];
+    let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"].map { try! JSONDecoder().decode([String].self, from: $0.data(using: .utf8)!) }
+    let excludedSnapshotPreviews = ProcessInfo.processInfo.environment["EXCLUDED_SNAPSHOT_PREVIEWS"].map { try! JSONDecoder().decode([String].self, from: $0.data(using: .utf8)!) }
 
-    var previewsSet: Set<String>? = nil
-    if let snapshotPreviews {
-      let previewsList = try! JSONDecoder().decode([String].self, from: snapshotPreviews.data(using: .utf8)!)
-      previewsSet = Set(previewsList)
-    }
-    var excludedPreviewsSet: Set<String>? = nil
-    if let excludedSnapshotPreviews {
-      let excludedPreviewsList = try! JSONDecoder().decode([String].self, from: excludedSnapshotPreviews.data(using: .utf8)!)
-      excludedPreviewsSet = Set(excludedPreviewsList)
-    }
+    let previewTypes = FindPreviews.findPreviews(included: snapshotPreviews, excluded: excludedSnapshotPreviews)
 
-    let previewTypes = findPreviews { name, proto in
-      guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) else { return true }
-      guard proto == "PreviewProvider" else { return true }
-
-      return shouldInclude(name: name, excludedPreviewsSet: excludedPreviewsSet, previewsSet: previewsSet)
-    }
-    let json = previewTypes.compactMap { preview -> [String: Any]? in
+    let json = previewTypes.map { preview -> [String: Any]? in
       var data = [
         "typeName": preview.typeName,
         "numPreviews": preview.previews.count,
@@ -180,9 +135,6 @@ class Snapshots {
           name = "\(fileId):\(displayName)"
         }
         data["displayName"] = name
-        if !shouldInclude(name: name, excludedPreviewsSet: excludedPreviewsSet, previewsSet: previewsSet) {
-          return nil
-        }
       }
 
       return data

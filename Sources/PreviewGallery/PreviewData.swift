@@ -24,6 +24,6 @@ public struct PreviewData {
   }
 
   @MainActor public static var `default`: PreviewData {
-    self.init(previews: findPreviews())
+    self.init(previews: FindPreviews.findPreviews())
   }
 }
