@@ -38,12 +38,12 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   ) {
       Self.setup()
       let targetOrientation = preview.orientation.toInterfaceOrientation()
-      guard windowScene!.interfaceOrientation != targetOrientation else {
-          performRender(preview: preview, completion: completion)
-          return
-      }
-
       if #available(iOS 16.0, *) {
+          guard windowScene!.interfaceOrientation != targetOrientation else {
+              performRender(preview: preview, completion: completion)
+              return
+          }
+
           var geometryUpdateError = false
           windowScene!.requestGeometryUpdate(.iOS(interfaceOrientations: targetOrientation.toInterfaceOrientationMask())) { error in
               NSLog("Rotation error handler: \(error) \(self.windowScene!.interfaceOrientation)")
