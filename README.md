@@ -33,25 +33,26 @@ The gallery also supports macOS. However, snapshotting does not support macOS.
 
 ## Local Snapshot Generation
 
-The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) automatically handles hosting and diffing your snapshot tests. This Swift Package can be used for locally debugging the snapshots by generating images for each preview as part of a XCTest. You’ll need a UI test target that imports the `SnapshottingTests` and `Snapshotting` products from this package. Create a test that inherits from `PreviewTest` like this:
+The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) automatically handles hosting and diffing your snapshot tests. This Swift Package can be used for locally debugging the snapshots by generating images for each preview as part of a XCTest. You’ll need a unit test target that imports the `SnapshottingTests` product from this package. Create a test that inherits from `SnapshotTest` like this:
 
 ```swift
-import Snapshotting
 import SnapshottingTests
 
-class MyPreviewTest: PreviewTest {
+class DemoAppPreviewTest: SnapshotTest {
 
-  override func getApp() -> XCUIApplication {
-    return XCUIApplication()
-  }
-
+  // Return the type names of previews like "MyApp.MyView._Previews" to selectively render only some previews
   override func snapshotPreviews() -> [String]? {
+    return nil
+  }
+  
+  // Use this to exclude some previews from generating
+  override func excludedSnapshotPreviews() -> [String]? {
     return nil
   }
 }
 ```
 
-Note that there are no test functions; they are automatically added at runtime by `PreviewTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results. The test must be run on an iOS simulator (not device).
+Note that there are no test functions; they are automatically added at runtime by `SnapshotTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The previews will be added as attachements in Xcode’s test results. The test must be run on an iOS simulator (not device).
 
 > [!NOTE]
 > When you use Preivew macros (`#Preview("Display Name")`) the name of the snapshot uses the file path and the name, for example: "MyModule/MyFile.swift:Display Name"
@@ -60,22 +61,22 @@ Note that there are no test functions; they are automatically added at runtime b
 
 ### Accessibility Audits
 
-Xcode 15 [accessibility audits](https://developer.apple.com/documentation/xctest/xcuiapplication/4191487-performaccessibilityaudit) can also be run locally on any preview. By default they will use all audit types. To customize the behavior you can override the following functions in your test:
+Xcode 15 [accessibility audits](https://developer.apple.com/documentation/xctest/xcuiapplication/4191487-performaccessibilityaudit) can also be run locally on any preview. They are run in a UI test (rather than unit test). To enable these tests, inherit from `AccessibilityPreviewTest`. By default they will use all audit types. To customize the behavior you can override the following functions in your test:
 
 ```swift
-  override func enableAccessibilityAudit() -> Bool {
-    true
-  }
+import SnapshottingTests
+import Snapshotting
 
-  @available(iOS 17.0, *)
+class DemoAppAccessibilityPreviewTest: AccessibilityPreviewTest {
+
   override func auditType() -> XCUIAccessibilityAuditType {
     return .all
   }
 
-  @available(iOS 17.0, *)
   override func handle(_ issue: XCUIAccessibilityAuditIssue) -> Bool {
     return false
   }
+}
 ```
 
 See the demo app for a full example.
