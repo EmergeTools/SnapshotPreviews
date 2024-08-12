@@ -18,6 +18,7 @@
 @end
 
 static NSMutableArray<EMGPreview *> *previews;
+static NSArray<NSInvocation *> *cachedInvocations;
 
 @implementation EMGPreviewBaseTest
 
@@ -26,6 +27,10 @@ static NSMutableArray<EMGPreview *> *previews;
 }
 
 + (NSArray<NSInvocation *> *)testInvocations {
+    if (cachedInvocations) {
+        return cachedInvocations;
+    }
+
     NSArray<NSString *> *dynamicTestSelectors = [self addMethods];
     EMGPreviewBaseTest *testInstance = [self create];
     NSMutableArray<NSInvocation *> *invocations = [NSMutableArray array];
@@ -36,6 +41,7 @@ static NSMutableArray<EMGPreview *> *previews;
         invocation.selector = selector;
         [invocations addObject:invocation];
     }
+    cachedInvocations = invocations;
     return invocations;
 }
 
