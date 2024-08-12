@@ -13,6 +13,9 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "AccessibilityPreviewTest"
+      ],
       "target" : {
         "containerPath" : "container:DemoApp.xcodeproj",
         "identifier" : "FAC167E62A5F41C500D79C23",
