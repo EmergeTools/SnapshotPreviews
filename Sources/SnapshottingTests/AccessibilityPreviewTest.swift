@@ -1,6 +1,6 @@
 //
-//  PreviewTest.swift
-//  
+//  AccessibilityPreviewTest.swift
+//
 //
 //  Created by Noah Martin on 8/9/24.
 //
@@ -9,7 +9,9 @@ import Foundation
 import SnapshottingTestsObjc
 import MachO
 
-open class PreviewTest: EMGPreviewBaseTest {
+// This is an XCUITest that uses XCUIApplication.performAccessibilityAudit to test previews
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+open class AccessibilityPreviewTest: EMGPreviewBaseTest {
 
   open func getApp() -> XCUIApplication {
     XCUIApplication()
@@ -24,10 +26,6 @@ open class PreviewTest: EMGPreviewBaseTest {
 
   open func excludedSnapshotPreviews() -> [String]? {
     nil
-  }
-
-  open var enableAccessibilityAudit: Bool {
-    true
   }
 
   @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
@@ -159,13 +157,9 @@ open class PreviewTest: EMGPreviewBaseTest {
       XCTFail("Failed to parse JSON: \(error)")
     }
 
-    if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
-      if enableAccessibilityAudit {
-        let app = getApp()
-        try? app.performAccessibilityAudit(for: auditType()) { [weak self] issue in
-          return self?.handle(issue: issue) ?? false
-        }
-      }
+    let app = getApp()
+    try? app.performAccessibilityAudit(for: auditType()) { [weak self] issue in
+      return self?.handle(issue: issue) ?? false
     }
   }
 }

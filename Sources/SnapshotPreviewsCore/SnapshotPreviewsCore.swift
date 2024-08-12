@@ -177,8 +177,8 @@ public enum FindPreviews {
 
   @MainActor
   public static func findPreviews(included: [String]?, excluded: [String]?) -> [PreviewType] {
-    var previewsSet = included.map { Set($0) }
-    var excludedPreviewsSet = excluded.map { Set($0) }
+    let previewsSet = included.map { Set($0) }
+    let excludedPreviewsSet = excluded.map { Set($0) }
 
     let previewTypes = findPreviews { name, proto in
       guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) else { return true }
