@@ -158,6 +158,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C39F81522C6ABB7A004C7D57 /* DemoAppTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = DemoAppTests.xctestplan; sourceTree = "<group>"; };
 		FA0B20F02A7DA20200EC91D3 /* AnyViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyViewPreview.swift; sourceTree = "<group>"; };
 		FA0B20F82A7DCB0100EC91D3 /* ArrayBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayBuilder.swift; sourceTree = "<group>"; };
 		FA0B20F92A7DCB0100EC91D3 /* PreviewVariants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewVariants.swift; sourceTree = "<group>"; };
@@ -279,6 +280,7 @@
 		FA1671B62A5367A800A42DB0 = {
 			isa = PBXGroup;
 			children = (
+				C39F81522C6ABB7A004C7D57 /* DemoAppTests.xctestplan */,
 				FA44246E2AAA5B27005BFCD9 /* DemoApp.xctestplan */,
 				FA1671C12A5367A800A42DB0 /* DemoApp */,
 				FA1671D82A5399F700A42DB0 /* DemoModule */,
