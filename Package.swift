@@ -41,7 +41,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         // Target that provides the XCTest
         .target(name: "SnapshottingTestsObjc"),
-        .target(name: "SnapshottingTests", dependencies: ["SnapshottingTestsObjc"]),
+        .target(name: "SnapshottingTests", dependencies: ["SnapshotPreviewsCore", "SnapshottingTestsObjc"]),
         .target(name: "SnapshotSharedModels"),
         // Core functionality
         .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", "SnapshotSharedModels", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot", condition: .when(platforms: [.iOS, .macCatalyst]))]),
