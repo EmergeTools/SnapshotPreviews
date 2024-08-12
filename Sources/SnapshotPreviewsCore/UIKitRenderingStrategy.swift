@@ -44,12 +44,16 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       }
 
       if #available(iOS 16.0, *) {
+          var geometryUpdateError = false
           windowScene!.requestGeometryUpdate(.iOS(interfaceOrientations: targetOrientation.toInterfaceOrientationMask())) { error in
               NSLog("Rotation error handler: \(error) \(self.windowScene!.interfaceOrientation)")
+              geometryUpdateError = true
               completion(SnapshotResult(image: .failure(error), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
               return
           }
-          waitForOrientationChange(targetOrientation: targetOrientation, preview: preview, attempts: 50, completion: completion)
+          if !geometryUpdateError {
+              waitForOrientationChange(targetOrientation: targetOrientation, preview: preview, attempts: 50, completion: completion)
+          }
       } else {
           performRender(preview: preview, completion: completion)
       }
