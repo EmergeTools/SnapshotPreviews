@@ -30,6 +30,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   }
 
   private let window: UIWindow
+  private var geometryUpdateError = false
 
   @MainActor
   public func render(
@@ -38,24 +39,18 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   ) {
       Self.setup()
       let targetOrientation = preview.orientation.toInterfaceOrientation()
-      if #available(iOS 16.0, *) {
-          guard windowScene!.interfaceOrientation != targetOrientation else {
-              performRender(preview: preview, completion: completion)
-              return
-          }
-
-          var geometryUpdateError = false
-          windowScene!.requestGeometryUpdate(.iOS(interfaceOrientations: targetOrientation.toInterfaceOrientationMask())) { error in
-              NSLog("Rotation error handler: \(error) \(self.windowScene!.interfaceOrientation)")
-              geometryUpdateError = true
-              completion(SnapshotResult(image: .failure(error), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
-              return
-          }
-          if !geometryUpdateError {
-              waitForOrientationChange(targetOrientation: targetOrientation, preview: preview, attempts: 50, completion: completion)
-          }
-      } else {
+      guard #available(iOS 16.0, *), windowScene!.interfaceOrientation != targetOrientation else {
           performRender(preview: preview, completion: completion)
+          return
+      }
+      windowScene!.requestGeometryUpdate(.iOS(interfaceOrientations: targetOrientation.toInterfaceOrientationMask())) { error in
+          NSLog("Rotation error handler: \(error) \(self.windowScene!.interfaceOrientation)")
+          self.geometryUpdateError = true
+          completion(SnapshotResult(image: .failure(error), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
+          return
+      }
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+          self?.waitForOrientationChange(targetOrientation: targetOrientation, preview: preview, attempts: 50, completion: completion)
       }
   }
 
@@ -65,6 +60,9 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       attempts: Int,
       completion: @escaping (SnapshotResult) -> Void
   ) {
+      if geometryUpdateError {
+          return
+      }
       guard attempts > 0 else {
           let timeoutError = NSError(domain: "OrientationChangeTimeout", code: 0, userInfo: [NSLocalizedDescriptionKey: "Orientation change timed out"])
           completion(SnapshotResult(image: .failure(timeoutError), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
