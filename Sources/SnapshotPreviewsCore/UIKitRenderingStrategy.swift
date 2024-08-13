@@ -38,15 +38,19 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       completion: @escaping (SnapshotResult) -> Void
   ) {
       Self.setup()
+      geometryUpdateError = false
       let targetOrientation = preview.orientation.toInterfaceOrientation()
       guard #available(iOS 16.0, *), windowScene!.interfaceOrientation != targetOrientation else {
           performRender(preview: preview, completion: completion)
           return
       }
+    
       windowScene!.requestGeometryUpdate(.iOS(interfaceOrientations: targetOrientation.toInterfaceOrientationMask())) { error in
           NSLog("Rotation error handler: \(error) \(self.windowScene!.interfaceOrientation)")
-          self.geometryUpdateError = true
-          completion(SnapshotResult(image: .failure(error), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
+          DispatchQueue.main.async {
+              self.geometryUpdateError = true
+              completion(SnapshotResult(image: .failure(error), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
+          }
           return
       }
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
