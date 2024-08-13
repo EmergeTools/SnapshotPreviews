@@ -18,7 +18,6 @@
 @end
 
 static NSMutableArray<EMGPreview *> *previews;
-static NSArray<NSInvocation *> *cachedInvocations;
 
 @implementation EMGPreviewBaseTest
 
@@ -27,9 +26,11 @@ static NSArray<NSInvocation *> *cachedInvocations;
 }
 
 + (NSArray<NSInvocation *> *)testInvocations {
-    if (cachedInvocations) {
-        return cachedInvocations;
-    }
+  NSString *className = NSStringFromClass([self class]);
+  // Only support running this test if it’s a subclass outside of the SnapshottingTests module
+  if ([className isEqualToString:@"EMGPreviewBaseTest"] || [className hasPrefix:@"SnapshottingTests."]) {
+    return @[];
+  }
 
     NSArray<NSString *> *dynamicTestSelectors = [self addMethods];
     EMGPreviewBaseTest *testInstance = [self create];
@@ -41,7 +42,6 @@ static NSArray<NSInvocation *> *cachedInvocations;
         invocation.selector = selector;
         [invocations addObject:invocation];
     }
-    cachedInvocations = invocations;
     return invocations;
 }
 
