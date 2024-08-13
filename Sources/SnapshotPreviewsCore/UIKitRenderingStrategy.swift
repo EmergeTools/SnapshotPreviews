@@ -30,7 +30,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   }
 
   private let window: UIWindow
-  private var geometryUpdateError = false
+  private var geometryUpdateError: Error?
 
   @MainActor
   public func render(
@@ -38,7 +38,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       completion: @escaping (SnapshotResult) -> Void
   ) {
       Self.setup()
-      geometryUpdateError = false
+      geometryUpdateError = nil
       let targetOrientation = preview.orientation.toInterfaceOrientation()
       guard #available(iOS 16.0, *), windowScene!.interfaceOrientation != targetOrientation else {
           performRender(preview: preview, completion: completion)
@@ -48,10 +48,8 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       windowScene!.requestGeometryUpdate(.iOS(interfaceOrientations: targetOrientation.toInterfaceOrientationMask())) { error in
           NSLog("Rotation error handler: \(error) \(self.windowScene!.interfaceOrientation)")
           DispatchQueue.main.async {
-              self.geometryUpdateError = true
-              completion(SnapshotResult(image: .failure(error), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
+              self.geometryUpdateError = error
           }
-          return
       }
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
           self?.waitForOrientationChange(targetOrientation: targetOrientation, preview: preview, attempts: 50, completion: completion)
@@ -64,7 +62,8 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       attempts: Int,
       completion: @escaping (SnapshotResult) -> Void
   ) {
-      if geometryUpdateError {
+      if let geometryUpdateError {
+          completion(SnapshotResult(image: .failure(geometryUpdateError), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil))
           return
       }
       guard attempts > 0 else {
