@@ -16,7 +16,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
     let windowScene = UIApplication.shared
       .connectedScenes
       .filter { $0.activationState == .foregroundActive }
-      .first
+      .first ?? UIApplication.shared.connectedScenes.first
 
     let window = windowScene != nil ? UIWindow(windowScene: windowScene as! UIWindowScene) : UIWindow()
     window.windowLevel = .statusBar + 1
