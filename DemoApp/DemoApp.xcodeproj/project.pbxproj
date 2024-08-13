@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C33735B42C6537E6001054FE /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33735B22C6537E6001054FE /* String+Localization.swift */; };
 		FA0B20F12A7DA20200EC91D3 /* AnyViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B20F02A7DA20200EC91D3 /* AnyViewPreview.swift */; };
 		FA0B20FA2A7DCB0100EC91D3 /* ArrayBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B20F82A7DCB0100EC91D3 /* ArrayBuilder.swift */; };
 		FA0B20FB2A7DCB0100EC91D3 /* PreviewVariants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B20F92A7DCB0100EC91D3 /* PreviewVariants.swift */; };
@@ -158,6 +159,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C33735B22C6537E6001054FE /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "DemoApp/Extensions/String+Localization.swift"; sourceTree = SOURCE_ROOT; };
 		FA0B20F02A7DA20200EC91D3 /* AnyViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyViewPreview.swift; sourceTree = "<group>"; };
 		FA0B20F82A7DCB0100EC91D3 /* ArrayBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayBuilder.swift; sourceTree = "<group>"; };
 		FA0B20F92A7DCB0100EC91D3 /* PreviewVariants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewVariants.swift; sourceTree = "<group>"; };
@@ -276,6 +278,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C33735B32C6537E6001054FE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C33735B22C6537E6001054FE /* String+Localization.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		FA1671B62A5367A800A42DB0 = {
 			isa = PBXGroup;
 			children = (
@@ -314,6 +324,7 @@
 				FABCCD922AC39081008F4D3A /* EMGTestHandler.swift */,
 				FA1671C42A5367A800A42DB0 /* ContentView.swift */,
 				FAD52BF02A7B5EBB001F1832 /* TestViews */,
+				C33735B32C6537E6001054FE /* Extensions */,
 				FA1671C62A5367A800A42DB0 /* Assets.xcassets */,
 				FA1671C82A5367A800A42DB0 /* DemoApp.entitlements */,
 				FA1671C92A5367A800A42DB0 /* Preview Content */,
@@ -739,6 +750,7 @@
 				FAD52BF72A7B5EEA001F1832 /* CodeEntryView.swift in Sources */,
 				FAD52BF62A7B5EEA001F1832 /* ExpandingView.swift in Sources */,
 				FAD52BF92A7B5EEA001F1832 /* RideShareButton.swift in Sources */,
+				C33735B42C6537E6001054FE /* String+Localization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
