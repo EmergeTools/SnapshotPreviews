@@ -8,6 +8,7 @@
 import Foundation
 import SnapshotPreviewsCore
 import SnapshottingTestsObjc
+import XCTest
 
 // Generate snapshots of Xcode previews
 open class SnapshotTest: EMGPreviewBaseTest, PreviewFilters {
