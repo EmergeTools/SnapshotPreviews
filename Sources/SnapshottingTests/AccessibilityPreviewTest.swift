@@ -8,6 +8,7 @@
 import Foundation
 import SnapshottingTestsObjc
 import MachO
+import XCTest
 
 // This is an XCUITest that uses XCUIApplication.performAccessibilityAudit to test previews
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)

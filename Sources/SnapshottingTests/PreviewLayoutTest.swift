@@ -9,6 +9,7 @@ import Foundation
 import SnapshotPreviewsCore
 import SnapshottingTestsObjc
 import SwiftUI
+import XCTest
 
 // Test Xcode previews by forcing a layout pass of each one
 open class PreviewLayoutTest: EMGPreviewBaseTest, PreviewFilters {
