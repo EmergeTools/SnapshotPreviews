@@ -6,26 +6,25 @@
 //
 
 import Foundation
-import SnapshottingTestsObjc
 import MachO
 import XCTest
 
 // This is an XCUITest that uses XCUIApplication.performAccessibilityAudit to test previews
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
-open class AccessibilityPreviewTest: EMGPreviewBaseTest {
+open class AccessibilityPreviewTest: PreviewBaseTest {
 
-  open func getApp() -> XCUIApplication {
+  open class func getApp() -> XCUIApplication {
     XCUIApplication()
   }
 
   // Override to return a list of previews that should be snapshotted.
   // The default is null, which snapshots all previews.
   // Elements should be the type name of the preview, like "MyModule.MyView_Previews"
-  open func snapshotPreviews() -> [String]? {
+  open class func snapshotPreviews() -> [String]? {
     nil
   }
 
-  open func excludedSnapshotPreviews() -> [String]? {
+  open class func excludedSnapshotPreviews() -> [String]? {
     nil
   }
 
@@ -48,9 +47,8 @@ open class AccessibilityPreviewTest: EMGPreviewBaseTest {
       return nil
   }
 
-  override public class func discoverPreviews() -> [EMGDiscoveredPreview] {
-    let instance = self.create()
-    let app = instance.getApp()
+  override class func discoverPreviews() -> [DiscoveredPreview] {
+    let app = Self.getApp()
     guard let path = getDylibPath(dylibName: "Snapshotting") else {
       NSLog("Snapshotting dylib not found, ensure it is a dependency of your test target.")
       preconditionFailure("Snapshotting dylib not found")
@@ -60,13 +58,13 @@ open class AccessibilityPreviewTest: EMGPreviewBaseTest {
     launchEnvironment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] = "1"
     launchEnvironment["DYLD_INSERT_LIBRARIES"] = path
 
-    if let previews = instance.snapshotPreviews() {
+    if let previews = Self.snapshotPreviews() {
       if let jsonData = try? JSONSerialization.data(withJSONObject: previews, options: []) {
         launchEnvironment["SNAPSHOT_PREVIEWS"] = String(data: jsonData, encoding: .utf8)
       }
     }
 
-    if let excludedPreviews = instance.excludedSnapshotPreviews() {
+    if let excludedPreviews = Self.excludedSnapshotPreviews() {
       if let jsonData = try? JSONSerialization.data(withJSONObject: excludedPreviews, options: []) {
         launchEnvironment["EXCLUDED_SNAPSHOT_PREVIEWS"] = String(data: jsonData, encoding: .utf8)
       }
@@ -101,19 +99,16 @@ open class AccessibilityPreviewTest: EMGPreviewBaseTest {
     let data = try! Data(contentsOf: metadataUrl)
     let json = try! JSONSerialization.jsonObject(with: data) as! [[String: Any]]
     return json.map { obj in
-      let preview = EMGDiscoveredPreview()
-      preview.typeName = obj["typeName"] as! String
-      preview.displayName = obj["displayName"] as? String
-      preview.numberOfPreviews = obj["numPreviews"] as! NSNumber
+      let preview = DiscoveredPreview(typeName: obj["typeName"] as! String, displayName: obj["displayName"] as? String, numberOfPreviews: (obj["numPreviews"] as! NSNumber).intValue)
       return preview
     }
   }
 
-  override public func test(_ preview: EMGPreview) {
+  override func testPreview(_ preview: DiscoveredPreviewAndIndex) {
     let typeName = preview.preview.typeName
     let previewId = preview.index
     let expectation = self.expectation(description: "Waiting for network response")
-    guard let url = URL(string: "http://localhost:38824/display/\(typeName)/\(previewId.intValue)") else {
+    guard let url = URL(string: "http://localhost:38824/display/\(typeName)/\(previewId)") else {
       XCTFail("Invalid URL")
       return
     }
@@ -158,7 +153,7 @@ open class AccessibilityPreviewTest: EMGPreviewBaseTest {
       XCTFail("Failed to parse JSON: \(error)")
     }
 
-    let app = getApp()
+    let app = Self.getApp()
     try? app.performAccessibilityAudit(for: auditType()) { [weak self] issue in
       return self?.handle(issue: issue) ?? false
     }
