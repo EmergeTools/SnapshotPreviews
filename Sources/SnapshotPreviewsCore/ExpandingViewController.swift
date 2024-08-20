@@ -43,7 +43,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 
   private var didCall = false
   private var previousHeight: CGFloat?
-  private let maxAdjustments: Int = 40
+  private let maxAdjustments: Int = 20
   private var adjustmentCount: Int = 0
 
   private var heightAnchor: NSLayoutConstraint?
