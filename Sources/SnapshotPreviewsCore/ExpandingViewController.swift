@@ -73,6 +73,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     heightAnchor = nil
     widthAnchor = nil
     previousHeight = nil
+    adjustmentCount = 0
   }
 
   public func setupView(layout: PreviewLayout) {
@@ -95,6 +96,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
   private func runCallback() {
     guard !didCall else { return }
 
+    adjustmentCount = 0
     didCall = true
     expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled)
   }
