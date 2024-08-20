@@ -43,6 +43,8 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 
   private var didCall = false
   private var previousHeight: CGFloat?
+  private let maxAdjustments: Int = 10
+  private var adjustmentCount: Int = 0
 
   private var heightAnchor: NSLayoutConstraint?
   private var widthAnchor: NSLayoutConstraint?
@@ -109,6 +111,13 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
       return
     }
 
+    // Check if we've made too many adjustments
+    if adjustmentCount >= maxAdjustments {
+        print("Warning: Max adjustments reached. Terminating height updates.")
+        runCallback()
+        return
+    }
+
     let supportsExpansion = rootView.supportsExpansion
     let scrollView = view.firstScrollView
     if let scrollView, supportsExpansion {
@@ -125,6 +134,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
           }
           previousHeight = scrollView.visibleContentHeight
           heightAnchor.constant += CGFloat(diff)
+          adjustmentCount += 1
         } else {
           runCallback()
         }
