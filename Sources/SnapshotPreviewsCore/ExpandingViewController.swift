@@ -135,8 +135,8 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
             }
           }
           previousHeight = scrollView.visibleContentHeight
-          heightAnchor.constant += CGFloat(diff)
           adjustmentCount += 1
+          heightAnchor.constant += CGFloat(diff)
         } else {
           runCallback()
         }
