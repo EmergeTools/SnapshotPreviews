@@ -17,9 +17,9 @@ jobs:
       - name: Build xcframework
         run: sh build.sh
       - name: Zip xcframework
-        run: zip -r SnapshottingTests.xcfraemwork.zip SnapshottingTests.xcframework
+        run: zip -r SnapshottingTests.xcframework.zip SnapshottingTests.xcframework
       - name: Zip preivews support
-        run: (cd PreviewsSupport && zip -r PreviewsSupport.xcframework.zip)
+        run: (cd PreviewsSupport && zip -r PreviewsSupport.xcframework.zip PreviewsSupport.xcframework)
       - name: Upload Artifact
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
