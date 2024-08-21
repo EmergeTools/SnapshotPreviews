@@ -17,7 +17,7 @@ Add the package dependency to your Xcode project using the URL of this repositor
 `PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your Xcode previews into a gallery of components and features you can access from your application. Xcode is not required to view the previews. You can use it to preview individual components (buttons/rows/icons/etc) or even entire interactive features.
 
 <p align="center">
-  <img src="./images/image1.png" />
+  <img src="https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews-iOS/master/images/image1.png" />
 </p>
 
 The public API of PreviewGallery is a single SwiftUI `View` named `PreviewGallery`. Displaying this view gives you access to the full gallery. For example, you could add a button with navigation like this:
@@ -57,7 +57,7 @@ Note that there are no test functions; they are automatically added at runtime b
 > [!NOTE]
 > When you use Preivew macros (`#Preview("Display Name")`) the name of the snapshot uses the file path and the name, for example: "MyModule/MyFile.swift:Display Name"
 
-![Screenshot of Xcode test output](images/testOutput.png)
+![Screenshot of Xcode test output](https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews-iOS/master/images/testOutput.png)
 
 ### Accessibility Audits
 
