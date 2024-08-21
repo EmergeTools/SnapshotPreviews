@@ -1,0 +1,32 @@
+name: Release workflow
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Xcode select
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Build xcframework
+        run: sh build.sh
+      - name: Zip xcframework
+        run: zip -r SnapshottingTests.xcfraemwork.zip SnapshottingTests.xcframework
+      - name: Zip preivews support
+        run: (cd PreviewsSupport && zip -r PreviewsSupport.xcframework.zip)
+      - name: Upload Artifact
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            SnapshottingTests.xcframework.zip
+            PreviewsSupport/PreviewsSupport.xcframework.zip
+          body:
+            Release ${{ github.ref }}
+            Automated release created by GitHub Actions.
