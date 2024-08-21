@@ -9,11 +9,11 @@ import Foundation
 import SnapshottingTests
 
 class DemoAppSnapshotTest: SnapshotTest {
-  override func snapshotPreviews() -> [String]? {
+  override class func snapshotPreviews() -> [String]? {
     return nil
   }
 
-  override func excludedSnapshotPreviews() -> [String]? {
+  override class func excludedSnapshotPreviews() -> [String]? {
     return nil
   }
 }

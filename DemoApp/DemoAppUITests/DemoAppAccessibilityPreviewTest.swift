@@ -12,11 +12,11 @@ import SnapshottingTests
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
 class DemoAppAccessibilityPreviewTest: AccessibilityPreviewTest {
 
-  override func snapshotPreviews() -> [String]? {
+  override class func snapshotPreviews() -> [String]? {
     return nil
   }
     
-  override func excludedSnapshotPreviews() -> [String]? {
+  override class func excludedSnapshotPreviews() -> [String]? {
     return nil
   }
 

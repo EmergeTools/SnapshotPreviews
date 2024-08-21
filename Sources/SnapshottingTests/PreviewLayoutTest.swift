@@ -7,33 +7,32 @@
 
 import Foundation
 import SnapshotPreviewsCore
-import SnapshottingTestsObjc
 import SwiftUI
 import XCTest
 
 // Test Xcode previews by forcing a layout pass of each one
-open class PreviewLayoutTest: EMGPreviewBaseTest, PreviewFilters {
+open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
 
-  open func snapshotPreviews() -> [String]?  {
+  open class func snapshotPreviews() -> [String]?  {
     nil
   }
 
-  open func excludedSnapshotPreviews() -> [String]? {
+  open class func excludedSnapshotPreviews() -> [String]? {
     nil
   }
 
   static private var previews: [PreviewType] = []
 
   @MainActor
-  open override class func discoverPreviews() -> [EMGDiscoveredPreview] {
+  override class func discoverPreviews() -> [DiscoveredPreview] {
     previews = matchingPreviewTypes()
-    return previews.map { EMGDiscoveredPreview.from(previewType: $0) }
+    return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
   @MainActor
-  open override func test(_ preview: EMGPreview) {
+  override func testPreview(_ preview: DiscoveredPreviewAndIndex) {
     let previewType = Self.previews.first { $0.typeName == preview.preview.typeName }
-    guard let preview = previewType?.previews[preview.index.intValue] else {
+    guard let preview = previewType?.previews[preview.index] else {
       XCTFail("Preview not found")
       return
     }

@@ -7,17 +7,17 @@
 
 import Foundation
 import SnapshotPreviewsCore
-import SnapshottingTestsObjc
+import XCTest
 import XCTest
 
 // Generate snapshots of Xcode previews
-open class SnapshotTest: EMGPreviewBaseTest, PreviewFilters {
+open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
-  open func snapshotPreviews() -> [String]?  {
+  open class func snapshotPreviews() -> [String]?  {
     nil
   }
 
-  open func excludedSnapshotPreviews() -> [String]? {
+  open class func excludedSnapshotPreviews() -> [String]? {
     nil
   }
 
@@ -37,15 +37,15 @@ open class SnapshotTest: EMGPreviewBaseTest, PreviewFilters {
   static private var previews: [SnapshotPreviewsCore.PreviewType] = []
 
   @MainActor
-  open override class func discoverPreviews() -> [EMGDiscoveredPreview] {
+  override class func discoverPreviews() -> [DiscoveredPreview] {
     previews = matchingPreviewTypes()
-    return previews.map { EMGDiscoveredPreview.from(previewType: $0) }
+    return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
   @MainActor
-  open override func test(_ preview: EMGPreview) {
+  override func testPreview(_ preview: DiscoveredPreviewAndIndex) {
     let previewType = Self.previews.first { $0.typeName == preview.preview.typeName }
-    guard let preview = previewType?.previews[preview.index.intValue] else {
+    guard let preview = previewType?.previews[preview.index] else {
       XCTFail("Preview not found")
       return
     }

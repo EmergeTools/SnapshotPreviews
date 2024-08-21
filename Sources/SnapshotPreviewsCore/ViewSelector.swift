@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 fileprivate struct ViewSelector: _VariadicView_MultiViewRoot {
   let position: Int
