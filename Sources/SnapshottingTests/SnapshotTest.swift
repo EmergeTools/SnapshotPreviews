@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SnapshotPreviewsCore
+@_implementationOnly import SnapshotPreviewsCore
 import XCTest
 import XCTest
 

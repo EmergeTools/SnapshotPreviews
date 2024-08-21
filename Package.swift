@@ -15,6 +15,7 @@ let package = Package(
         // This is the only library that depends on XCTest.framework
         .library(
           name: "SnapshottingTests",
+          type: .static, // Replace this to build dynamic
           targets: ["SnapshottingTests"]),
         // Link the main app to this target to use custom snapshot settings
         // This lib does not get inserted when running tests to avoid
