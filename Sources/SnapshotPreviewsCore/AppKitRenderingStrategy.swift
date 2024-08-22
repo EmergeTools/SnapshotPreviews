@@ -27,7 +27,6 @@ public class AppKitRenderingStrategy: RenderingStrategy {
 
   public init() {
     window = BorderlessWindow()
-    window.setContentSize(NSSize(width: 100, height: 100))
     window.makeKeyAndOrderFront(nil)
   }
 
