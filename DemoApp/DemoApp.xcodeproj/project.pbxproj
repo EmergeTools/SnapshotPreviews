@@ -829,6 +829,11 @@
 		};
 		FA8F8B802C66C4C4007CEA33 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+				macos,
+			);
 			target = FA1671BE2A5367A800A42DB0 /* DemoApp */;
 			targetProxy = FA8F8B7F2C66C4C4007CEA33 /* PBXContainerItemProxy */;
 		};
@@ -1245,6 +1250,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.emerge.DemoAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1265,6 +1272,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.emerge.DemoAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

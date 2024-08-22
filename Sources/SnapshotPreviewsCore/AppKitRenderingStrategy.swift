@@ -99,7 +99,7 @@ final class AppKitContainer: NSHostingController<EmergeModifierView> {
       heightAnchor = view.heightAnchor.constraint(equalToConstant: height)
       heightAnchor?.isActive = true
     default:
-      let fittingSize = sizeThatFits(in: NSScreen.main!.frame.size)
+      let fittingSize = sizeThatFits(in: NSSize(width: 800, height: 200))
       widthAnchor = view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
       widthAnchor?.isActive = true
       heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
