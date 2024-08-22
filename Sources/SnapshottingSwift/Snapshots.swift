@@ -29,6 +29,8 @@ class Snapshots {
   public init() {
     #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
     renderingStrategy = UIKitRenderingStrategy()
+    #elseif canImport(AppKit) && !targetEnvironment(macCatalyst)
+    renderingStrategy = AppKitRenderingStrategy()
     #else
     if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, visionOS 1.0, *) {
       renderingStrategy = SwiftUIRenderingStrategy()

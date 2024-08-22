@@ -24,6 +24,8 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   private static func getRenderingStrategy() -> RenderingStrategy {
     #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
       return UIKitRenderingStrategy()
+    #elseif canImport(AppKit) && !targetEnvironment(macCatalyst)
+      AppKitRenderingStrategy()
     #else
     if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, visionOS 1.0, *) {
       SwiftUIRenderingStrategy()
