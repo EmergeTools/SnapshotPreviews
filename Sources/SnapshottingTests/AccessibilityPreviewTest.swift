@@ -99,7 +99,10 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     let data = try! Data(contentsOf: metadataUrl)
     let json = try! JSONSerialization.jsonObject(with: data) as! [[String: Any]]
     return json.map { obj in
-      let preview = DiscoveredPreview(typeName: obj["typeName"] as! String, displayName: obj["displayName"] as? String, numberOfPreviews: (obj["numPreviews"] as! NSNumber).intValue)
+      let preview = DiscoveredPreview(typeName: obj["typeName"] as! String,
+                                      displayName: obj["displayName"] as? String,
+                                      devices: (obj["devices"] as! String).components(separatedBy: ","),
+                                      numberOfPreviews: (obj["numPreviews"] as! NSNumber).intValue)
       return preview
     }
   }

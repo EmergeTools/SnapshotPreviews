@@ -10,6 +10,9 @@ import Foundation
 
 extension DiscoveredPreview {
   static func from(previewType: PreviewType) -> DiscoveredPreview {
-    return DiscoveredPreview(typeName: previewType.typeName, displayName: previewType.displayName, numberOfPreviews: previewType.previews.count)
+    return DiscoveredPreview(typeName: previewType.typeName,
+                             displayName: previewType.displayName,
+                             devices: previewType.previews.map { $0.device?.rawValue ?? "" },
+                             numberOfPreviews: previewType.previews.count)
   }
 }
