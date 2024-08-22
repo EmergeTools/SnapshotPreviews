@@ -19,6 +19,8 @@ class BorderlessWindow: NSWindow {
     }
 }
 
+private var _colorScheme: ColorScheme? = nil
+
 public class AppKitRenderingStrategy: RenderingStrategy {
 
   private let window: NSWindow
@@ -29,24 +31,30 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     window.makeKeyAndOrderFront(nil)
   }
 
-  private var colorScheme: ColorScheme? = nil
-
   @MainActor public func render(
     preview: SnapshotPreviewsCore.Preview,
     completion: @escaping (SnapshotResult) -> Void)
   {
-    let view = preview.view()
-    let vc = AppKitContainer(rootView: view)
+    var wrappedView = preview.view()
+    _colorScheme = nil
+    wrappedView = PreferredColorSchemeWrapper {
+      AnyView(wrappedView)
+    } colorSchemeUpdater: { scheme in
+      _colorScheme = scheme
+    }
+    let vc = AppKitContainer(rootView: wrappedView)
     vc.setupView(layout: preview.layout)
     vc.rendered = { mode, precision, accessibilityEnabled in
-      let image = vc.view.snapshot()
-      completion(
-        SnapshotResult(
-          image: image != nil ? .success(image!) : .failure(SwiftUIRenderingError.renderingError),
-          precision: precision,
-          accessibilityEnabled: accessibilityEnabled,
-          accessibilityMarkers: nil,
-          colorScheme: nil))
+      DispatchQueue.main.async {
+        let image = vc.view.snapshot()
+        completion(
+          SnapshotResult(
+            image: image != nil ? .success(image!) : .failure(SwiftUIRenderingError.renderingError),
+            precision: precision,
+            accessibilityEnabled: accessibilityEnabled,
+            accessibilityMarkers: nil,
+            colorScheme: _colorScheme))
+      }
     }
     window.contentViewController = vc
   }
