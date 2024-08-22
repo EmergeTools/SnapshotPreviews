@@ -25,7 +25,7 @@ open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
 
   @MainActor
   override class func discoverPreviews() -> [DiscoveredPreview] {
-    previews = matchingPreviewTypes()
+    previews = FindPreviews.findPreviews(included: Self.snapshotPreviews(), excluded: Self.excludedSnapshotPreviews())
     return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
