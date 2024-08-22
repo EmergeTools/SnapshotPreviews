@@ -82,7 +82,7 @@ open class PreviewBaseTest: XCTestCase {
           // Filter out device specific previews whose device name doesn't match the currently selected one
           if currentDeviceName != nil {
             let specifiedPreviewDevice = discoveredPreview.devices[j]
-            guard specifiedPreviewDevice == "" || specifiedPreviewDevice == currentDeviceName else {
+            guard specifiedPreviewDevice.isEmpty || specifiedPreviewDevice == currentDeviceName else {
               continue
             }
           }

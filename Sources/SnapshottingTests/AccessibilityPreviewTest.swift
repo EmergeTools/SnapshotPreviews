@@ -101,7 +101,7 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     return json.map { obj in
       let preview = DiscoveredPreview(typeName: obj["typeName"] as! String,
                                       displayName: obj["displayName"] as? String,
-                                      devices: (obj["devices"] as! String).components(separatedBy: ","),
+                                      devices: (obj["devices"] as! [String]),
                                       numberOfPreviews: (obj["numPreviews"] as! NSNumber).intValue)
       return preview
     }
