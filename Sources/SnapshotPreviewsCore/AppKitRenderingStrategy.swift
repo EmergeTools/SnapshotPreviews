@@ -133,7 +133,7 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
 
     if !supportsExpansion {
       // Reset the scroll point
-      (firstScrollView as! NSScrollView).documentView!.scroll(NSPoint(x: 0, y: 0))
+      (firstScrollView as? NSScrollView)?.documentView?.scroll(NSPoint(x: 0, y: 0))
     }
 
     updateHeight {

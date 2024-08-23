@@ -36,7 +36,9 @@ struct RideShareButtonView_Previews: PreviewProvider {
         .previewDisplayName("Ride Share Button View - Light")
         // This should never show as a diff
         .emergeSnapshotPrecision(0.0)
+      #if os(iOS)
         .emergeRenderingMode(.coreAnimation)
+      #endif
 
       RideShareButtonView(title: "Request Ride") {
           print("Button tapped")
@@ -52,7 +54,9 @@ struct RideShareButtonView_Previews: PreviewProvider {
       .previewLayout(.sizeThatFits)
       .padding()
       .previewDisplayName("Ride Share Button View - Light")
+      #if os(iOS)
       .emergeRenderingMode(.coreAnimation)
       .emergeAccessibility(true)
+      #endif
     }
 }

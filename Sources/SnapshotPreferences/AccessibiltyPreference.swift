@@ -19,7 +19,10 @@ struct AccessibilityPreferenceKey: PreferenceKey {
 }
 
 extension View {
-  @available(iOS 15, *)
+  @available(macOS, unavailable)
+  @available(watchOS, unavailable)
+  @available(visionOS, unavailable)
+  @available(tvOS, unavailable)
   public func emergeAccessibility(_ enabled: Bool?) -> some View {
     preference(key: AccessibilityPreferenceKey.self, value: enabled)
   }

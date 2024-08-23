@@ -69,6 +69,10 @@ extension NamedViewModifier {
     .init(name: "XXL Text Size", value: { $0.dynamicTypeSize(.xxxLarge) })
   }
 
+  @available(macOS, unavailable)
+  @available(watchOS, unavailable)
+  @available(visionOS, unavailable)
+  @available(tvOS, unavailable)
   static var accessibility: NamedViewModifier {
     .init(name: "Accessibility", value: { $0.emergeAccessibility(true) })
   }
@@ -81,6 +85,10 @@ extension NamedViewModifier {
 extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
   static var previewDefault: [NamedViewModifier] {
+    #if os(iOS)
     [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility, .landscape]
+    #else
+    [.unmodified, .darkMode, .rtl]
+    #endif
   }
 }
