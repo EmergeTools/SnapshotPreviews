@@ -55,6 +55,9 @@ public class AppKitRenderingStrategy: RenderingStrategy {
             colorScheme: _colorScheme))
       }
     }
+    // Reset the window size to default before adding the new view controller
+    window.contentViewController = NSViewController()
+    window.setContentSize(AppKitContainer.defaultSize)
     window.contentViewController = vc
   }
 }
@@ -64,17 +67,17 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
   var supportsExpansion: Bool {
     rootView.supportsExpansion
   }
-
-  private var didCall = false
-
   var heightAnchor: NSLayoutConstraint?
-  private var widthAnchor: NSLayoutConstraint?
-
   var previousHeight: CGFloat?
 
   public var rendered: ((EmergeRenderingMode?, Float?, Bool?) -> Void)? {
     didSet { didCall = false }
   }
+
+  static let defaultSize = NSSize(width: 800, height: 400)
+
+  private var didCall = false
+  private var widthAnchor: NSLayoutConstraint?
 
   init<Content: View>(rootView: Content) {
     super.init(rootView: EmergeModifierView(wrapped: rootView))
@@ -105,7 +108,7 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
       heightAnchor = view.heightAnchor.constraint(equalToConstant: height)
       heightAnchor?.isActive = true
     default:
-      let fittingSize = sizeThatFits(in: NSSize(width: 800, height: 400))
+      let fittingSize = sizeThatFits(in: Self.defaultSize)
       widthAnchor = view.widthAnchor.constraint(equalToConstant: fittingSize.width)
       widthAnchor?.isActive = true
       heightAnchor = view.heightAnchor.constraint(equalToConstant: fittingSize.height)
@@ -129,11 +132,6 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
     guard rendered != nil else {
       runCallback()
       return
-    }
-
-    if !supportsExpansion {
-      // Reset the scroll point
-      (firstScrollView as? NSScrollView)?.documentView?.scroll(NSPoint(x: 0, y: 0))
     }
 
     updateHeight {
