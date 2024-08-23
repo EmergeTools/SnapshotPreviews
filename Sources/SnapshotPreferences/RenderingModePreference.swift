@@ -18,7 +18,10 @@ struct RenderingModePreferenceKey: PreferenceKey {
 }
 
 extension View {
-  @available(iOS 15, *)
+  @available(macOS, unavailable)
+  @available(watchOS, unavailable)
+  @available(visionOS, unavailable)
+  @available(tvOS, unavailable)
   public func emergeRenderingMode(_ renderingMode: EmergeRenderingMode?) -> some View {
     preference(key: RenderingModePreferenceKey.self, value: renderingMode?.rawValue)
   }
