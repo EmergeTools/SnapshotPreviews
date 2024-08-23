@@ -43,9 +43,13 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     }
     let vc = AppKitContainer(rootView: wrappedView)
     vc.setupView(layout: preview.layout)
-    vc.rendered = { mode, precision, accessibilityEnabled in
+    // Reset the window size to default before adding the new view controller
+    window.contentViewController = NSViewController()
+    window.setContentSize(AppKitContainer.defaultSize)
+    window.contentViewController = vc
+    vc.rendered = { [weak vc] mode, precision, accessibilityEnabled in
       DispatchQueue.main.async {
-        let image = vc.view.snapshot()
+        let image = vc?.view.snapshot()
         completion(
           SnapshotResult(
             image: image != nil ? .success(image!) : .failure(SwiftUIRenderingError.renderingError),
@@ -55,10 +59,6 @@ public class AppKitRenderingStrategy: RenderingStrategy {
             colorScheme: _colorScheme))
       }
     }
-    // Reset the window size to default before adding the new view controller
-    window.contentViewController = NSViewController()
-    window.setContentSize(AppKitContainer.defaultSize)
-    window.contentViewController = vc
   }
 }
 
