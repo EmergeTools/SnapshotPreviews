@@ -18,6 +18,7 @@ struct RenderingModePreferenceKey: PreferenceKey {
 }
 
 extension View {
+  @available(iOS 15, *)
   public func emergeRenderingMode(_ renderingMode: EmergeRenderingMode?) -> some View {
     preference(key: RenderingModePreferenceKey.self, value: renderingMode?.rawValue)
   }
