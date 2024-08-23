@@ -59,12 +59,18 @@ public class AppKitRenderingStrategy: RenderingStrategy {
   }
 }
 
-final class AppKitContainer: NSHostingController<EmergeModifierView> {
+final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpansionProviding {
+
+  var supportsExpansion: Bool {
+    rootView.supportsExpansion
+  }
 
   private var didCall = false
 
-  private var heightAnchor: NSLayoutConstraint?
+  var heightAnchor: NSLayoutConstraint?
   private var widthAnchor: NSLayoutConstraint?
+
+  var previousHeight: CGFloat?
 
   public var rendered: ((EmergeRenderingMode?, Float?, Bool?) -> Void)? {
     didSet { didCall = false }
@@ -99,10 +105,10 @@ final class AppKitContainer: NSHostingController<EmergeModifierView> {
       heightAnchor = view.heightAnchor.constraint(equalToConstant: height)
       heightAnchor?.isActive = true
     default:
-      let fittingSize = sizeThatFits(in: NSSize(width: 800, height: 200))
-      widthAnchor = view.widthAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
+      let fittingSize = sizeThatFits(in: NSSize(width: 800, height: 400))
+      widthAnchor = view.widthAnchor.constraint(equalToConstant: fittingSize.width)
       widthAnchor?.isActive = true
-      heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
+      heightAnchor = view.heightAnchor.constraint(equalToConstant: fittingSize.height)
       heightAnchor?.isActive = true
     }
   }
@@ -116,7 +122,23 @@ final class AppKitContainer: NSHostingController<EmergeModifierView> {
 
   override func viewDidLayout() {
     super.viewDidLayout()
-    runCallback()
+    updateScrollViewHeight()
+  }
+
+  public func updateScrollViewHeight() {
+    guard rendered != nil else {
+      runCallback()
+      return
+    }
+
+    if !supportsExpansion {
+      // Reset the scroll point
+      (firstScrollView as! NSScrollView).documentView!.scroll(NSPoint(x: 0, y: 0))
+    }
+
+    updateHeight {
+      runCallback()
+    }
   }
 }
 

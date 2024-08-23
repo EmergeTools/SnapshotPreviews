@@ -14,37 +14,16 @@ import SnapshotSharedModels
 
 #if canImport(UIKit) && !os(visionOS) && !os(watchOS) && !os(tvOS)
 
-extension UIScrollView {
-  var visibleContentHeight: CGFloat {
-    frame.height - (adjustedContentInset.top + adjustedContentInset.bottom)
+public final class ExpandingViewController: UIHostingController<EmergeModifierView>, ScrollExpansionProviding {
+
+  var supportsExpansion: Bool {
+    rootView.supportsExpansion
   }
-}
-
-extension UIView {
-  var firstScrollView: UIScrollView? {
-    var subviews = subviews
-    while !subviews.isEmpty {
-      let subview = subviews.removeFirst()
-      // Don’t expand UITextView, it can cause flakes
-      guard !(subview is UITextView) else {
-        continue
-      }
-
-      subviews.append(contentsOf: subview.subviews)
-      if let scrollView = subview as? UIScrollView {
-        return scrollView
-      }
-    }
-    return nil
-  }
-}
-
-public final class ExpandingViewController: UIHostingController<EmergeModifierView> {
 
   private var didCall = false
-  private var previousHeight: CGFloat?
+  var previousHeight: CGFloat?
 
-  private var heightAnchor: NSLayoutConstraint?
+  var heightAnchor: NSLayoutConstraint?
   private var widthAnchor: NSLayoutConstraint?
 
   public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?) -> Void)? {
@@ -103,35 +82,12 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
   }
 
   public func updateScrollViewHeight() {
-    // If heightAnchor isn't set, this was a fixed size and we don't expand the scroll view
-    guard let heightAnchor, expansionSettled != nil else {
+    guard expansionSettled != nil else {
       runCallback()
       return
     }
 
-    let supportsExpansion = rootView.supportsExpansion
-    let scrollView = view.firstScrollView
-    if let scrollView, supportsExpansion {
-      let diff = Int(scrollView.contentSize.height - scrollView.visibleContentHeight)
-      if abs(diff) > 0 {
-        if previousHeight != nil || diff > 0 {
-          if let previousHeight {
-            // Check if expansion isn't working and we should give up.
-            // Could happen if the view is constrained to not grow, such as a half sheet
-            guard abs(previousHeight - scrollView.visibleContentHeight) >= 1 else {
-              runCallback()
-              return
-            }
-          }
-          previousHeight = scrollView.visibleContentHeight
-          heightAnchor.constant += CGFloat(diff)
-        } else {
-          runCallback()
-        }
-      } else {
-        runCallback()
-      }
-    } else {
+    updateHeight {
       runCallback()
     }
   }
