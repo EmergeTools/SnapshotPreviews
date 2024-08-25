@@ -123,8 +123,8 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
     rendered?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled)
   }
 
-  override func viewDidLayout() {
-    super.viewDidLayout()
+  override func updateViewConstraints() {
+    super.updateViewConstraints()
     updateScrollViewHeight()
   }
 
