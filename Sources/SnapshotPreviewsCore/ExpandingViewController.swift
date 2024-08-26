@@ -78,7 +78,11 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.updateScrollViewHeight()
+
+    // Kick off in next run loop cycle to let the layout pass complete first
+    DispatchQueue.main.async {
+      self.updateScrollViewHeight()
+    }
   }
 
   public func updateScrollViewHeight() {
