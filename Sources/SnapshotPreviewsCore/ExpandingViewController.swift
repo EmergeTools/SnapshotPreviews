@@ -85,14 +85,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-
-//    if Thread.isMainThread {
-//      updateScrollViewHeight()
-//    } else {
-      DispatchQueue.main.async {
-        self.updateScrollViewHeight()
-      }
-//    }
+    updateScrollViewHeight()
   }
 
   public func updateScrollViewHeight() {
