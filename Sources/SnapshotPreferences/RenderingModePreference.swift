@@ -37,7 +37,7 @@ extension View {
     /// struct ContentView: View {
     ///     var body: some View {
     ///         Text("Emerge Effect")
-    ///             .emergeRenderingMode(.optimized)
+    ///             .emergeRenderingMode(.coreAnimation)
     ///     }
     /// }
     /// ```
