@@ -9,3 +9,6 @@ DerivedData/
 DemoApp/DemoApp.xcodeproj/xcuserdata/
 .xcuserstate
 PreviewsSupport/PreviewsSupport.xcframework/**/*.private.swiftinterface
+
+
+DemoApp/DemoApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/

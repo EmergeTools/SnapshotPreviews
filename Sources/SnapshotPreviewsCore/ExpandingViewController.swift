@@ -20,13 +20,20 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     rootView.supportsExpansion
   }
 
+  // Snapshots have an overall time limit of 10s, so limit this part to 5s
+  private let HeightExpansionTimeLimitInSeconds: Double = 5
+
   private var didCall = false
   var previousHeight: CGFloat?
 
   var heightAnchor: NSLayoutConstraint?
   private var widthAnchor: NSLayoutConstraint?
 
-  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?) -> Void)? {
+  private var startTime: Date?
+  private var timer: Timer?
+  private var elapsedTime: TimeInterval = 0
+
+  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?, Error?) -> Void)? {
     didSet { didCall = false }
   }
 
@@ -69,19 +76,42 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     }
   }
 
-  private func runCallback() {
+  private func runCallback(_ error: Error? = nil) {
     guard !didCall else { return }
 
     didCall = true
-    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled)
+    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled, error)
+    stopAndResetTimer()
   }
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.updateScrollViewHeight()
+
+    DispatchQueue.main.async {
+      self.updateScrollViewHeight()
+    }
   }
 
   public func updateScrollViewHeight() {
+    let scrollView = view.firstScrollView
+
+
+//    WILL MOVE TO SCROLL EXPANSION, have to test post rebase
+    // Timeout limit
+    if timer == nil {
+      startTimer()
+    } else if elapsedTime >= HeightExpansionTimeLimitInSeconds {
+      let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: scrollView?.visibleContentHeight ?? -1))
+      NSLog("ExpandingViewController: Expanding scroll view timed out")
+
+      // Setting anchors back to full
+      let fittingSize = sizeThatFits(in: UIScreen.main.bounds.size)
+      heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
+      widthAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
+      runCallback(timeoutError)
+      return
+    }
+
     guard expansionSettled != nil else {
       runCallback()
       return
@@ -90,6 +120,43 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     updateHeight {
       runCallback()
     }
+  }
+
+//  MARK: - Timer
+
+  func startTimer() {
+      if self.timer == nil {
+          self.startTime = Date()
+          self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+              guard let self else {
+                  return
+              }
+              if let start = self.startTime {
+                  self.elapsedTime = Date().timeIntervalSince(start)
+                  if self.elapsedTime >= HeightExpansionTimeLimitInSeconds {
+                      let scrollView = self.view.firstScrollView
+                      let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: scrollView?.visibleContentHeight ?? -1))
+                      NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(scrollView?.visibleContentHeight ?? -1)")
+
+                      // Setting anchors back to full
+                      let fittingSize = self.sizeThatFits(in: UIScreen.main.bounds.size)
+                      self.heightAnchor = self.view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
+                      self.widthAnchor = self.view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
+                      self.runCallback(timeoutError)
+                  }
+              }
+          }
+          print("Timer scheduled")
+      } else {
+          print("Timer already exists")
+      }
+  }
+
+  func stopAndResetTimer() {
+      timer?.invalidate()
+      timer = nil
+      startTime = nil
+      elapsedTime = 0
   }
 
 }
