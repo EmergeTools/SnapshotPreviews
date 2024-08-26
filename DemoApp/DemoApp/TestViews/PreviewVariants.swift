@@ -87,8 +87,7 @@ extension [NamedViewModifier] {
   static var previewDefault: [NamedViewModifier] {
     #if os(iOS)
     if UserDefaults.standard.bool(forKey: "NSDoubleLocalizedStrings") {
-      return [.unmodifiegst
-              d, .darkMode, .xxlTextSize, .rtl, .landscape]
+      return [.unmodified, .darkMode, .xxlTextSize, .rtl, .landscape]
     }
     return [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility, .landscape]
     #else
