@@ -93,15 +93,11 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
   }
 
   public func updateScrollViewHeight() {
-    let scrollView = view.firstScrollView
-
-
-//    WILL MOVE TO SCROLL EXPANSION, have to test post rebase
     // Timeout limit
     if timer == nil {
       startTimer()
     } else if elapsedTime >= HeightExpansionTimeLimitInSeconds {
-      let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: scrollView?.visibleContentHeight ?? -1))
+      let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: firstScrollView?.visibleContentHeight ?? -1))
       NSLog("ExpandingViewController: Expanding scroll view timed out")
 
       // Setting anchors back to full
