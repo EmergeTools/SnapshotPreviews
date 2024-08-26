@@ -1,7 +1,11 @@
 version: 1
 builder:
   configs:
-  - platform: ios
-    scheme: PreviewGallery
-  - platform: macos
-    scheme: PreviewGallery
+    - documentation_targets:
+        - SnapshotPreferences
+        - Snapshotting
+        - SnapshottingTests
+    - platform: ios
+      scheme: PreviewGallery
+    - platform: macos
+      scheme: PreviewGallery
