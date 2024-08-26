@@ -20,8 +20,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     rootView.supportsExpansion
   }
 
-  // Snapshots have an overall time limit of 10s, so limit this part to 5s
-  private let HeightExpansionTimeLimitInSeconds: Double = 5
+  private let HeightExpansionTimeLimitInSeconds: Double = 30
 
   private var didCall = false
   var previousHeight: CGFloat?
@@ -87,8 +86,12 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    DispatchQueue.main.async {
-      self.updateScrollViewHeight()
+    if Thread.isMainThread {
+      updateScrollViewHeight()
+    } else {
+      DispatchQueue.main.async {
+        self.updateScrollViewHeight()
+      }
     }
   }
 
@@ -96,16 +99,6 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     // Timeout limit
     if timer == nil {
       startTimer()
-    } else if elapsedTime >= HeightExpansionTimeLimitInSeconds {
-      let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: firstScrollView?.visibleContentHeight ?? -1))
-      NSLog("ExpandingViewController: Expanding scroll view timed out")
-
-      // Setting anchors back to full
-      let fittingSize = sizeThatFits(in: UIScreen.main.bounds.size)
-      heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
-      widthAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
-      runCallback(timeoutError)
-      return
     }
 
     guard expansionSettled != nil else {
@@ -121,24 +114,24 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 //  MARK: - Timer
 
   func startTimer() {
-      if self.timer == nil {
-          self.startTime = Date()
-          self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+      if timer == nil {
+          startTime = Date()
+          timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
               guard let self else {
                   return
               }
-              if let start = self.startTime {
-                  self.elapsedTime = Date().timeIntervalSince(start)
-                  if self.elapsedTime >= HeightExpansionTimeLimitInSeconds {
-                      let scrollView = self.view.firstScrollView
+              if let start = startTime {
+                  elapsedTime = Date().timeIntervalSince(start)
+                  if elapsedTime >= HeightExpansionTimeLimitInSeconds {
+                      let scrollView = firstScrollView
                       let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: scrollView?.visibleContentHeight ?? -1))
                       NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(scrollView?.visibleContentHeight ?? -1)")
 
                       // Setting anchors back to full
-                      let fittingSize = self.sizeThatFits(in: UIScreen.main.bounds.size)
-                      self.heightAnchor = self.view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
-                      self.widthAnchor = self.view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
-                      self.runCallback(timeoutError)
+                      let fittingSize = sizeThatFits(in: UIScreen.main.bounds.size)
+                      heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
+                      widthAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
+                      runCallback(timeoutError)
                   }
               }
           }
