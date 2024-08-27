@@ -26,25 +26,37 @@ struct PreviewCellView: View {
   }
 }
 
+/// A SwiftUI View that displays a gallery of previews organized by modules.
+///
+/// `PreviewGallery` presents a list of modules, each containing its respective previews.
+/// If no previews are found, it displays a message indicating so.
 public struct PreviewGallery: View {
-  
-  let data: PreviewData
-  
-  @MainActor
-  public init(data: PreviewData? = nil) {
-    self.data = data ?? .default
-  }
-  
-  public var body: some View {
-    if data.modules.count > 0 {
-      List {
-        ForEach(Array(data.modules).sorted(), id: \.self) { module in
-          ModulePreviews(module: module, data: data)
-        }
-      }
-      .navigationTitle("Modules")
-    } else {
-      Text("No previews found")
+    /// The data source containing preview information.
+    let data: PreviewData
+
+    /// Initializes a new `PreviewGallery` with the given preview data.
+    ///
+    /// This initializer must be called on the main actor because it potentially
+    /// accesses the `PreviewData.default` property, which is marked with `@MainActor`.
+    ///
+    /// - Parameter data: The `PreviewData` to use for populating the gallery.
+    ///   If `nil`, the default `PreviewData` will be used.
+    @MainActor
+    public init(data: PreviewData? = nil) {
+        self.data = data ?? .default
     }
-  }
+
+    /// The content and behavior of the view.
+    public var body: some View {
+        if data.modules.count > 0 {
+            List {
+                ForEach(Array(data.modules).sorted(), id: \.self) { module in
+                    ModulePreviews(module: module, data: data)
+                }
+            }
+            .navigationTitle("Modules")
+        } else {
+            Text("No previews found")
+        }
+    }
 }
