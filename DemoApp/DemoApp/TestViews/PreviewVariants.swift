@@ -86,7 +86,10 @@ extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
   static var previewDefault: [NamedViewModifier] {
     #if os(iOS)
-    [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility, .landscape]
+    if UserDefaults.standard.bool(forKey: "NSDoubleLocalizedStrings") {
+      return [.unmodified, .darkMode, .xxlTextSize, .rtl, .landscape]
+    }
+    return [.unmodified, .darkMode, .xxlTextSize, .rtl, .accessibility, .landscape]
     #else
     [.unmodified, .darkMode, .rtl]
     #endif
