@@ -27,10 +27,10 @@ extension View {
     /// - Note: This method is only available on iOS. It is unavailable on macOS, watchOS, visionOS, and tvOS.
     ///
     /// - Parameter renderingMode: An `EmergeRenderingMode` value that specifies the
-    ///   desired rendering mode for emerge transitions. If `nil`, the default rendering
+    ///   desired rendering mode for snapshots. If `nil`, the default rendering
     ///   mode will be selected based off of the view's height.
     ///
-    /// - Returns: A view with the specified  rendering mode preference applied.
+    /// - Returns: A view with the specified rendering mode preference applied.
     ///
     /// # Example
     /// ```swift

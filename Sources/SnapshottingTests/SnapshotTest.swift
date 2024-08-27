@@ -53,7 +53,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
   static private var previews: [SnapshotPreviewsCore.PreviewType] = []
 
-  /// Discovers all relevant previews based on inclusion and exclusion filters.
+  /// Discovers all relevant previews based on inclusion and exclusion filters. Subclasses should NOT override this method.
   ///
   /// This method uses `FindPreviews` to locate all previews, applying any specified filters.
   /// - Returns: An array of `DiscoveredPreview` objects representing the found previews.
@@ -63,7 +63,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
-  /// Tests a specific preview by rendering it and generating a snapshot.
+  /// Tests a specific preview by rendering it and generating a snapshot. Subclasses should NOT override this method.
   ///
   /// This method renders the specified preview using the appropriate rendering strategy,
   /// creates a snapshot image, and attaches it to the test results.

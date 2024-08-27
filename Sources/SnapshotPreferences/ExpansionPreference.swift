@@ -22,7 +22,7 @@ extension View {
     /// Applies an expansion effect to the view's snapshot.
     ///
     /// Use this method to control the emerge expansion effect on a view. When enabled,
-    /// the engine will attempt to expand the view's first scrollview to the maximum height possible.
+    /// the view's first scrollview will be expanded to show all content in the snapshot.
     ///
     /// - Parameter enabled: A Boolean value that determines whether the emerge expansion
     ///   effect is applied. If `nil`, the effect will default to `true`.

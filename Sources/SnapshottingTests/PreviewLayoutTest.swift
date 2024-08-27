@@ -34,7 +34,7 @@ open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
 
   static private var previews: [PreviewType] = []
 
-  /// Discovers all relevant previews based on inclusion and exclusion filters.
+  /// Discovers all relevant previews based on inclusion and exclusion filters. Subclasses should NOT override this method.
   ///
   /// This method uses `FindPreviews` to locate all previews, applying any specified filters.
   /// - Returns: An array of `DiscoveredPreview` objects representing the found previews.
@@ -44,7 +44,7 @@ open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
     return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
-  /// Tests a specific preview by performing a layout pass.
+  /// Tests a specific preview by performing a layout pass. Subclasses should NOT override this method.
   ///
   /// This method creates a hosting controller for the preview and forces a layout pass to verify
   /// that no crashes occur during the process.
