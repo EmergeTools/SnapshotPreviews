@@ -30,7 +30,6 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 
   private var startTime: Date?
   private var timer: Timer?
-  private var elapsedTime: TimeInterval = 0
 
   public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?, Error?) -> Void)? {
     didSet { didCall = false }
@@ -107,38 +106,34 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 //  MARK: - Timer
 
   func startTimer() {
-      if timer == nil {
-          startTime = Date()
-          timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-              guard let self else {
-                  return
-              }
-              if let start = startTime {
-                  elapsedTime = Date().timeIntervalSince(start)
-                  if elapsedTime >= HeightExpansionTimeLimitInSeconds {
-                      let scrollView = firstScrollView
-                      let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width, height: scrollView?.visibleContentHeight ?? -1))
-                      NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(scrollView?.visibleContentHeight ?? -1)")
-
-                      // Setting anchors back to full
-                      let fittingSize = sizeThatFits(in: UIScreen.main.bounds.size)
-                      heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
-                      widthAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
-                      runCallback(timeoutError)
-                  }
-              }
-          }
-          print("Timer scheduled")
-      } else {
-          print("Timer already exists")
+      guard timer == nil else {
+        print("Timer already exists")
+        return
       }
+      startTime = Date()
+      timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+          guard let self,
+                let start = startTime,
+                Date().timeIntervalSince(start) >= HeightExpansionTimeLimitInSeconds else {
+              return
+          }
+          let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width,
+                                                                        height: firstScrollView?.visibleContentHeight ?? -1))
+          NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(firstScrollView?.visibleContentHeight ?? -1)")
+
+          // Setting anchors back to full
+          let fittingSize = sizeThatFits(in: UIScreen.main.bounds.size)
+          heightAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.height)
+          widthAnchor = view.heightAnchor.constraint(greaterThanOrEqualToConstant: fittingSize.width)
+          runCallback(timeoutError)
+      }
+      print("Timer scheduled")
   }
 
   func stopAndResetTimer() {
       timer?.invalidate()
       timer = nil
       startTime = nil
-      elapsedTime = 0
   }
 
 }
