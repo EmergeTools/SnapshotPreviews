@@ -13,8 +13,6 @@ import XCTest
 ///
 /// This class provides a framework for running accessibility audits on SwiftUI previews.
 /// It allows for customization of which previews to test and how to handle accessibility issues.
-///
-/// - Note: This class is available on iOS 17.0, macOS 14.0, tvOS 17.0, and watchOS 10.0 or later.
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
 open class AccessibilityPreviewTest: PreviewBaseTest {
 

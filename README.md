@@ -3,7 +3,6 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
 
-
 An all-in-one snapshot testing solution built on Xcode previews. Automatic browsable gallery of previews, and no-code snapshot generation with XCTest. Supports SwiftUI and UIKit previews using `PreviewProvider` or `#Preview` and works with any platform that supports SwiftUI.
 
 # Installation
@@ -29,7 +28,7 @@ import PreviewGallery
 NavigationLink("Open Gallery") { PreviewGallery() }
 ```
 
-The gallery also supports macOS. However, snapshotting does not support macOS.
+Just be sure to wrap it within a `NavigationStack` to work correctly. The gallery also supports macOS. However, snapshotting does not support macOS.
 
 ## Local Snapshot Generation
 
@@ -44,7 +43,7 @@ class DemoAppPreviewTest: SnapshotTest {
   override func snapshotPreviews() -> [String]? {
     return nil
   }
-  
+
   // Use this to exclude some previews from generating
   override func excludedSnapshotPreviews() -> [String]? {
     return nil
