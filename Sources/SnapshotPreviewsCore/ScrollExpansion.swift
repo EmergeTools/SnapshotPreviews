@@ -123,11 +123,15 @@ extension NSView: FirstScrollViewProviding {
     var subviews = subviews
     while !subviews.isEmpty {
       let subview = subviews.removeFirst()
-      subviews.append(contentsOf: subview.subviews)
-      // Don’t expand NSTextView, it can cause flakes
-      if let scrollView = subview as? NSScrollView, !(scrollView.documentView is NSTextView) {
+      if let scrollView = subview as? NSScrollView {
+        // Don’t expand NSTextView, it can cause flakes
+        guard !(scrollView.documentView is NSTextView) else {
+          continue
+        }
+
         return scrollView
       }
+      subviews.append(contentsOf: subview.subviews)
     }
     return nil
   }
