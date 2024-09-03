@@ -58,7 +58,6 @@ public struct PreviewGallery: View {
     self.data = data ?? .default
   }
 
-  /// The content and behavior of the view.
   public var body: some View {
     if data.modules.count > 0 {
       List {

@@ -28,7 +28,7 @@ import PreviewGallery
 NavigationLink("Open Gallery") { PreviewGallery() }
 ```
 
-Just be sure to wrap it within a `NavigationStack` to work correctly. The gallery also supports macOS. However, snapshotting does not support macOS.
+Just be sure to wrap it within a `NavigationStack` to work correctly. Both snapshotting and the gallery support macOS.
 
 ## Local Snapshot Generation
 
