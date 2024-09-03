@@ -9,42 +9,74 @@ import Foundation
 import MachO
 import XCTest
 
-// This is an XCUITest that uses XCUIApplication.performAccessibilityAudit to test previews
+/// A base class for conducting accessibility audits on SwiftUI previews using XCTest and XCUITest.
+///
+/// This class provides a framework for running accessibility audits on SwiftUI previews.
+/// It allows for customization of which previews to test and how to handle accessibility issues.
+///
+/// Usage: Create a subclass of it in your project and override any needed methods
+/// (ex. you only want to check for specific accessibility audit types rather than "all").
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
 open class AccessibilityPreviewTest: PreviewBaseTest {
 
+  /// Returns an instance of XCUIApplication for testing.
+  ///
+  /// Override this method to provide a custom XCUIApplication instance if needed.
+  ///
+  /// - Returns: An instance of XCUIApplication.
   open class func getApp() -> XCUIApplication {
     XCUIApplication()
   }
 
-  // Override to return a list of previews that should be snapshotted.
-  // The default is null, which snapshots all previews.
-  // Elements should be the type name of the preview, like "MyModule.MyView_Previews"
+  /// Specifies which previews should be snapshotted for testing.
+  ///
+  /// Override this method to return a list of preview type names to be tested.
+  /// If not overridden, all previews will be snapshotted.
+  /// Elements should be the type name of the preview, like "MyModule.MyView_Previews". This also supports Regex format.
+  ///
+  /// - Returns: An optional array of String
   open class func snapshotPreviews() -> [String]? {
     nil
   }
 
+  /// Specifies which previews should be excluded from snapshotting.
+  ///
+  /// Override this method to return a list of preview type names to be excluded from testing.
+  /// Elements should be the type name of the preview, like "MyModule.MyView_Previews". This also supports Regex format.
+  ///
+  /// - Returns: An optional array of Strings representing preview type names to exclude, or `nil` to exclude none.
   open class func excludedSnapshotPreviews() -> [String]? {
     nil
   }
 
+  /// Specifies the type of accessibility audit to perform.
+  ///
+  /// Override this method to customize the type of accessibility audit.
+  ///
+  /// - Returns: An XCUIAccessibilityAuditType value. Default is `.all`.
   @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
   open func auditType() -> XCUIAccessibilityAuditType { .all }
 
+  /// Handles accessibility audit issues.
+  ///
+  /// Override this method to provide custom handling of accessibility issues discovered during the audit.
+  ///
+  /// - Parameter issue: The XCUIAccessibilityAuditIssue to handle.
+  /// - Returns: A Boolean value indicating whether the issue was handled. Return `true` if the issue was handled, `false` otherwise.
   @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
   open func handle(issue: XCUIAccessibilityAuditIssue) -> Bool { false }
 
   private static func getDylibPath(dylibName: String) -> String? {
-      let count = _dyld_image_count()
-      for i in 0..<count {
-          if let imagePath = _dyld_get_image_name(i) {
-              let imagePathStr = String(cString: imagePath)
-              if (imagePathStr as NSString).lastPathComponent == dylibName {
-                  return imagePathStr
-              }
-          }
+    let count = _dyld_image_count()
+    for i in 0..<count {
+      if let imagePath = _dyld_get_image_name(i) {
+        let imagePathStr = String(cString: imagePath)
+        if (imagePathStr as NSString).lastPathComponent == dylibName {
+          return imagePathStr
+        }
       }
-      return nil
+    }
+    return nil
   }
 
   override class func discoverPreviews() -> [DiscoveredPreview] {
