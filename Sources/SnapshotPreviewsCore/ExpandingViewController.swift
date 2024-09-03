@@ -20,13 +20,18 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     rootView.supportsExpansion
   }
 
+  private let HeightExpansionTimeLimitInSeconds: Double = 30
+
   private var didCall = false
   var previousHeight: CGFloat?
 
   var heightAnchor: NSLayoutConstraint?
   private var widthAnchor: NSLayoutConstraint?
 
-  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?) -> Void)? {
+  private var startTime: Date?
+  private var timer: Timer?
+
+  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?, Error?) -> Void)? {
     didSet { didCall = false }
   }
 
@@ -69,19 +74,25 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     }
   }
 
-  private func runCallback() {
+  private func runCallback(_ error: Error? = nil) {
     guard !didCall else { return }
 
     didCall = true
-    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled)
+    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled, error)
+    stopAndResetTimer()
   }
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.updateScrollViewHeight()
+    updateScrollViewHeight()
   }
 
   public func updateScrollViewHeight() {
+    // Timeout limit
+    if timer == nil {
+      startTimer()
+    }
+
     guard expansionSettled != nil else {
       runCallback()
       return
@@ -90,6 +101,33 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     updateHeight {
       runCallback()
     }
+  }
+
+//  MARK: - Timer
+
+  func startTimer() {
+      guard timer == nil else {
+        print("Timer already exists")
+        return
+      }
+      startTime = Date()
+      timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+          guard let self,
+                let start = startTime,
+                Date().timeIntervalSince(start) >= HeightExpansionTimeLimitInSeconds else {
+              return
+          }
+          let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width,
+                                                                        height: firstScrollView?.visibleContentHeight ?? -1))
+          NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(firstScrollView?.visibleContentHeight ?? -1)")
+          runCallback(timeoutError)
+      }
+  }
+
+  func stopAndResetTimer() {
+      timer?.invalidate()
+      timer = nil
+      startTime = nil
   }
 
 }

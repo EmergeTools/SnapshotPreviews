@@ -15,6 +15,7 @@ import SnapshotSharedModels
 public enum RenderingError: Error {
   case failedRendering(CGSize)
   case maxSize(CGSize)
+  case expandingViewTimeout(CGSize)
 }
 
 extension AccessibilityMarker: AccessibilityMark {
@@ -57,8 +58,17 @@ extension View {
     async: Bool,
     completion: @escaping (SnapshotResult) -> Void)
   {
-    controller.expansionSettled = { [weak controller, weak window] renderingMode, precision, accessibilityEnabled in
-      guard let controller, let window, let containerVC = controller.parent else { return }
+    controller.expansionSettled = { [weak controller, weak window] renderingMode, precision, accessibilityEnabled, error in
+      guard let controller, let window, let containerVC = controller.parent else {
+        return
+      }
+
+      if let error {
+        DispatchQueue.main.async {
+          completion(SnapshotResult(image: .failure(error), precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme))
+        }
+        return
+      }
 
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
