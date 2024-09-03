@@ -122,7 +122,6 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
           NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(firstScrollView?.visibleContentHeight ?? -1)")
           runCallback(timeoutError)
       }
-      print("Timer scheduled")
   }
 
   func stopAndResetTimer() {
