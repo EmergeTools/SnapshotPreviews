@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -e
+
 xcodebuild archive \
  -scheme PreviewsSupport \
  -archivePath ./PreviewsSupport-iphonesimulator.xcarchive \

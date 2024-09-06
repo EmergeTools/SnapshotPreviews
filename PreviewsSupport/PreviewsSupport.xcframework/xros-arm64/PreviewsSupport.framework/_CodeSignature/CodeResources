@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/PreviewsSupport-Swift.h</key>
 		<data>
-		jHNWr6KG4IdrIPElKB0ctDJiUM4=
+		SxWnn3W8qcB5zbX8Zx2jEMhUdSE=
 		</data>
 		<key>Headers/PreviewsSupport.h</key>
 		<data>
@@ -14,27 +14,27 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		pgXBAvJBraoJYcxVc9iIjLexwwM=
+		8fWGrgUwSLyB758gRj6FrNbVIQs=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.abi.json</key>
 		<data>
-		vaY0Wi01/czlGoKEbRaDRu/rNJg=
+		pvnbUYGZZJvuN0EX4dxSLv77GEM=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.private.swiftinterface</key>
 		<data>
-		kI/OASxxLlIgRz1pBoJMnENaK8g=
+		gvEMusEoUX8192fK0isOhJadCDg=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftdoc</key>
 		<data>
-		ACPd76vMeP1YAZMH5jh8nCAss10=
+		qjW/NAEwEMSxyqH2nG4EAcnPPEg=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftinterface</key>
 		<data>
-		OXQG7sz/q14HQcUlkh3+JcYyxoY=
+		1sMa8k/57Vi2/4uFfECspB675yg=
 		</data>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftmodule</key>
 		<data>
-		/h7NTAwHHVh6kEWXalbLGkLm2OM=
+		ieqCbg27nWBdJ3yWycW9r5g0ZxE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -47,7 +47,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			MRseLQ8U1L+eiCDvi34ebePzbfiWNEqz7WxbVqFSB1M=
+			J9e/w6j04a2oueLAVHvDBVlqG5mT0XQYmL9IPDIbLfc=
 			</data>
 		</dict>
 		<key>Headers/PreviewsSupport.h</key>
@@ -61,35 +61,35 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			l/yVrBY/U7+zSCypAsKduT6J3Wzh+0QP4n7BfTXFUJY=
+			GVJPxIbiEEUcNoUeRXhr5+TRSQImqphXoK+e6czzJiY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Kjv0nvVhK2WQIhGmGbbSQ3QI2ExFhjsCgRqbFyfYuXs=
+			ozyhXPLogKob6d5rCdykJF9ncOrPT6s5NlpQLsIiB7c=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			iDDiNkkLsPulh7UT9RBrLvL5g8hIFuvK+QJGZkRz1T0=
+			zFScbEN4EDVbGf38tDTsyPS7q+KxfZQsYoTtwQoPHjY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			T7rJ5dWKiy6DVyjWjmzp6BXrRjR9T7KEfi36UWrBpwc=
+			nEGOQJtSkmk1LEmi4Bb7iLMVujJJLcGhxnPc31a80W8=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-xros.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			3/ChIjS3hvTdFevYk4/ccpU4aw2IOK2hYa+GGzR3pGI=
+			evTcw8OUyxcp9qEzp/78giHHFDwP6ebC1N5BsAGC2ms=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
