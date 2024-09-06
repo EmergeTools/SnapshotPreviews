@@ -1,8 +1,8 @@
 {
   "ABIRoot": {
     "kind": "Root",
-    "name": "TopLevel",
-    "printedName": "TopLevel",
+    "name": "PreviewsSupport",
+    "printedName": "PreviewsSupport",
     "children": [
       {
         "kind": "Import",
@@ -12,6 +12,16 @@
         "moduleName": "PreviewsSupport",
         "declAttributes": [
           "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "DeveloperToolsSupport",
+        "printedName": "DeveloperToolsSupport",
+        "declKind": "Import",
+        "moduleName": "PreviewsSupport",
+        "declAttributes": [
+          "AccessControl"
         ]
       },
       {
@@ -99,6 +109,22 @@
         "moduleName": "PreviewsSupport",
         "declAttributes": [
           "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
         ]
       },
       {
@@ -179,6 +205,22 @@
         "moduleName": "PreviewsSupport",
         "declAttributes": [
           "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
         ]
       },
       {
@@ -259,6 +301,22 @@
         "moduleName": "PreviewsSupport",
         "declAttributes": [
           "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
         ]
       },
       {
@@ -271,12 +329,28 @@
         "moduleName": "UIKit",
         "intro_Macosx": "14.0",
         "intro_iOS": "17.0",
+        "intro_tvOS": "17.0",
         "declAttributes": [
+          "Available",
           "Available",
           "Available"
         ],
         "isExternal": true,
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "MakeUIViewProvider",
@@ -296,12 +370,28 @@
         "moduleName": "UIKit",
         "intro_Macosx": "14.0",
         "intro_iOS": "17.0",
+        "intro_tvOS": "17.0",
         "declAttributes": [
+          "Available",
           "Available",
           "Available"
         ],
         "isExternal": true,
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "MakeViewControllerProvider",
@@ -321,7 +411,11 @@
         "moduleName": "SwiftUI",
         "intro_Macosx": "14.0",
         "intro_iOS": "17.0",
+        "intro_tvOS": "17.0",
+        "intro_watchOS": "10.0",
         "declAttributes": [
+          "Available",
+          "Available",
           "Available",
           "Available"
         ],
@@ -329,10 +423,308 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "MakeViewProvider",
             "printedName": "MakeViewProvider",
             "usr": "s:15PreviewsSupport16MakeViewProviderP",
             "mangledName": "$s15PreviewsSupport16MakeViewProviderP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "DefaultPreviewSource",
+        "printedName": "DefaultPreviewSource",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "makeView",
+            "printedName": "makeView",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> any SwiftUI.View",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "View",
+                    "printedName": "any SwiftUI.View",
+                    "usr": "s:7SwiftUI4ViewP"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC07SwiftUI04ViewE4BodyVRszlE04makeJ0AE0J0_pyScMYccvp",
+            "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC07SwiftUI04ViewE4BodyVRszlE04makeJ0AE0J0_pyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "spi_group_names": [
+              "Private"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> any SwiftUI.View",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "View",
+                        "printedName": "any SwiftUI.View",
+                        "usr": "s:7SwiftUI4ViewP"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC07SwiftUI04ViewE4BodyVRszlE04makeJ0AE0J0_pyScMYccvg",
+                "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC07SwiftUI04ViewE4BodyVRszlE04makeJ0AE0J0_pyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 == SwiftUI.ViewPreviewBody>",
+                "sugared_genericSig": "<A where A == SwiftUI.ViewPreviewBody>",
+                "isFromExtension": true,
+                "spi_group_names": [
+                  "Private"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "makeView",
+            "printedName": "makeView",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> UIKit.UIView",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIView",
+                    "printedName": "UIKit.UIView",
+                    "usr": "c:objc(cs)UIView"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So6UIViewCRszlE8makeViewAFyScMYccvp",
+            "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So6UIViewCRszlE8makeViewAFyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "spi_group_names": [
+              "Private"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> UIKit.UIView",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIView",
+                        "printedName": "UIKit.UIView",
+                        "usr": "c:objc(cs)UIView"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So6UIViewCRszlE8makeViewAFyScMYccvg",
+                "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So6UIViewCRszlE8makeViewAFyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 == UIKit.UIView>",
+                "sugared_genericSig": "<A where A == UIKit.UIView>",
+                "isFromExtension": true,
+                "spi_group_names": [
+                  "Private"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "makeViewController",
+            "printedName": "makeViewController",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> UIKit.UIViewController",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIViewController",
+                    "printedName": "UIKit.UIViewController",
+                    "usr": "c:objc(cs)UIViewController"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So16UIViewControllerCRszlE08makeViewI0AFyScMYccvp",
+            "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So16UIViewControllerCRszlE08makeViewI0AFyScMYccvp",
+            "moduleName": "PreviewsSupport",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "spi_group_names": [
+              "Private"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> UIKit.UIViewController",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "UIViewController",
+                        "printedName": "UIKit.UIViewController",
+                        "usr": "c:objc(cs)UIViewController"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So16UIViewControllerCRszlE08makeViewI0AFyScMYccvg",
+                "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV08PreviewsC0So16UIViewControllerCRszlE08makeViewI0AFyScMYccvg",
+                "moduleName": "PreviewsSupport",
+                "genericSig": "<τ_0_0 where τ_0_0 == UIKit.UIViewController>",
+                "sugared_genericSig": "<A where A == UIKit.UIViewController>",
+                "isFromExtension": true,
+                "spi_group_names": [
+                  "Private"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:21DeveloperToolsSupport20DefaultPreviewSourceV",
+        "mangledName": "$s21DeveloperToolsSupport20DefaultPreviewSourceV",
+        "moduleName": "DeveloperToolsSupport",
+        "genericSig": "<τ_0_0>",
+        "sugared_genericSig": "<A>",
+        "intro_Macosx": "15.0",
+        "intro_iOS": "18.0",
+        "intro_tvOS": "18.0",
+        "intro_watchOS": "11.0",
+        "declAttributes": [
+          "Available",
+          "Available",
+          "Available",
+          "Available",
+          "Available"
+        ],
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "MakeViewProvider",
+            "printedName": "MakeViewProvider",
+            "usr": "s:15PreviewsSupport16MakeViewProviderP",
+            "mangledName": "$s15PreviewsSupport16MakeViewProviderP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "MakeUIViewProvider",
+            "printedName": "MakeUIViewProvider",
+            "usr": "s:15PreviewsSupport18MakeUIViewProviderP",
+            "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "MakeViewControllerProvider",
+            "printedName": "MakeViewControllerProvider",
+            "usr": "s:15PreviewsSupport26MakeViewControllerProviderP",
+            "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP"
           }
         ]
       }

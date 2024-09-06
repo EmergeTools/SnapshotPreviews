@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		ktLYcCsAn8hfgDCpFvztRHH7omg=
+		wK7NTYa762P6qzO1UYGnqCm2WHM=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,7 +15,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/8Pw5v4y/vKdF/KKMICDv2ULcXg+hZKhQAMKl7om9pM=
+			Cza07iVBKfu/HPRN9ShnZFqWr1neVEvxbs7cC9HMLco=
 			</data>
 		</dict>
 		<key>Headers/PreviewsSupport.h</key>
@@ -29,70 +29,70 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yFdLlY5wywG6GJsjK3efqnDSybWRYqx89uepQL42Yi4=
+			hTDka/Mld6kIHSRX0tvV+hNILMaPBPYCH8A8rKdTom8=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			X2HndxdnmzFeCB0y/3djApoyTJi6BAFqgLlhGA7C3KU=
+			6u3gSc8OezMKO8zLJe6QMxhZtCFGK4HUTQm23ZHXtk4=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			x8WhAGypTujwsJ6lgaBUDqVJ8XXTUNevgCE3zlYgc8M=
+			accdNmWyHCDBXdM1F/O1Uc7nwRTplaXTHTXhOkGxUf0=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SosBhTSB5u5gBY65NUAZFyk4jZLKMogXl3Vh5o91Lq0=
+			ANyOhV8IffZgGva12lvIo5IdWZgsUBYpCMm7tTmWh0A=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			DRE9GXQAUUuthf20FxmmNIRfGIROBoHGgAZe+UE4MEY=
+			1Le/1pf8QN6R7DGDQK1ISVfqc2hyb2pwoVMIQYwynZs=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			yFdLlY5wywG6GJsjK3efqnDSybWRYqx89uepQL42Yi4=
+			hTDka/Mld6kIHSRX0tvV+hNILMaPBPYCH8A8rKdTom8=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZwzVxF7QrBdi+PsOi+mQJAw2XwYymICEUeTeGG5r44s=
+			qJeIL6iAnU1J3p/alumo3JDtBWWKdGNIvs1d/ExaoUs=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			VvdMqsxo4Q9jWCxV8wh+nZekYpQ3pb6K0uqcQ0Gp7lg=
+			N7xXTAAgzSU2AQJ+o/I1YZ2oD1OobXDmsg9ipnm86RQ=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			pJSGzxMEkKRXb7/zneecgQqjzB5cpEQurzizX9miY60=
+			kxMT26/vmv5yIbpyfymZnMrqGq2diwjdZKj2g1vx+do=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			40i/bNcpEXQRxYnyMVpDBqrOjUPnjGWSFhjTpV6IWwE=
+			WgufQMZckblCl+0bZAjEv5n/iyO0d8jyYfwjyPI5Zw8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -106,7 +106,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FKPw/L89//JmNp0reVtK6VIbkc9N11hAPMNhagjPLW8=
+			03WLsnn1ZkT++lwBb1wr9bzDDYWlrQmqWwO+cBzbzRA=
 			</data>
 		</dict>
 	</dict>
