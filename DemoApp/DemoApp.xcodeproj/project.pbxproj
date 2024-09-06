@@ -52,6 +52,7 @@
 		FA9C8E442A56959300DC4574 /* RatingPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9C8E432A56959300DC4574 /* RatingPreviews.swift */; };
 		FAA4F4CF2B271D9C00127B63 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA4F4CE2B271D9C00127B63 /* Color.swift */; };
 		FABCCD932AC39081008F4D3A /* EMGTestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABCCD922AC39081008F4D3A /* EMGTestHandler.swift */; };
+		FAC912372C894B6E00459191 /* OSVersionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC912362C894B6E00459191 /* OSVersionView.swift */; };
 		FACA23792A55FBEE0080545A /* DemoModule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA1671D72A5399F700A42DB0 /* DemoModule.framework */; };
 		FACBADA32C67B8D60012D600 /* DemoWatchPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACBADA22C67B8D60012D600 /* DemoWatchPreviewTest.swift */; };
 		FACBADAA2C67B8ED0012D600 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = FACBADA92C67B8ED0012D600 /* SnapshottingTests */; };
@@ -200,6 +201,7 @@
 		FAA4F4CE2B271D9C00127B63 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		FABCCD922AC39081008F4D3A /* EMGTestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EMGTestHandler.swift; sourceTree = "<group>"; };
 		FAC167E72A5F41C500D79C23 /* DemoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAC912362C894B6E00459191 /* OSVersionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionView.swift; sourceTree = "<group>"; };
 		FACA23752A55FB970080545A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		FACBADA02C67B8D60012D600 /* Demo Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Demo Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACBADA22C67B8D60012D600 /* DemoWatchPreviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoWatchPreviewTest.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				FA0B20F02A7DA20200EC91D3 /* AnyViewPreview.swift */,
 				FAD0107A2AA29ABA007D1AF6 /* TextView.swift */,
 				FA1E452D2ADF3C3D002C85DB /* UIViewPreviews.swift */,
+				FAC912362C894B6E00459191 /* OSVersionView.swift */,
 			);
 			path = TestViews;
 			sourceTree = "<group>";
@@ -727,6 +730,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA1671C52A5367A800A42DB0 /* ContentView.swift in Sources */,
+				FAC912372C894B6E00459191 /* OSVersionView.swift in Sources */,
 				FAD52BF82A7B5EEA001F1832 /* RideDetailView.swift in Sources */,
 				FA1671C32A5367A800A42DB0 /* DemoAppApp.swift in Sources */,
 				FAD0107B2AA29ABA007D1AF6 /* TextView.swift in Sources */,
