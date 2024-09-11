@@ -89,7 +89,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
 
   public func updateScrollViewHeight() {
     // Timeout limit
-    if timer == nil {
+    if timer == nil && heightAnchor != nil && supportsExpansion && firstScrollView != nil {
       startTimer()
     }
 
