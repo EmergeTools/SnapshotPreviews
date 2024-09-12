@@ -88,6 +88,7 @@ public struct PreviewType: Hashable, Identifiable {
   init<A: PreviewProvider>(typeName: String, previewProvider: A.Type) {
     self.typeName = typeName
     self.fileID = nil
+    self.line = nil
     self.previews = A._allPreviews.map { Preview(preview: $0, type: A.self) }
     self.platform = A.platform
   }
@@ -98,6 +99,7 @@ public struct PreviewType: Hashable, Identifiable {
   init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
     self.typeName = typeName
     self.fileID = A.fileID
+    self.line = A.line
     guard let internalPreview = try? A.makePreview(), let preview = Preview(preview: internalPreview)  else {
       return nil
     }
@@ -120,7 +122,11 @@ public struct PreviewType: Hashable, Identifiable {
 
   public var displayName: String {
     if let fileID = fileID {
-      return String(fileID.split(separator: "/").last!.split(separator: ".").first!)
+      let basename = String(fileID.split(separator: "/").last!.split(separator: ".").first!)
+      if let line = line {
+        return "\(basename)#\(line)"
+      }
+      return basename
     }
     let components = typeName
       .split(separator: ".")
@@ -138,6 +144,7 @@ public struct PreviewType: Hashable, Identifiable {
 
   public let id = UUID()
   public let fileID: String?
+  public let line: Int?
   public let typeName: String
   public var previews: [Preview]
   public let platform: PreviewPlatform?
