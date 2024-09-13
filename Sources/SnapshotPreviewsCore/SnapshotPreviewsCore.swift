@@ -122,11 +122,7 @@ public struct PreviewType: Hashable, Identifiable {
 
   public var displayName: String {
     if let fileID = fileID {
-      let basename = String(fileID.split(separator: "/").last!.split(separator: ".").first!)
-      if let line = line {
-        return "\(basename)#\(line)"
-      }
-      return basename
+      return String(fileID.split(separator: "/").last!.split(separator: ".").first!)
     }
     let components = typeName
       .split(separator: ".")
