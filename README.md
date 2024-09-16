@@ -170,11 +170,11 @@ struct MyView_Previews: PreviewProvider {
 }
 ```
 
-## Star History
+# Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=EmergeTools/SnapshotPreviews-iOS&type=Date)](https://star-history.com/#EmergeTools/SnapshotPreviews-iOS&Date)
 
-## Related Reading
+# Related Reading
 - [How to use VariadicView, SwiftUI's Private View API](https://www.emergetools.com/blog/posts/how-to-use-variadic-view): VariadicView is a core part of how multiple images are rendered for one PreviewProvider.
 - [The Surprising Cost of Protocol Conformances in Swift](https://www.emergetools.com/blog/posts/SwiftProtocolConformance): Details of how protocol conformances work in the runtime, which is how previews are discovered in app binaries.
 - [Emerge Android](https://github.com/EmergeTools/emerge-android): The android SDK for similar preview based snapshot testing, along with other EmergeTools features.
