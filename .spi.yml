@@ -5,4 +5,4 @@
 version: 1
 builder:
   configs:
-    - documentation_targets: [SnapshotPreferences, Snapshotting, SnapshottingTests, PreviewGallery]
+    - documentation_targets: [SnapshotPreferences, Snapshotting, SnapshottingTests]
