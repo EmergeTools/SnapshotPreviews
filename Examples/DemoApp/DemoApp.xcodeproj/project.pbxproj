@@ -213,7 +213,7 @@
 		FAD52BF42A7B5EEA001F1832 /* RideShareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideShareButton.swift; sourceTree = "<group>"; };
 		FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideOptionsView.swift; sourceTree = "<group>"; };
 		FADB112B2C67A17500985C48 /* DemoAppSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAppSnapshotTest.swift; sourceTree = "<group>"; };
-		FAF1BA622A54934200AEBE1B /* .. */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ..; path = ../..; sourceTree = "<group>"; };
+		FAF1BA622A54934200AEBE1B /* .. */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ..; path = ../../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
