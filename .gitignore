@@ -6,9 +6,9 @@ DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
-DemoApp/DemoApp.xcodeproj/xcuserdata/
+Examples/DemoApp/DemoApp.xcodeproj/xcuserdata/
 .xcuserstate
 PreviewsSupport/PreviewsSupport.xcframework/**/*.private.swiftinterface
 
 
-DemoApp/DemoApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+Examples/DemoApp/DemoApp.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
