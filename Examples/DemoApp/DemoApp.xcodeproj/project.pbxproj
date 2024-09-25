@@ -64,6 +64,7 @@
 		FAD52BF92A7B5EEA001F1832 /* RideShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF42A7B5EEA001F1832 /* RideShareButton.swift */; };
 		FAD52BFA2A7B5EEA001F1832 /* RideOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */; };
 		FADB112C2C67A17500985C48 /* DemoAppSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB112B2C67A17500985C48 /* DemoAppSnapshotTest.swift */; };
+		FAF7AC3A2CA477C50080AD0C /* FontSizeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF7AC392CA477C10080AD0C /* FontSizeTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -214,6 +215,7 @@
 		FAD52BF52A7B5EEA001F1832 /* RideOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideOptionsView.swift; sourceTree = "<group>"; };
 		FADB112B2C67A17500985C48 /* DemoAppSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAppSnapshotTest.swift; sourceTree = "<group>"; };
 		FAF1BA622A54934200AEBE1B /* .. */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ..; path = ../../..; sourceTree = "<group>"; };
+		FAF7AC392CA477C10080AD0C /* FontSizeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSizeTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -420,6 +422,7 @@
 			isa = PBXGroup;
 			children = (
 				FAD52BF22A7B5EEA001F1832 /* CodeEntryView.swift */,
+				FAF7AC392CA477C10080AD0C /* FontSizeTest.swift */,
 				FAD52BF12A7B5EEA001F1832 /* ExpandingView.swift */,
 				FA5E82962A96448A008DE3F0 /* StateView.swift */,
 				FA40515C2A95B587007A66D4 /* EmptyView.swift */,
@@ -732,6 +735,7 @@
 				FA1671C52A5367A800A42DB0 /* ContentView.swift in Sources */,
 				FAC912372C894B6E00459191 /* OSVersionView.swift in Sources */,
 				FAD52BF82A7B5EEA001F1832 /* RideDetailView.swift in Sources */,
+				FAF7AC3A2CA477C50080AD0C /* FontSizeTest.swift in Sources */,
 				FA1671C32A5367A800A42DB0 /* DemoAppApp.swift in Sources */,
 				FAD0107B2AA29ABA007D1AF6 /* TextView.swift in Sources */,
 				FA0B20FA2A7DCB0100EC91D3 /* ArrayBuilder.swift in Sources */,
