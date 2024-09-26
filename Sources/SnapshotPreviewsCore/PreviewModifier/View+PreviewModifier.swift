@@ -13,7 +13,7 @@ extension View {
   func applyPreviewModifiers(_ modifiers: [any PreviewModifier]) -> some View {
     var currentView: AnyView = AnyView(self)
     for modifier in modifiers {
-      let viewModifier = PreviewModifierViewModifierHelper.getViewModifier(modifier: modifier)
+      let viewModifier = PreviewModifierSupport.toViewModifier(modifier: AnyPreviewModifier(modifier))
       currentView = AnyView(currentView.modifier(viewModifier))
     }
     return currentView
