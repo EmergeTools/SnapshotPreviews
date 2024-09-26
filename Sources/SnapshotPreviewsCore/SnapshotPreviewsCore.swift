@@ -14,6 +14,7 @@ public struct Preview: Identifiable {
         P.previews
       }
     }
+    previewModifiers = []
   }
 
 #if compiler(>=5.9)
@@ -39,6 +40,16 @@ public struct Preview: Identifiable {
         }
       }
     }
+    let previewModifiersArrays = traits.compactMap({ trait in
+      if #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *),
+         let value = Mirror(reflecting: trait).descendant("value"),
+         let value = value as? [(any PreviewModifier)] {
+        return value
+      }
+      return nil
+    }).flatMap { $0 }
+    self.previewModifiers = previewModifiersArrays
+    
     self.orientation = orientation
     self.layout = layout
     displayName = preview.descendant("displayName") as? String
@@ -77,9 +88,34 @@ public struct Preview: Identifiable {
   public let index: Int
   public let device: PreviewDevice?
   public let layout: PreviewLayout
+  public let previewModifiers: [Any]
   private let _view: @MainActor () -> any View
-  @MainActor public func view() -> any View {
-    _view()
+  @MainActor
+  public func view() -> any View {
+    if #available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *) {
+      return _view().applyPreviewModifiers(previewModifiers as! [any PreviewModifier])
+    }
+    return _view()
+  }
+  
+  @available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
+  @MainActor
+  func loadPreviewModifiers() async {
+   for previewModifier in previewModifiers {
+     guard let modifier = previewModifier as? (any PreviewModifier) else {
+       continue
+     }
+    
+     let type = type(of: modifier)
+     let hash = String(describing: type)
+    
+     guard PreviewModifierContextCache.contextCache[hash] == nil else {
+       continue
+     }
+      
+     let context = try! await type.makeSharedContext()
+     PreviewModifierContextCache.contextCache[hash] = context
+   }
   }
 }
 

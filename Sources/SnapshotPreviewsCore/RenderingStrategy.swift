@@ -61,6 +61,10 @@ public protocol RenderingStrategy {
   @MainActor func render(
     preview: SnapshotPreviewsCore.Preview,
     completion: @escaping (SnapshotResult) -> Void)
+  
+  @MainActor func preparePreview(
+    preview: SnapshotPreviewsCore.Preview
+  ) async
 }
 
 private let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as? NSObject.Type
@@ -68,6 +72,14 @@ private let testHandler: NSObject.Type? = NSClassFromString("EMGTestHandler") as
 extension RenderingStrategy {
   static func setup() {
     testHandler?.perform(NSSelectorFromString("setup"))
+  }
+  
+  @MainActor public func preparePreview(
+    preview: SnapshotPreviewsCore.Preview
+  ) async {
+    if #available(iOS 18.0, *) {
+      await preview.loadPreviewModifiers()
+    }
   }
 }
 
