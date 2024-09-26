@@ -129,321 +129,8 @@
       },
       {
         "kind": "TypeDecl",
-        "name": "PreviewModifierContextCache",
-        "printedName": "PreviewModifierContextCache",
-        "children": [
-          {
-            "kind": "Var",
-            "name": "contextCache",
-            "printedName": "contextCache",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Dictionary",
-                "printedName": "[Swift.String : Any]",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "ProtocolComposition",
-                    "printedName": "Any"
-                  }
-                ],
-                "usr": "s:SD"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvpZ",
-            "mangledName": "$s15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvpZ",
-            "moduleName": "PreviewsSupport",
-            "static": true,
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl"
-            ],
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Dictionary",
-                    "printedName": "[Swift.String : Any]",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "ProtocolComposition",
-                        "printedName": "Any"
-                      }
-                    ],
-                    "usr": "s:SD"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvgZ",
-                "mangledName": "$s15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvgZ",
-                "moduleName": "PreviewsSupport",
-                "static": true,
-                "implicit": true,
-                "accessorKind": "get"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Set",
-                "printedName": "Set()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Dictionary",
-                    "printedName": "[Swift.String : Any]",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "ProtocolComposition",
-                        "printedName": "Any"
-                      }
-                    ],
-                    "usr": "s:SD"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvsZ",
-                "mangledName": "$s15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvsZ",
-                "moduleName": "PreviewsSupport",
-                "static": true,
-                "implicit": true,
-                "accessorKind": "set"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Modify",
-                "printedName": "Modify()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvMZ",
-                "mangledName": "$s15PreviewsSupport27PreviewModifierContextCacheV07contextF0SDySSypGvMZ",
-                "moduleName": "PreviewsSupport",
-                "static": true,
-                "implicit": true,
-                "intro_Macosx": "15.0",
-                "intro_iOS": "18.0",
-                "intro_tvOS": "18.0",
-                "intro_watchOS": "11.0",
-                "declAttributes": [
-                  "Available",
-                  "Available",
-                  "Available",
-                  "Available"
-                ],
-                "accessorKind": "_modify"
-              }
-            ]
-          }
-        ],
-        "declKind": "Struct",
-        "usr": "s:15PreviewsSupport27PreviewModifierContextCacheV",
-        "mangledName": "$s15PreviewsSupport27PreviewModifierContextCacheV",
-        "moduleName": "PreviewsSupport",
-        "intro_Macosx": "15.0",
-        "intro_iOS": "18.0",
-        "intro_tvOS": "18.0",
-        "intro_watchOS": "11.0",
-        "declAttributes": [
-          "AccessControl",
-          "Available",
-          "Available",
-          "Available",
-          "Available"
-        ],
-        "conformances": [
-          {
-            "kind": "Conformance",
-            "name": "Copyable",
-            "printedName": "Copyable",
-            "usr": "s:s8CopyableP",
-            "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          }
-        ]
-      },
-      {
-        "kind": "TypeDecl",
-        "name": "AnyPreviewModifier",
-        "printedName": "AnyPreviewModifier",
-        "children": [
-          {
-            "kind": "Function",
-            "name": "makeSharedContext",
-            "printedName": "makeSharedContext()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "ProtocolComposition",
-                "printedName": "Any"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "s:15PreviewsSupport18AnyPreviewModifierV17makeSharedContextypyYaKFZ",
-            "mangledName": "$s15PreviewsSupport18AnyPreviewModifierV17makeSharedContextypyYaKFZ",
-            "moduleName": "PreviewsSupport",
-            "static": true,
-            "declAttributes": [
-              "Custom",
-              "AccessControl"
-            ],
-            "throwing": true,
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "body",
-            "printedName": "body(content:context:)",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "AnyView",
-                "printedName": "SwiftUI.AnyView",
-                "usr": "s:7SwiftUI7AnyViewV"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "PreviewModifierContent",
-                "printedName": "SwiftUI.PreviewModifierContent",
-                "usr": "s:7SwiftUI22PreviewModifierContentV"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "ProtocolComposition",
-                "printedName": "Any"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "s:15PreviewsSupport18AnyPreviewModifierV4body7content7context7SwiftUI0C4ViewVAG0dE7ContentV_yptF",
-            "mangledName": "$s15PreviewsSupport18AnyPreviewModifierV4body7content7context7SwiftUI0C4ViewVAG0dE7ContentV_yptF",
-            "moduleName": "PreviewsSupport",
-            "declAttributes": [
-              "Custom",
-              "AccessControl"
-            ],
-            "funcSelfKind": "NonMutating"
-          }
-        ],
-        "declKind": "Struct",
-        "usr": "s:15PreviewsSupport18AnyPreviewModifierV",
-        "mangledName": "$s15PreviewsSupport18AnyPreviewModifierV",
-        "moduleName": "PreviewsSupport",
-        "intro_Macosx": "15.0",
-        "intro_iOS": "18.0",
-        "intro_tvOS": "18.0",
-        "intro_watchOS": "11.0",
-        "declAttributes": [
-          "Custom",
-          "AccessControl",
-          "Available",
-          "Available",
-          "Available",
-          "Available"
-        ],
-        "conformances": [
-          {
-            "kind": "Conformance",
-            "name": "Copyable",
-            "printedName": "Copyable",
-            "usr": "s:s8CopyableP",
-            "mangledName": "$ss8CopyableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Escapable",
-            "printedName": "Escapable",
-            "usr": "s:s9EscapableP",
-            "mangledName": "$ss9EscapableP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "PreviewModifier",
-            "printedName": "PreviewModifier",
-            "children": [
-              {
-                "kind": "TypeWitness",
-                "name": "Context",
-                "printedName": "Context",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "ProtocolComposition",
-                    "printedName": "Any"
-                  }
-                ]
-              },
-              {
-                "kind": "TypeWitness",
-                "name": "Body",
-                "printedName": "Body",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "AnyView",
-                    "printedName": "SwiftUI.AnyView",
-                    "usr": "s:7SwiftUI7AnyViewV"
-                  }
-                ]
-              }
-            ],
-            "usr": "s:7SwiftUI15PreviewModifierP",
-            "mangledName": "$s7SwiftUI15PreviewModifierP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Sendable",
-            "printedName": "Sendable",
-            "usr": "s:s8SendableP",
-            "mangledName": "$ss8SendableP"
-          }
-        ]
-      },
-      {
-        "kind": "TypeDecl",
-        "name": "AnyModifier",
-        "printedName": "AnyModifier",
+        "name": "AnyViewModifier",
+        "printedName": "AnyViewModifier",
         "children": [
           {
             "kind": "Constructor",
@@ -452,9 +139,16 @@
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "AnyModifier",
-                "printedName": "PreviewsSupport.AnyModifier",
-                "usr": "s:15PreviewsSupport11AnyModifierV"
+                "name": "AnyViewModifier",
+                "printedName": "PreviewsSupport.AnyViewModifier<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:15PreviewsSupport15AnyViewModifierV"
               },
               {
                 "kind": "TypeNominal",
@@ -463,11 +157,11 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:15PreviewsSupport11AnyModifierVyACxc7SwiftUI07PreviewD0Rzlufc",
-            "mangledName": "$s15PreviewsSupport11AnyModifierVyACxc7SwiftUI07PreviewD0Rzlufc",
+            "usr": "s:15PreviewsSupport15AnyViewModifierVyACyxGxcfc",
+            "mangledName": "$s15PreviewsSupport15AnyViewModifierVyACyxGxcfc",
             "moduleName": "PreviewsSupport",
-            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.PreviewModifier>",
-            "sugared_genericSig": "<M where M : SwiftUI.PreviewModifier>",
+            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.PreviewModifier, τ_0_0.Context == ()>",
+            "sugared_genericSig": "<M where M : SwiftUI.PreviewModifier, M.Context == ()>",
             "declAttributes": [
               "Preconcurrency",
               "Custom",
@@ -496,22 +190,31 @@
               {
                 "kind": "TypeNominal",
                 "name": "_ViewModifier_Content",
-                "printedName": "SwiftUI._ViewModifier_Content<PreviewsSupport.AnyModifier>",
+                "printedName": "SwiftUI._ViewModifier_Content<PreviewsSupport.AnyViewModifier<τ_0_0>>",
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "AnyModifier",
-                    "printedName": "PreviewsSupport.AnyModifier",
-                    "usr": "s:15PreviewsSupport11AnyModifierV"
+                    "name": "AnyViewModifier",
+                    "printedName": "PreviewsSupport.AnyViewModifier<τ_0_0>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "GenericTypeParam",
+                        "printedName": "τ_0_0"
+                      }
+                    ],
+                    "usr": "s:15PreviewsSupport15AnyViewModifierV"
                   }
                 ],
                 "usr": "s:7SwiftUI21_ViewModifier_ContentV"
               }
             ],
             "declKind": "Func",
-            "usr": "s:15PreviewsSupport11AnyModifierV4body7contentQr7SwiftUI05_ViewD8_ContentVyACG_tF",
-            "mangledName": "$s15PreviewsSupport11AnyModifierV4body7contentQr7SwiftUI05_ViewD8_ContentVyACG_tF",
+            "usr": "s:15PreviewsSupport15AnyViewModifierV4body7contentQr7SwiftUI01_dE8_ContentVyACyxGG_tF",
+            "mangledName": "$s15PreviewsSupport15AnyViewModifierV4body7contentQr7SwiftUI01_dE8_ContentVyACyxGG_tF",
             "moduleName": "PreviewsSupport",
+            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.PreviewModifier, τ_0_0.Context == ()>",
+            "sugared_genericSig": "<M where M : SwiftUI.PreviewModifier, M.Context == ()>",
             "declAttributes": [
               "Preconcurrency",
               "Custom",
@@ -521,9 +224,11 @@
           }
         ],
         "declKind": "Struct",
-        "usr": "s:15PreviewsSupport11AnyModifierV",
-        "mangledName": "$s15PreviewsSupport11AnyModifierV",
+        "usr": "s:15PreviewsSupport15AnyViewModifierV",
+        "mangledName": "$s15PreviewsSupport15AnyViewModifierV",
         "moduleName": "PreviewsSupport",
+        "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.PreviewModifier, τ_0_0.Context == ()>",
+        "sugared_genericSig": "<M where M : SwiftUI.PreviewModifier, M.Context == ()>",
         "intro_Macosx": "15.0",
         "intro_iOS": "18.0",
         "intro_tvOS": "18.0",
@@ -592,19 +297,26 @@
       },
       {
         "kind": "TypeDecl",
-        "name": "PreviewModifierViewModifierHelper",
-        "printedName": "PreviewModifierViewModifierHelper",
+        "name": "PreviewModifierSupport",
+        "printedName": "PreviewModifierSupport",
         "children": [
           {
             "kind": "Function",
-            "name": "getViewModifier",
-            "printedName": "getViewModifier(modifier:)",
+            "name": "toViewModifier",
+            "printedName": "toViewModifier(modifier:)",
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "AnyModifier",
-                "printedName": "PreviewsSupport.AnyModifier",
-                "usr": "s:15PreviewsSupport11AnyModifierV"
+                "name": "AnyViewModifier",
+                "printedName": "PreviewsSupport.AnyViewModifier<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:15PreviewsSupport15AnyViewModifierV"
               },
               {
                 "kind": "TypeNominal",
@@ -613,22 +325,21 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:15PreviewsSupport019PreviewModifierViewD6HelperV03geteD08modifierAA03AnyD0Vx_t7SwiftUI0cD0RzlFZ",
-            "mangledName": "$s15PreviewsSupport019PreviewModifierViewD6HelperV03geteD08modifierAA03AnyD0Vx_t7SwiftUI0cD0RzlFZ",
+            "usr": "s:15PreviewsSupport015PreviewModifierB0O06toViewD08modifierAA03AnyfD0VyxGx_t7SwiftUI0cD0Rzyt7ContextRtzlFZ",
+            "mangledName": "$s15PreviewsSupport015PreviewModifierB0O06toViewD08modifierAA03AnyfD0VyxGx_t7SwiftUI0cD0Rzyt7ContextRtzlFZ",
             "moduleName": "PreviewsSupport",
-            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.PreviewModifier>",
-            "sugared_genericSig": "<M where M : SwiftUI.PreviewModifier>",
+            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.PreviewModifier, τ_0_0.Context == ()>",
+            "sugared_genericSig": "<A where A : SwiftUI.PreviewModifier, A.Context == ()>",
             "static": true,
             "declAttributes": [
-              "AccessControl",
-              "Custom"
+              "AccessControl"
             ],
             "funcSelfKind": "NonMutating"
           }
         ],
-        "declKind": "Struct",
-        "usr": "s:15PreviewsSupport019PreviewModifierViewD6HelperV",
-        "mangledName": "$s15PreviewsSupport019PreviewModifierViewD6HelperV",
+        "declKind": "Enum",
+        "usr": "s:15PreviewsSupport015PreviewModifierB0O",
+        "mangledName": "$s15PreviewsSupport015PreviewModifierB0O",
         "moduleName": "PreviewsSupport",
         "intro_Macosx": "15.0",
         "intro_iOS": "18.0",
@@ -826,13 +537,5 @@
     ],
     "json_format_version": 8
   },
-  "ConstValues": [
-    {
-      "filePath": "\/Users\/itaybrenner\/emerge\/SnapshotPreviews-iOS\/PreviewsSupport\/PreviewsSupport\/PreviewsSupport.swift",
-      "kind": "Dictionary",
-      "offset": 3011,
-      "length": 3,
-      "value": "[]"
-    }
-  ]
+  "ConstValues": []
 }

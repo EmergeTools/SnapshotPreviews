@@ -9,34 +9,19 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 public protocol MakeViewProvider {
-  var makeView: @_Concurrency.MainActor () -> any SwiftUI.View { get }
+  var makeView: @_Concurrency.MainActor () -> any SwiftUICore.View { get }
 }
 @available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
-public struct PreviewModifierContextCache {
-  public static var contextCache: [Swift.String : Any]
-}
-@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
-@_Concurrency.MainActor public struct AnyPreviewModifier : SwiftUI.PreviewModifier {
-  @_Concurrency.MainActor public static func makeSharedContext() async throws -> Any
-  @_Concurrency.MainActor public func body(content: SwiftUI.PreviewModifierContent, context: Any) -> SwiftUICore.AnyView
-  @available(iOS 18.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, macOS 15.0, *)
-  public typealias Body = SwiftUICore.AnyView
-  @available(iOS 18.0, tvOS 18.0, watchOS 11.0, visionOS 2.0, macOS 15.0, *)
-  public typealias Context = Any
-}
-@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
-@_Concurrency.MainActor @preconcurrency public struct AnyModifier : SwiftUI.ViewModifier {
-  @_Concurrency.MainActor @preconcurrency public init<M>(_ modifier: M) where M : SwiftUI.PreviewModifier
-  @_Concurrency.MainActor @preconcurrency public func body(content: PreviewsSupport.AnyModifier.Content) -> some SwiftUI.View
+@_Concurrency.MainActor @preconcurrency public struct AnyViewModifier<M> : SwiftUICore.ViewModifier where M : SwiftUI.PreviewModifier, M.Context == () {
+  @_Concurrency.MainActor @preconcurrency public init(_ modifier: M)
+  @_Concurrency.MainActor @preconcurrency public func body(content: PreviewsSupport.AnyViewModifier<M>.Content) -> some SwiftUICore.View
   
   @available(iOS 18.0, tvOS 18.0, watchOS 11.0, macOS 15.0, *)
-  public typealias Body = @_opaqueReturnTypeOf("$s15PreviewsSupport11AnyModifierV4body7contentQr7SwiftUI05_ViewD8_ContentVyACG_tF", 0) __
+  public typealias Body = @_opaqueReturnTypeOf("$s15PreviewsSupport15AnyViewModifierV4body7contentQr7SwiftUI01_dE8_ContentVyACyxGG_tF", 0) __<M>
 }
 @available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
-public struct PreviewModifierViewModifierHelper {
-  @_Concurrency.MainActor public static func getViewModifier<M>(modifier: M) -> PreviewsSupport.AnyModifier where M : SwiftUI.PreviewModifier
+public enum PreviewModifierSupport {
+  public static func toViewModifier<A>(modifier: A) -> PreviewsSupport.AnyViewModifier<A> where A : SwiftUI.PreviewModifier, A.Context == ()
 }
 @available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
-extension PreviewsSupport.AnyPreviewModifier : Swift.Sendable {}
-@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
-extension PreviewsSupport.AnyModifier : Swift.Sendable {}
+extension PreviewsSupport.AnyViewModifier : Swift.Sendable {}
