@@ -105,3 +105,57 @@ extension DefaultPreviewSource: MakeViewControllerProvider where A == UIViewCont
 }
 
 #endif
+
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
+public struct PreviewModifierContextCache {
+ public static var contextCache: [String: Any] = [:]
+}
+
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
+public struct AnyPreviewModifier: PreviewModifier {
+  private let _body: (PreviewModifier.Content) -> AnyView
+
+  init<M: PreviewModifier>(_ modifier: M) {
+    let type = type(of: modifier)
+    let hash = String(describing: type)
+
+    _body = { content in
+      let cachedContext = PreviewModifierContextCache.contextCache[hash]
+      guard let typedContext = cachedContext as? M.Context else {
+        fatalError("Context type mismatch, expected: \(String(describing: M.Context.self)), got: \(String(describing: cachedContext.self))")
+      }
+      return AnyView(modifier.body(content: content, context: typedContext))
+    }
+  }
+
+  public static func makeSharedContext() async throws -> Any {
+    // Not necessary since we load it from the PreviewModifier
+    return ()
+  }
+
+  public func body(content: PreviewModifier.Content, context: Any) -> AnyView {
+    return _body(content)
+  }
+}
+
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
+public struct AnyModifier: ViewModifier {
+  private var modifier: any PreviewModifier
+
+  public init<M: PreviewModifier>(_ modifier: M) {
+   self.modifier = modifier
+  }
+
+  public func body(content: Content) -> some View {
+   content
+     .modifier(PreviewModifierViewModifier(modifier: AnyPreviewModifier(modifier), context: ()))
+  }
+}
+
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
+public struct PreviewModifierViewModifierHelper {
+  @MainActor
+  public static func getViewModifier<M: PreviewModifier>(modifier: M) -> AnyModifier {
+    return AnyModifier(AnyPreviewModifier(modifier))
+  }
+}
