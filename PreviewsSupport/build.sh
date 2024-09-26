@@ -112,3 +112,5 @@ xcodebuild -create-xcframework \
  -framework ./PreviewsSupport-macosx.xcarchive/Products/Library/Frameworks/PreviewsSupport.framework \
  -framework ./PreviewsSupport-catalyst.xcarchive/Products/Library/Frameworks/PreviewsSupport.framework \
  -output ./PreviewsSupport.xcframework
+
+find . -type f -name '*.swiftinterface' -exec sed -i '' 's/SwiftUICore.View/SwiftUI.View/g' {} +
