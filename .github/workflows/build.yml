@@ -57,7 +57,7 @@ jobs:
       - name: Xcode select
         run: sudo xcode-select -s '/Applications/Xcode_16.app/Contents/Developer'
       - name: Build Test Watch App
-        run: cd Examples && xcodebuild build -scheme 'Demo Watch App' -sdk watchsimulator -destination 'platform=watchOS Simulator,name=Apple Watch Series 10 (42mm)' -project DemoApp/DemoApp.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+        run: cd Examples && xcodebuild build -scheme 'Demo Watch App' -sdk watchsimulator -destination 'generic/platform=watchOS Simulator' -project DemoApp/DemoApp.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
       - name: Build Snapshotting
         run: xcodebuild build -scheme Snapshotting -sdk watchsimulator -destination 'generic/platform=watchOS Simulator'
       - name: Build SnapshottingTests
