@@ -36,22 +36,10 @@ for file_path in swiftui_interface
     File.open(file_path, 'a') do |file|
       file.puts("@available(iOS 18.0, macOS 15.0, tvOS 18.0, watchOS 11.0, *)
 public struct PreviewModifierViewModifier<A> where A : PreviewModifier {
-
-    /// Gets the current body of the caller.
-    ///
-    /// `content` is a proxy for the view that will have the modifier
-    /// represented by `Self` applied to it.
-    public func body(content: _ViewModifier_Content<PreviewModifierViewModifier<A>>) -> some View
-
-
+    public func body(content: SwiftUI._ViewModifier_Content<PreviewModifierViewModifier<A>>) -> some View
     public init(modifier: A, context: A.Context)
-
-    public static func metadata() -> any Any.Type
-
-    public static var nominalTypeDescriptor: String { get }
 }
-
-extension PreviewModifierViewModifier : ViewModifier {
+extension PreviewModifierViewModifier : SwiftUI.ViewModifier where A : SwiftUI.PreviewModifier {
 }")
     end
   end
