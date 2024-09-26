@@ -359,6 +359,9 @@
               "HasStorage",
               "AccessControl"
             ],
+            "spi_group_names": [
+              "Public"
+            ],
             "hasStorage": true,
             "accessors": [
               {
@@ -392,6 +395,9 @@
                 "moduleName": "PreviewsSupport",
                 "static": true,
                 "implicit": true,
+                "spi_group_names": [
+                  "Public"
+                ],
                 "accessorKind": "get"
               },
               {
@@ -430,6 +436,9 @@
                 "moduleName": "PreviewsSupport",
                 "static": true,
                 "implicit": true,
+                "spi_group_names": [
+                  "Public"
+                ],
                 "accessorKind": "set"
               },
               {
@@ -459,6 +468,9 @@
                   "Available",
                   "Available"
                 ],
+                "spi_group_names": [
+                  "Public"
+                ],
                 "accessorKind": "_modify"
               }
             ]
@@ -474,10 +486,14 @@
         "intro_watchOS": "11.0",
         "declAttributes": [
           "AccessControl",
+          "SPIAccessControl",
           "Available",
           "Available",
           "Available",
           "Available"
+        ],
+        "spi_group_names": [
+          "Public"
         ],
         "conformances": [
           {
@@ -521,6 +537,9 @@
               "Custom",
               "AccessControl"
             ],
+            "spi_group_names": [
+              "Private"
+            ],
             "throwing": true,
             "funcSelfKind": "NonMutating"
           },
@@ -555,6 +574,9 @@
               "Custom",
               "AccessControl"
             ],
+            "spi_group_names": [
+              "Private"
+            ],
             "funcSelfKind": "NonMutating"
           }
         ],
@@ -569,10 +591,14 @@
         "declAttributes": [
           "Custom",
           "AccessControl",
+          "SPIAccessControl",
           "Available",
           "Available",
           "Available",
           "Available"
+        ],
+        "spi_group_names": [
+          "Private"
         ],
         "conformances": [
           {
@@ -665,6 +691,9 @@
               "Custom",
               "AccessControl"
             ],
+            "spi_group_names": [
+              "Private"
+            ],
             "init_kind": "Designated"
           },
           {
@@ -709,6 +738,9 @@
               "Custom",
               "AccessControl"
             ],
+            "spi_group_names": [
+              "Private"
+            ],
             "funcSelfKind": "NonMutating"
           }
         ],
@@ -724,10 +756,14 @@
           "Preconcurrency",
           "Custom",
           "AccessControl",
+          "SPIAccessControl",
           "Available",
           "Available",
           "Available",
           "Available"
+        ],
+        "spi_group_names": [
+          "Private"
         ],
         "conformances": [
           {
@@ -815,6 +851,9 @@
               "AccessControl",
               "Custom"
             ],
+            "spi_group_names": [
+              "Public"
+            ],
             "funcSelfKind": "NonMutating"
           }
         ],
@@ -828,10 +867,14 @@
         "intro_watchOS": "11.0",
         "declAttributes": [
           "AccessControl",
+          "SPIAccessControl",
           "Available",
           "Available",
           "Available",
           "Available"
+        ],
+        "spi_group_names": [
+          "Public"
         ],
         "conformances": [
           {
@@ -1266,7 +1309,7 @@
     {
       "filePath": "\/Users\/itaybrenner\/emerge\/SnapshotPreviews-iOS\/PreviewsSupport\/PreviewsSupport\/PreviewsSupport.swift",
       "kind": "Dictionary",
-      "offset": 3011,
+      "offset": 3025,
       "length": 3,
       "value": "[]"
     }
