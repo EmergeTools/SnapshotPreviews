@@ -29,14 +29,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jhza8qhnX+D1R599F1ixjzOkgbYtDddVBaBOmhPmMfc=
+			eytM0xtqfTDY0Mkz/aoZAUbWAhGugCXH/QbwLztjpFU=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZqtaQLXmdrjPQUEqIAcIuuaT8neYeg4op1RKR9PeMfs=
+			y+Um2n+AaFOKp2fnf1FeFr/PVxGTlaQA0bpR1pzHauY=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.swiftdoc</key>
@@ -50,28 +50,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			TQ7n5d+0PNv738rL96BfZCKWm1NuUHCfRbB3EE46sYQ=
+			jXoVR+19evMbeAPtYLDcZEKVAENdzvV0XLRAojWYR5E=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/arm64-apple-ios-macabi.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			pw++Fvlejx9id5yQJtRtx+jyf3A00ES4foovdHQVxZg=
+			o/Aeceo+6hKggUXXqLkAKQktev1T4Q4cmKRQkUL4sYI=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jhza8qhnX+D1R599F1ixjzOkgbYtDddVBaBOmhPmMfc=
+			eytM0xtqfTDY0Mkz/aoZAUbWAhGugCXH/QbwLztjpFU=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Kc7+uxUFBceIyyxQIakitUCChYRZbHbQ0TeQowVrYXc=
+			GwobEHABtj6j8lR3Bct16K7L/Uwh2kObp6I3UHrgR4g=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.swiftdoc</key>
@@ -85,14 +85,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Iyed0ZBr8McBnvbo9pVLPzSRS5P2a/nUJ5Jt5eJReS0=
+			TAobFv0bbvy3cRGiK2QQqISueYpdkdD2qlbuiyuYlXM=
 			</data>
 		</dict>
 		<key>Modules/PreviewsSupport.swiftmodule/x86_64-apple-ios-macabi.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			7BlGmfYO+LA4EEXei5Y9tyr0ZAVVPfgR4fHE3a+mpTk=
+			rfRujhGLcIPfD+LIQYRRE5faHYoEZWtI41rPkBZcNlE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
