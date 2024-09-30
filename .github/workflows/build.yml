@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_16.0.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Build TestApp
         run: cd Examples && xcodebuild build -scheme DemoApp -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -project DemoApp/DemoApp.xcodeproj
       - name: Build Snapshotting
@@ -27,7 +27,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_16.0.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Build PreviewGallery
         run: xcodebuild build -scheme PreviewGallery -sdk appletvsimulator -destination 'generic/platform=tvOS Simulator'
       - name: Build Snapshotting
@@ -55,7 +55,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_16.0.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Build Test Watch App
         run: cd Examples && xcodebuild build -scheme 'Demo Watch App' -sdk watchsimulator -destination 'generic/platform=watchOS Simulator' -project DemoApp/DemoApp.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
       - name: Build Snapshotting
@@ -69,7 +69,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_16.0.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Build PreviewGallery
         run: xcodebuild build -scheme PreviewGallery -sdk macosx -destination 'generic/platform=macOS'
       - name: Build Snapshotting
@@ -82,7 +82,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_16.0.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Build PreviewGallery
         run: xcodebuild build -scheme PreviewGallery -sdk macosx -destination 'platform=macOS,variant=Mac Catalyst'
       - name: Build Snapshotting
