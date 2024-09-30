@@ -1,5 +1,5 @@
 //
-//  AccessibiltyPreference.swift
+//  AppStoreScreenshotPreference.swift
 //
 //
 //  Created by Noah Martin on 2/2/24.
