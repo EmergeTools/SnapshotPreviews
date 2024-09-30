@@ -2,7 +2,7 @@
 //  AppStoreScreenshotPreference.swift
 //
 //
-//  Created by Noah Martin on 2/2/24.
+//  Created by Trevor Elkins on 09/30/24.
 //
 
 import Foundation
