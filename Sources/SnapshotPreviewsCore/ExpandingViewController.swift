@@ -31,7 +31,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
   private var startTime: Date?
   private var timer: Timer?
 
-  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?, Error?) -> Void)? {
+  public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?, Bool?, Error?) -> Void)? {
     didSet { didCall = false }
   }
 
@@ -78,7 +78,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     guard !didCall else { return }
 
     didCall = true
-    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled, error)
+    expansionSettled?(rootView.emergeRenderingMode, rootView.precision, rootView.accessibilityEnabled, rootView.appStoreSnapshot, error)
     stopAndResetTimer()
   }
 
