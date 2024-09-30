@@ -30,7 +30,7 @@ class EmergeModifierState: NSObject {
   var renderingMode: EmergeRenderingMode.RawValue?
   var precision: Float?
   var accessibilityEnabled: Bool?
-  var appStoreScreenshot: Bool?
+  var appStoreSnapshot: Bool?
 }
 
 @objc(EmergeModifierFinder)
@@ -50,8 +50,8 @@ class EmergeModifierFinder: NSObject {
       .onPreferenceChange(AccessibilityPreferenceKey.self, perform: { value in
         EmergeModifierState.shared.accessibilityEnabled = value
       })
-      .onPreferenceChange(AppStoreScreenshotPreferenceKey.self, perform: { value in
-        EmergeModifierState.shared.appStoreScreenshot = value
+      .onPreferenceChange(AppStoreSnapshotPreferenceKey.self, perform: { value in
+        EmergeModifierState.shared.appStoreSnapshot = value
       })
   }
 }
