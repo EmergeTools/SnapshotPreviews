@@ -19,7 +19,7 @@ struct AppStoreScreenshotPreferenceKey: PreferenceKey {
 }
 
 extension View {
-    /// Marks a screenshot for use with our App Store screenshot editing tool.
+    /// Marks a snapshot for use with our App Store screenshot editing tool.
     ///
     /// - Note: This method is only available on iOS. It is unavailable on macOS, watchOS, visionOS, and tvOS.
     ///
