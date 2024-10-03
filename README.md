@@ -110,6 +110,9 @@ Add the package dependency to your Xcode project using the URL of this repositor
 Link your app to `PreviewGallery` and (optionally) to `SnapshotPreferences` to customize the behavior of snapshot generation.
 Link your XCTest target to `SnapshottingTests`.
 
+> [!WARNING]
+> If you happen to see the following error "Could not find or use auto-linked library 'XCTestSwiftSupport': library 'XCTestSwiftSupport' not found" after installing, try setting `ENABLE_TESTING_SEARCH_PATHS` to `YES` in your target's build settings!
+
 # Tips
 
 ### Unique names
