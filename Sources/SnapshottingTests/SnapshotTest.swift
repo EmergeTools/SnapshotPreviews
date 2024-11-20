@@ -49,7 +49,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     }
     #endif
   }
-  private let renderingStrategy = getRenderingStrategy()
+  private static let renderingStrategy = getRenderingStrategy()
 
   static private var previews: [SnapshotPreviewsCore.PreviewType] = []
 
@@ -79,7 +79,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
     var result: SnapshotResult? = nil
     let expectation = XCTestExpectation()
-    renderingStrategy.render(preview: preview) { snapshotResult in
+    Self.renderingStrategy.render(preview: preview) { snapshotResult in
       result = snapshotResult
       expectation.fulfill()
     }

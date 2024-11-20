@@ -41,13 +41,15 @@ public struct SnapshotResult {
     precision: Float?,
     accessibilityEnabled: Bool?,
     accessibilityMarkers: [AccessibilityMark]?,
-    colorScheme: ColorScheme?)
+    colorScheme: ColorScheme?,
+    appStoreSnapshot: Bool?)
   {
     self.image = image
     self.precision = precision
     self.accessibilityEnabled = accessibilityEnabled
     self.accessibilityMarkers = accessibilityMarkers
     self.colorScheme = colorScheme
+    self.appStoreSnapshot = appStoreSnapshot
   }
 
   public let image: Result<ImageType, Error>
@@ -55,6 +57,7 @@ public struct SnapshotResult {
   public let accessibilityEnabled: Bool?
   public let accessibilityMarkers: [AccessibilityMark]?
   public let colorScheme: ColorScheme?
+  public let appStoreSnapshot: Bool?
 }
 
 public protocol RenderingStrategy {

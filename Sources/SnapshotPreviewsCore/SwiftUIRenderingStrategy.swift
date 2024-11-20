@@ -41,9 +41,9 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
       let image = renderer.nsImage
 #endif
       if let image {
-        completion(SnapshotResult(image: .success(image), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme))
+        completion(SnapshotResult(image: .success(image), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
       } else {
-        completion(SnapshotResult(image: .failure(SwiftUIRenderingError.renderingError), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme))
+        completion(SnapshotResult(image: .failure(SwiftUIRenderingError.renderingError), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
       }
     }
   }
