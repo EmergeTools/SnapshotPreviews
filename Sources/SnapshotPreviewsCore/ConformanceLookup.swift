@@ -11,6 +11,13 @@ import MachO
 private func getTypeName(descriptor: UnsafePointer<TargetModuleContextDescriptor>) -> String? {
   let flags = descriptor.pointee.flags
   var parentName: String? = nil
+  if descriptor.pointee.parent != 0 {
+    let parent = UnsafeRawPointer(descriptor).advanced(by: MemoryLayout<TargetModuleContextDescriptor>.offset(of: \.parent)!).advanced(by: Int(descriptor.pointee.parent))
+    if abs(descriptor.pointee.parent) % 2 == 1 {
+      return nil
+    }
+    parentName = getTypeName(descriptor: parent.assumingMemoryBound(to: TargetModuleContextDescriptor.self))
+  }
   switch flags.kind {
   case .Module, .Enum, .Struct, .Class:
     let name = UnsafeRawPointer(descriptor)
@@ -18,19 +25,12 @@ private func getTypeName(descriptor: UnsafePointer<TargetModuleContextDescriptor
       .advanced(by: Int(descriptor.pointee.name))
       .assumingMemoryBound(to: CChar.self)
     let typeName = String(cString: name)
-    if descriptor.pointee.parent != 0 {
-      let parent = UnsafeRawPointer(descriptor).advanced(by: MemoryLayout<TargetModuleContextDescriptor>.offset(of: \.parent)!).advanced(by: Int(descriptor.pointee.parent))
-      if abs(descriptor.pointee.parent) % 2 == 1 {
-        return nil
-      }
-      parentName = getTypeName(descriptor: parent.assumingMemoryBound(to: TargetModuleContextDescriptor.self))
-    }
     if let parentName = parentName {
       return "\(parentName).\(typeName)"
     }
     return typeName
   default:
-    return nil
+    return parentName
   }
 }
 
