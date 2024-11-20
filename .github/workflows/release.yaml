@@ -16,8 +16,10 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Build xcframework
         run: sh build.sh
-      - name: Zip xcframework
+      - name: Zip SnapshottingTests xcframework
         run: zip -r SnapshottingTests.xcframework.zip SnapshottingTests.xcframework
+      - name: Zip PreviewGallery xcframework
+        run: zip -r PreviewGallery.xcframework.zip PreviewGallery.xcframework
       - name: Zip preivews support
         run: (cd PreviewsSupport && zip -r PreviewsSupport.xcframework.zip PreviewsSupport.xcframework)
       - name: Upload Artifact
@@ -25,6 +27,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
+            PreviewGallery.xcframework.zip
             SnapshottingTests.xcframework.zip
             PreviewsSupport/PreviewsSupport.xcframework.zip
           body:

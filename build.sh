@@ -45,10 +45,18 @@ build_framework() {
 # Update the Package.swift to build the library as dynamic instead of static
 sed -i '' '/Replace this/ s/.*/type: .dynamic,/' Package.swift
 
+# Build SnapshottingTests
 build_framework "iphonesimulator" "generic/platform=iOS Simulator" "SnapshottingTests"
 build_framework "iphoneos" "generic/platform=iOS" "SnapshottingTests"
+
+# Build PreviewGallery
+build_framework "iphonesimulator" "generic/platform=iOS Simulator" "PreviewGallery"
+build_framework "iphoneos" "generic/platform=iOS" "PreviewGallery"
 
 echo "Builds completed successfully."
 
 rm -rf "SnapshottingTests.xcframework"
 xcodebuild -create-xcframework -framework SnapshottingTests-iphonesimulator.xcarchive/Products/Library/Frameworks/SnapshottingTests.framework -framework SnapshottingTests-iphoneos.xcarchive/Products/Library/Frameworks/SnapshottingTests.framework -output SnapshottingTests.xcframework
+
+rm -rf "PreviewGallery.xcframework"
+xcodebuild -create-xcframework -framework PreviewGallery-iphonesimulator.xcarchive/Products/Library/Frameworks/PreviewGallery.framework -framework PreviewGallery-iphoneos.xcarchive/Products/Library/Frameworks/PreviewGallery.framework -output PreviewGallery.xcframework

@@ -1,7 +1,9 @@
 # 📸 SnapshotPreviews
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews-iOS%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews-iOS)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews)
+[![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.emergetools.com%2Fapi%2Fv2%2Fpublic_new_build%3FexampleId%3Dsnapshotpreviews-ios.PreviewGallery%26platform%3Dios%26badgeOption%3Dversion_and_max_install_size%26buildType%3Drelease&query=$.badgeMetadata&label=PreviewGallery&logo=apple)](https://www.emergetools.com/app/example/ios/snapshotpreviews-ios.PreviewGallery/release?utm_campaign=badge-data)
+[![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.emergetools.com%2Fapi%2Fv2%2Fpublic_new_build%3FexampleId%3Dsnapshotpreviews-ios.SnapshottingTests%26platform%3Dios%26badgeOption%3Dversion_and_max_install_size%26buildType%3Drelease&query=$.badgeMetadata&label=SnapshottingTests&logo=apple)](https://www.emergetools.com/app/example/ios/snapshotpreviews-ios.SnapshottingTests/release?utm_campaign=badge-data)
 
 An all-in-one snapshot testing solution built on Xcode previews. Automatic browsable gallery of previews, and no-code snapshot generation with XCTest. Supports SwiftUI and UIKit previews using `PreviewProvider` or `#Preview` and works on all Apple platforms (iOS/macOS/watchOS/tvOS/visionOS).
 
@@ -16,7 +18,7 @@ An all-in-one snapshot testing solution built on Xcode previews. Automatic brows
 `PreviewGallery` is an interactive UI built on top of snapshot extraction. It turns your Xcode previews into a gallery of components and features you can access from your application, for example in an internal settings screen. **Xcode is not required to view the previews.** You can use it to preview individual components (buttons/rows/icons/etc) or even entire interactive features.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews-iOS/master/images/image1.png" />
+  <img src="https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews/master/images/image1.png" />
 </p>
 
 The public API of PreviewGallery is a single SwiftUI `View` named `PreviewGallery`. Displaying this view gives you access to the full gallery. For example, you could add a button to open the gallery like this:
@@ -65,7 +67,7 @@ Note that there are no test functions; they are automatically added at runtime b
 > [!NOTE]
 > When you use Preview macros (`#Preview("Display Name")`) the name of the snapshot uses the file path and the name, for example: "MyModule/MyFile.swift:Display Name"
 
-![Screenshot of Xcode test output](https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews-iOS/master/images/testOutput.png)
+![Screenshot of Xcode test output](https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews/master/images/testOutput.png)
 
 The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) generates snapshots and diffs them in the cloud to control for sources of flakiness, store images outside of git, and optimize test performance. `SnapshotTest` is for locally debugging these snapshot tests. You can also use `PreviewTest` to get code coverage of all previews in your unit test without generating PNGs. This will validate that previews do not crash (such as a missing @EnvironmentObject) but runs faster because it does not render the views to images.
 
@@ -101,10 +103,10 @@ See the demo app for a full example.
 
 # Installation
 
-Add the package dependency to your Xcode project using the URL of this repository (https://github.com/EmergeTools/SnapshotPreviews-iOS).
+Add the package dependency to your Xcode project using the URL of this repository (https://github.com/EmergeTools/SnapshotPreviews).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews-iOS/master/images/image2.png" />
+  <img src="https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews/master/images/image2.png" />
 </p>
 
 Link your app to `PreviewGallery` and (optionally) to `SnapshotPreferences` to customize the behavior of snapshot generation.
@@ -150,7 +152,7 @@ Check `ProcessInfo.isRunningPeviews` to disable behavior you don’t want in pre
 > [!TIP]
 > Using PreviewVariants greatly simplifies snapshot testing, by ensuring a consistent set of variants and that every view is provided a name.
 
-Using multiple variants of the same view can ensure test coverage of all the ways users interact with your UI. Most are provided by SwiftUI, eg: `.dynamicTypeSize(.xxxLarge)`. There is one built into the package: `.emergeAccessibility(true)`. This function adds a visualization of voice over elements to your snapshot. You can automatically add variants using the [`PreviewVariants` View](https://github.com/EmergeTools/SnapshotPreviews-iOS/blob/main/DemoApp/DemoApp/TestViews/PreviewVariants.swift) that is demonstrated in the example app. It adds RTL, landscape, accessibility, dark mode and large text variants. You can use it like this:
+Using multiple variants of the same view can ensure test coverage of all the ways users interact with your UI. Most are provided by SwiftUI, eg: `.dynamicTypeSize(.xxxLarge)`. There is one built into the package: `.emergeAccessibility(true)`. This function adds a visualization of voice over elements to your snapshot. You can automatically add variants using the [`PreviewVariants` View](https://github.com/EmergeTools/SnapshotPreviews/blob/main/DemoApp/DemoApp/TestViews/PreviewVariants.swift) that is demonstrated in the example app. It adds RTL, landscape, accessibility, dark mode and large text variants. You can use it like this:
 
 ```swift
 struct MyView_Previews: PreviewProvider {
@@ -172,7 +174,7 @@ struct MyView_Previews: PreviewProvider {
 
 # Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=EmergeTools/SnapshotPreviews-iOS&type=Date)](https://star-history.com/#EmergeTools/SnapshotPreviews-iOS&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=EmergeTools/SnapshotPreviews&type=Date)](https://star-history.com/#EmergeTools/SnapshotPreviews&Date)
 
 # Related Reading
 - [How to use VariadicView, SwiftUI's Private View API](https://www.emergetools.com/blog/posts/how-to-use-variadic-view): VariadicView is a core part of how multiple images are rendered for one PreviewProvider.
