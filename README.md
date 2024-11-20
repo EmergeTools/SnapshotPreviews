@@ -1,8 +1,9 @@
 # 📸 SnapshotPreviews
 
-[![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.emergetools.com%2Fapi%2Fv2%2Fpublic_new_build%3FexampleId%3Dcom.emerge.PreviewsSupport%26platform%3Dios%26badgeOption%3Dversion_and_max_install_size%26buildType%3Drelease&query=$.badgeMetadata&label=PreviewsSupport&logo=apple)](https://www.emergetools.com/app/example/ios/etdistribution.ETDistribution/manual)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEmergeTools%2FSnapshotPreviews%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/EmergeTools/SnapshotPreviews)
+[![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.emergetools.com%2Fapi%2Fv2%2Fpublic_new_build%3FexampleId%3Dsnapshotpreviews-ios.PreviewGallery%26platform%3Dios%26badgeOption%3Dversion_and_max_install_size%26buildType%3Drelease&query=$.badgeMetadata&label=PreviewGallery&logo=apple)](https://www.emergetools.com/app/example/ios/snapshotpreviews-ios.PreviewGallery/release?utm_campaign=badge-data)
+[![](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.emergetools.com%2Fapi%2Fv2%2Fpublic_new_build%3FexampleId%3Dsnapshotpreviews-ios.SnapshottingTests%26platform%3Dios%26badgeOption%3Dversion_and_max_install_size%26buildType%3Drelease&query=$.badgeMetadata&label=SnapshottingTests&logo=apple)](https://www.emergetools.com/app/example/ios/snapshotpreviews-ios.SnapshottingTests/release?utm_campaign=badge-data)
 
 An all-in-one snapshot testing solution built on Xcode previews. Automatic browsable gallery of previews, and no-code snapshot generation with XCTest. Supports SwiftUI and UIKit previews using `PreviewProvider` or `#Preview` and works on all Apple platforms (iOS/macOS/watchOS/tvOS/visionOS).
 
