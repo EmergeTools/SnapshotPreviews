@@ -37,7 +37,7 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
     if let image {
       completion(SnapshotResult(image: .success(image), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
     } else {
-      completion(SnapshotResult(image: .failure(RenderingError.failedRendering(image?.size ?? .zero)), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
+      completion(SnapshotResult(image: .failure(RenderingError.failedRendering(.zero)), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
     }
   }
 }
