@@ -52,7 +52,7 @@ public class AppKitRenderingStrategy: RenderingStrategy {
         let image = vc?.view.snapshot()
         completion(
           SnapshotResult(
-            image: image != nil ? .success(image!) : .failure(SwiftUIRenderingError.renderingError),
+            image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(vc?.view.bounds.size ?? .zero)),
             precision: precision,
             accessibilityEnabled: accessibilityEnabled,
             accessibilityMarkers: nil,
