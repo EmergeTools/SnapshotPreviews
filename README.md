@@ -152,7 +152,7 @@ Check `ProcessInfo.isRunningPeviews` to disable behavior you don’t want in pre
 > [!TIP]
 > Using PreviewVariants greatly simplifies snapshot testing, by ensuring a consistent set of variants and that every view is provided a name.
 
-Using multiple variants of the same view can ensure test coverage of all the ways users interact with your UI. Most are provided by SwiftUI, eg: `.dynamicTypeSize(.xxxLarge)`. There is one built into the package: `.emergeAccessibility(true)`. This function adds a visualization of voice over elements to your snapshot. You can automatically add variants using the [`PreviewVariants` View](https://github.com/EmergeTools/SnapshotPreviews/blob/main/DemoApp/DemoApp/TestViews/PreviewVariants.swift) that is demonstrated in the example app. It adds RTL, landscape, accessibility, dark mode and large text variants. You can use it like this:
+Using multiple variants of the same view can ensure test coverage of all the ways users interact with your UI. Most are provided by SwiftUI, eg: `.dynamicTypeSize(.xxxLarge)`. There is one built into the package: `.emergeAccessibility(true)`. This function adds a visualization of voice over elements to your snapshot. You can automatically add variants using the [`PreviewVariants` View](https://github.com/EmergeTools/SnapshotPreviews/blob/main/Examples/DemoApp/DemoApp/TestViews/PreviewVariants.swift) that is demonstrated in the example app. It adds RTL, landscape, accessibility, dark mode and large text variants. You can use it like this:
 
 ```swift
 struct MyView_Previews: PreviewProvider {
