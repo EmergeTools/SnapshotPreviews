@@ -10,6 +10,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
           name: "PreviewGallery",
+          type: .static, // Replace this to build dynamic
           targets: ["PreviewGallery"]),
         // Test library to import in your XCTest target.
         // This is the only library that depends on XCTest.framework
