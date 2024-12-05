@@ -8,10 +8,6 @@
 import Foundation
 import SwiftUI
 
-enum SwiftUIRenderingError: Error {
-  case renderingError
-}
-
 @available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, visionOS 1.0, *)
 public class SwiftUIRenderingStrategy: RenderingStrategy {
 
@@ -42,8 +38,9 @@ public class SwiftUIRenderingStrategy: RenderingStrategy {
 #endif
       if let image {
         completion(SnapshotResult(image: .success(image), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
+        completion(SnapshotResult(image: .success(image), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
       } else {
-        completion(SnapshotResult(image: .failure(SwiftUIRenderingError.renderingError), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
+        completion(SnapshotResult(image: .failure(RenderingError.failedRendering(.zero)), precision: wrappedView.precision, accessibilityEnabled: wrappedView.accessibilityEnabled, accessibilityMarkers: [], colorScheme: colorScheme, appStoreSnapshot: wrappedView.appStoreSnapshot))
       }
     }
   }

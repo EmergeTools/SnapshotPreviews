@@ -5,18 +5,20 @@
 //  Created by Noah Martin on 12/22/22.
 //
 
-#if canImport(UIKit) && !os(visionOS) && !os(watchOS) && !os(tvOS)
-import Foundation
-import SwiftUI
-import UIKit
-import AccessibilitySnapshotCore
-import SnapshotSharedModels
+import CoreFoundation
 
 public enum RenderingError: Error {
   case failedRendering(CGSize)
   case maxSize(CGSize)
   case expandingViewTimeout(CGSize)
 }
+
+#if canImport(UIKit) && !os(visionOS) && !os(watchOS) && !os(tvOS)
+import Foundation
+import SwiftUI
+import UIKit
+import AccessibilitySnapshotCore
+import SnapshotSharedModels
 
 extension AccessibilityMarker: AccessibilityMark {
   public var accessibilityShape: MarkerShape {
