@@ -69,7 +69,7 @@ Note that there are no test functions; they are automatically added at runtime b
 
 ![Screenshot of Xcode test output](https://raw.githubusercontent.com/EmergeTools/SnapshotPreviews/master/images/testOutput.png)
 
-The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) generates snapshots and diffs them in the cloud to control for sources of flakiness, store images outside of git, and optimize test performance. `SnapshotTest` is for locally debugging these snapshot tests. You can also use `PreviewTest` to get code coverage of all previews in your unit test without generating PNGs. This will validate that previews do not crash (such as a missing @EnvironmentObject) but runs faster because it does not render the views to images.
+The [EmergeTools snapshot testing service](https://docs.emergetools.com/docs/snapshot-testing) generates snapshots and diffs them in the cloud to control for sources of flakiness, store images outside of git, and optimize test performance. `SnapshotTest` is for locally debugging these snapshot tests. You can also use `PreviewLayoutTest` to get code coverage of all previews in your unit test without generating PNGs. This will validate that previews do not crash (such as a missing @EnvironmentObject) but runs faster because it does not render the views to images.
 
 ## Accessibility Audits
 
