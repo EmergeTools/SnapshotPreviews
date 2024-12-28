@@ -51,12 +51,12 @@ import SnapshottingTests
 class DemoAppPreviewTest: SnapshotTest {
 
   // Return the type names of previews like "MyApp.MyView._Previews" to selectively render only some previews
-  override func snapshotPreviews() -> [String]? {
+  override class func snapshotPreviews() -> [String]? {
     return nil
   }
 
   // Use this to exclude some previews from generating
-  override func excludedSnapshotPreviews() -> [String]? {
+  override class func excludedSnapshotPreviews() -> [String]? {
     return nil
   }
 }
@@ -85,7 +85,7 @@ class DemoAppAccessibilityPreviewTest: AccessibilityPreviewTest {
     return .all
   }
 
-  override func handle(_ issue: XCUIAccessibilityAuditIssue) -> Bool {
+  override func handle(issue: XCUIAccessibilityAuditIssue) -> Bool {
     return false
   }
 }
