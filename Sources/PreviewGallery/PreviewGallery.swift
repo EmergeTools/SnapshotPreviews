@@ -10,17 +10,21 @@ import SwiftUI
 import SnapshotPreviewsCore
 
 struct PreviewCellView: View {
-  let preview: PreviewType
+  let previewGrouping: PreviewGrouping
+
+  var previews: [SnapshotPreviewsCore.Preview] {
+    previewGrouping.previews.flatMap { $0.previews(requiringFullscreen: false)}
+  }
 
   var body: some View {
     VStack(alignment: .center) {
       TitleSubtitleRow(
-        title: preview.displayName,
-        subtitle: "\(preview.previews.count) Preview\(preview.previews.count != 1 ? "s" : "")"
+        title: previewGrouping.displayName,
+        subtitle: "\(previews.count) Preview\(previews.count != 1 ? "s" : "")"
       )
       .padding(EdgeInsets(top: 12, leading: 16, bottom: 6, trailing: 16))
 
-      PreviewCell(preview: preview.previews[0])
+      PreviewCell(preview: previews[0])
     }
     .padding(.bottom, 8)
   }

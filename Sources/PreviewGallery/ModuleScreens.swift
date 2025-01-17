@@ -10,9 +10,9 @@ import SwiftUI
 import SnapshotPreviewsCore
 
 struct ModuleSelectionView: View {
-  let provider: SnapshotPreviewsCore.PreviewType
+  let provider: PreviewGrouping
   var body: some View {
-    let featurePreviews = provider.previews.filter { $0.requiresFullScreen }
+    let featurePreviews = provider.previews.flatMap(\.previews).filter { $0.requiresFullScreen }
     NavigationLink {
       if featurePreviews.count == 1 {
         AnyView(featurePreviews[0].view())
@@ -48,9 +48,7 @@ struct ModuleScreens: View {
   
   var body: some View {
     let featureProviders = data.previews(in: module).filter { provider in
-      return provider.previews.contains { preview in
-        return preview.requiresFullScreen
-      }
+      !provider.previewTypes(requiringFullscreen: true).isEmpty
     }
     return List {
       ForEach(featureProviders) { provider in
