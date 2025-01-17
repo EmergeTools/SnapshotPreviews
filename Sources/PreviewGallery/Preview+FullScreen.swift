@@ -20,3 +20,9 @@ extension Preview {
   }
 
 }
+
+extension PreviewType {
+  func previews(requiringFullscreen: Bool) -> [Preview] {
+    previews.filter { $0.requiresFullScreen == requiringFullscreen }
+  }
+}

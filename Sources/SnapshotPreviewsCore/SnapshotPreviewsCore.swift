@@ -122,16 +122,13 @@ public struct PreviewType: Hashable, Identifiable {
 
   public var displayName: String {
     if let fileID = fileID {
-      return String(fileID.split(separator: "/").last!.split(separator: ".").first!)
+      return String(fileID.split(separator: "/").last!.split(separator: ".").first!).splittingHumanReadableName.joined(separator: " ")
     }
-    let components = typeName
+    let withoutModule = typeName
       .split(separator: ".")
       .dropFirst()
-      .flatMap { $0.split(separator: "_") }
-      .joined(separator: " ")
-      .splitBefore(separator: { $0.isUpperCase && !($1?.isUpperCase ?? true) })
-      .map{ String($0).trimmingCharacters(in: .whitespaces) }
-      .filter { $0.count > 0 }
+      .joined(separator: ".")
+    let components = withoutModule.splittingHumanReadableName
     if components.last == "Previews" {
       return components.dropLast().joined(separator: " ")
     }
@@ -230,35 +227,4 @@ public enum FindPreviews {
         }
     }
   }
-}
-
-extension Sequence {
-    func splitBefore(
-        separator isSeparator: (Iterator.Element, Iterator.Element?) throws -> Bool
-    ) rethrows -> [AnySequence<Iterator.Element>] {
-        var result: [AnySequence<Iterator.Element>] = []
-        var subSequence: [Iterator.Element] = []
-
-        var iterator = self.makeIterator()
-        var currentElement = iterator.next()
-        while let element = currentElement {
-          let nextElement = iterator.next()
-          if try isSeparator(element, nextElement) {
-                if !subSequence.isEmpty {
-                    result.append(AnySequence(subSequence))
-                }
-                subSequence = [element]
-            }
-            else {
-                subSequence.append(element)
-            }
-          currentElement = nextElement
-        }
-        result.append(AnySequence(subSequence))
-        return result
-    }
-}
-
-extension Character {
-    var isUpperCase: Bool { return String(self) == String(self).uppercased() }
 }

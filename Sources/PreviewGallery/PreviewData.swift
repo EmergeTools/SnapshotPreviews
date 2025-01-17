@@ -8,6 +8,20 @@
 import Foundation
 import SnapshotPreviewsCore
 
+struct PreviewGrouping: Identifiable {
+  let id: String
+
+  var displayName: String {
+    previews[0].displayName
+  }
+
+  func previewTypes(requiringFullscreen: Bool) -> [PreviewType] {
+    return previews.filter { !$0.previews(requiringFullscreen: requiringFullscreen).isEmpty }
+  }
+
+  let previews: [PreviewType]
+}
+
 
 /// A structure that manages a collection of preview types.
 ///
@@ -30,8 +44,13 @@ public struct PreviewData {
   ///
   /// - Parameter module: The name of the module to filter previews for.
   /// - Returns: An array of `PreviewType` instances belonging to the specified module, sorted by type name.
-  func previews(in module: String) -> [PreviewType] {
-    previews.filter { $0.module == module }.sorted { $0.typeName < $1.typeName }
+  func previews(in module: String) -> [PreviewGrouping] {
+    let modulePreviews = previews.filter { $0.module == module }
+    return Dictionary(grouping: modulePreviews) { p in
+      p.fileID ?? p.typeName
+    }.values.map { previews in
+      PreviewGrouping(id: previews[0].fileID ?? previews[0].typeName, previews: previews)
+    }.sorted { $0.displayName < $1.displayName }
   }
 
   /// A set of all unique module names represented in the previews.
