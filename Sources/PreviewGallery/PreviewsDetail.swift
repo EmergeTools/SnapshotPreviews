@@ -12,9 +12,10 @@ import SnapshotPreviewsCore
 struct PreviewsDetail: View {
   
   let previewGrouping: PreviewGrouping
+  @State private var searchText = ""
 
   var previews: [SnapshotPreviewsCore.Preview] {
-    previewGrouping.previews.flatMap { $0.previews(requiringFullscreen: false) }
+    previewGrouping.previews.flatMap { $0.previews(requiringFullscreen: false) }.filterWithText(searchText, { $0.displayName ?? "" })
   }
 
   var body: some View {
@@ -41,6 +42,7 @@ struct PreviewsDetail: View {
     .background(Color(PlatformColor.galleryBackground))
     #endif
     .navigationTitle(previewGrouping.displayName)
+    .searchable(text: $searchText)
   }
   
 }

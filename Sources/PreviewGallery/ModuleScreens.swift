@@ -45,16 +45,18 @@ struct ModuleScreens: View {
   
   let module: String
   let data: PreviewData
+  @State private var searchText = ""
   
   var body: some View {
     let featureProviders = data.previews(in: module).filter { provider in
       !provider.previewTypes(requiringFullscreen: true).isEmpty
-    }
+    }.filterWithText(searchText, { $0.displayName })
     return List {
       ForEach(featureProviders) { provider in
         ModuleSelectionView(provider: provider)
       }
     }.navigationTitle("Screens")
+    .searchable(text: $searchText)
   }
   
 }

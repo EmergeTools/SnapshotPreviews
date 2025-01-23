@@ -52,6 +52,8 @@ struct PreviewCellView: View {
 public struct PreviewGallery: View {
   /// The data source containing preview information.
   let data: PreviewData
+  
+  @State private var searchText = ""
 
   /// Initializes a new `PreviewGallery` with the given preview data.
   ///
@@ -65,11 +67,12 @@ public struct PreviewGallery: View {
   public var body: some View {
     if data.modules.count > 0 {
       List {
-        ForEach(Array(data.modules).sorted(), id: \.self) { module in
+        ForEach(Array(data.modules).sorted().filterWithText(searchText, { $0 }), id: \.self) { module in
           ModulePreviews(module: module, data: data)
         }
       }
       .navigationTitle("Modules")
+      .searchable(text: $searchText)
     } else {
       Text("No previews found")
     }
