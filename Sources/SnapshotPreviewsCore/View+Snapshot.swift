@@ -27,11 +27,13 @@ extension AccessibilityMarker: AccessibilityMark {
       return .frame(frame)
     case .path(let path):
       return .path(path)
+    @unknown default:
+      fatalError("Unknown shape")
     }
   }
 }
 
-private var _colorScheme: ColorScheme? = nil
+@MainActor private var _colorScheme: ColorScheme? = nil
 
 extension View {
   public func makeExpandingView(layout: PreviewLayout, window: UIWindow) -> ExpandingViewController {
@@ -189,6 +191,7 @@ extension View {
 }
 
 extension CGSize {
+  @MainActor
   var requiresCoreAnimationSnapshot: Bool {
     height >= UIScreen.main.bounds.size.height * 2
   }
@@ -209,6 +212,8 @@ extension UIView {
         layer.layerForSnapshot.render(in: context)
         return true
       }
+    case .some(_):
+      fatalError("Unsupported rendering mode: \(String(describing: mode))")
     }
   }
 }
@@ -220,6 +225,8 @@ extension EmergeRenderingMode {
       return .renderLayerInContext
     case .uiView:
       return .drawHierarchyInRect
+    @unknown default:
+      fatalError("Unkown a11y rendering mode: \(self)") 
     }
   }
 }

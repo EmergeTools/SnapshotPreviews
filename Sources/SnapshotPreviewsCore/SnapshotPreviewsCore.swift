@@ -9,8 +9,9 @@ public struct Preview: Identifiable {
     displayName = preview.displayName
     device = preview.device
     layout = preview.layout
+    let previewId = preview.id
     _view = {
-      ViewSelectorTree(SnapshotViewModel(index: preview.id)) {
+      ViewSelectorTree(SnapshotViewModel(index: previewId)) {
         P.previews
       }
     }
@@ -18,6 +19,7 @@ public struct Preview: Identifiable {
 
 #if compiler(>=5.9)
   @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
+  @MainActor
   init?(preview: DeveloperToolsSupport.Preview) {
     previewId = "0"
     var orientation: InterfaceOrientation = .portrait
@@ -52,11 +54,11 @@ public struct Preview: Identifiable {
       #if canImport(UIKit) && !os(watchOS)
       if let source = source as? MakeUIViewProvider {
         _view = {
-          return UIViewWrapper(source.makeView)
+          UIViewWrapper(source.makeView)
         }
       } else if let source = source as? MakeViewControllerProvider {
         _view = {
-          return UIViewControllerWrapper(source.makeViewController)
+          UIViewControllerWrapper(source.makeViewController)
         }
       } else {
         return nil
@@ -85,7 +87,7 @@ public struct Preview: Identifiable {
 
 // Wraps PreviewProvider or PreviewRegistry
 public struct PreviewType: Hashable, Identifiable {
-  init<A: PreviewProvider>(typeName: String, previewProvider: A.Type) {
+  @MainActor init<A: PreviewProvider>(typeName: String, previewProvider: A.Type) {
     self.typeName = typeName
     self.fileID = nil
     self.line = nil

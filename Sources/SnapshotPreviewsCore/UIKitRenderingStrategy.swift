@@ -12,7 +12,7 @@ import SwiftUI
 
 public class UIKitRenderingStrategy: RenderingStrategy {
 
-  public init() {
+  @MainActor public init() {
     let windowScene = UIApplication.shared
       .connectedScenes
       .filter { $0.activationState == .foregroundActive }
@@ -25,7 +25,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
     self.window = window
   }
 
-  private var windowScene: UIWindowScene? {
+  @MainActor private var windowScene: UIWindowScene? {
     window.windowScene
   }
 

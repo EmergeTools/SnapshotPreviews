@@ -24,8 +24,10 @@ public struct PreferredColorSchemeWrapper<Content: View>: View {
   public var body: some View {
     content
       .onPreferenceChange(PreferredColorSchemeKey.self, perform: { value in
-        preferredColorScheme = value
-        colorSchemeUpdater?(value)
+        Task { @MainActor in
+          preferredColorScheme = value
+          colorSchemeUpdater?(value)
+        }
       })
       .environment(\.colorScheme, preferredColorScheme ?? colorScheme)
       .preferredColorScheme(nil)

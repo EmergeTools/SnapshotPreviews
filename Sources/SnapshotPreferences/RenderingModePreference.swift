@@ -14,7 +14,7 @@ struct RenderingModePreferenceKey: PreferenceKey {
     value = nextValue()
   }
   
-  static var defaultValue: EmergeRenderingMode.RawValue? = nil
+  static let defaultValue: EmergeRenderingMode.RawValue? = nil
 }
 
 extension View {

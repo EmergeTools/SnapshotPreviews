@@ -24,7 +24,7 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
   /// Override this method to provide a custom XCUIApplication instance if needed.
   ///
   /// - Returns: An instance of XCUIApplication.
-  open class func getApp() -> XCUIApplication {
+  @MainActor open class func getApp() -> XCUIApplication {
     XCUIApplication()
   }
 
@@ -113,13 +113,10 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     let request = URLRequest(url: url)
     let group = DispatchGroup()
     group.enter()
-    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      if let data = data, let stringData = String(data: data, encoding: .utf8) {
-        resultPath = stringData
-      }
+    getResultsPath(request: request) { stringData in
+      resultPath = stringData
       group.leave()
     }
-    task.resume()
     guard group.wait(timeout: .now().advanced(by: .seconds(25))) == .success else {
       preconditionFailure("test timed out")
     }
@@ -150,11 +147,10 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
 
     let request = URLRequest(url: url)
     var resultData: Data?
-    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+    getResultData(request: request) { data in
       resultData = data
       expectation.fulfill()
     }
-    task.resume()
 
     waitForExpectations(timeout: 5) { error in
       if let error = error {
@@ -192,5 +188,28 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     try? app.performAccessibilityAudit(for: auditType()) { [weak self] issue in
       return self?.handle(issue: issue) ?? false
     }
+  }
+  
+  private class func getResultsPath(request: URLRequest, completion: @escaping @MainActor (String?) -> Void) {
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      Task {
+        var result: String? = nil
+        if let data = data, let stringData = String(data: data, encoding: .utf8) {
+          result = stringData
+        }
+          
+        await completion(result)
+      }
+    }
+    task.resume()
+  }
+  
+  private func getResultData(request: URLRequest, completion: @escaping @MainActor (Data?) -> Void) {
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      Task {
+        await completion(data)
+      }
+    }
+    task.resume()
   }
 }

@@ -73,6 +73,7 @@ extension NamedViewModifier {
   @available(watchOS, unavailable)
   @available(visionOS, unavailable)
   @available(tvOS, unavailable)
+  @MainActor
   static var accessibility: NamedViewModifier {
     .init(name: "Accessibility", value: { $0.emergeAccessibility(true) })
   }
@@ -84,6 +85,7 @@ extension NamedViewModifier {
 
 extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
+  @MainActor
   static var previewDefault: [NamedViewModifier] {
     #if os(iOS)
     if UserDefaults.standard.bool(forKey: "NSDoubleLocalizedStrings") {
