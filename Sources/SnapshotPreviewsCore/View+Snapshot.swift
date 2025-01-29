@@ -36,6 +36,7 @@ extension AccessibilityMarker: AccessibilityMark {
 @MainActor private var _colorScheme: ColorScheme? = nil
 
 extension View {
+  @MainActor
   public func makeExpandingView(layout: PreviewLayout, window: UIWindow) -> ExpandingViewController {
     UIView.setAnimationsEnabled(false)
     var wrappedView: any View = self.transaction { transaction in

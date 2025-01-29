@@ -17,6 +17,7 @@ import SnapshotSharedModels
     .perform(NSSelectorFromString("shared"))
     .takeUnretainedValue()) : nil
 
+@MainActor
 public struct EmergeModifierView: View {
 
   private let internalView: AnyView
