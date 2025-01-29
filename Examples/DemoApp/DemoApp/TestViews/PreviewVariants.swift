@@ -14,6 +14,7 @@ extension View {
 
 struct PreviewVariants: View {
 
+  @MainActor
   init(
     modifiers: [NamedViewModifier] = .previewDefault,
     layout: PreviewLayout = .device,
