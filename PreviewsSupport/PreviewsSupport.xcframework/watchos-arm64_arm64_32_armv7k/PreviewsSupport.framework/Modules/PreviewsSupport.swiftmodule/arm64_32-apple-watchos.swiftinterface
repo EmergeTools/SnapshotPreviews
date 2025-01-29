@@ -10,5 +10,5 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 public protocol MakeViewProvider {
-  var makeView: @_Concurrency.MainActor @Sendable () -> any SwiftUICore.View { get }
+  var makeView: @_Concurrency.MainActor @Sendable () -> any SwiftUI.View { get }
 }
