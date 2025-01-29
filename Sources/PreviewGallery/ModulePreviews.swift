@@ -11,17 +11,19 @@ import SwiftUI
 struct ModulePreviews: View {
   let module: String
   let data: PreviewData
+  
+  @State private var searchText = ""
 
   var body: some View {
     let allPreviewGroups = data.previews(in: module)
     let componentProviders = allPreviewGroups.filter { provider in
       provider.previewTypes(requiringFullscreen: false).count > 0
-    }
+    }.filterWithText(searchText, { $0.displayName })
     let fullScreenCount = allPreviewGroups.flatMap { $0.previews.flatMap { $0.previews(requiringFullscreen: true)} }.count
     return NavigationLink(module) {
       ScrollView {
         LazyVStack(alignment: .leading, spacing: 12) {
-          if fullScreenCount > 0 {
+          if fullScreenCount > 0 && (searchText.isEmpty || "screens".contains(searchText.lowercased())) {
             NavigationLink(destination: ModuleScreens(module: module, data: data)) {
               TitleSubtitleRow(
                 title: "Screens",
@@ -50,6 +52,7 @@ struct ModulePreviews: View {
       .background(Color(PlatformColor.galleryBackground))
       #endif
       .navigationTitle(module)
+      .searchable(text: $searchText)
     }
   }
 }
