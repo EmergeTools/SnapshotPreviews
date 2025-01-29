@@ -12,16 +12,16 @@ import UIKit
 #endif
 
 public protocol MakeViewProvider {
-  var makeView: @MainActor () -> any View { get }
+  var makeView: @MainActor @Sendable () -> any View { get }
 }
 
 #if canImport(UIKit) && !os(watchOS)
 public protocol MakeUIViewProvider {
-  var makeView: @MainActor () -> UIView { get }
+  var makeView: @MainActor @Sendable () -> UIView { get }
 }
 
 public protocol MakeViewControllerProvider {
-  var makeViewController: @MainActor () -> UIViewController { get }
+  var makeViewController: @MainActor @Sendable () -> UIViewController { get }
 }
 
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, *)

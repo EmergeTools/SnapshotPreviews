@@ -61,8 +61,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvp",
-            "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvp",
+            "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyYbScMYccvp",
+            "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyYbScMYccvp",
             "moduleName": "PreviewsSupport",
             "protocolReq": true,
             "accessors": [
@@ -91,8 +91,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvg",
-                "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyScMYccvg",
+                "usr": "s:15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyYbScMYccvg",
+                "mangledName": "$s15PreviewsSupport16MakeViewProviderP04makeD07SwiftUI0D0_pyYbScMYccvg",
                 "moduleName": "PreviewsSupport",
                 "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeViewProvider>",
                 "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeViewProvider>",
@@ -157,8 +157,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "s:15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvp",
-            "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvp",
+            "usr": "s:15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyYbScMYccvp",
+            "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyYbScMYccvp",
             "moduleName": "PreviewsSupport",
             "protocolReq": true,
             "accessors": [
@@ -187,8 +187,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvg",
-                "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyScMYccvg",
+                "usr": "s:15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyYbScMYccvg",
+                "mangledName": "$s15PreviewsSupport18MakeUIViewProviderP8makeViewSo0D0CyYbScMYccvg",
                 "moduleName": "PreviewsSupport",
                 "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeUIViewProvider>",
                 "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeUIViewProvider>",
@@ -253,8 +253,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "s:15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvp",
-            "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvp",
+            "usr": "s:15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyYbScMYccvp",
+            "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyYbScMYccvp",
             "moduleName": "PreviewsSupport",
             "protocolReq": true,
             "accessors": [
@@ -283,8 +283,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvg",
-                "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyScMYccvg",
+                "usr": "s:15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyYbScMYccvg",
+                "mangledName": "$s15PreviewsSupport26MakeViewControllerProviderP04makedE0So06UIViewE0CyYbScMYccvg",
                 "moduleName": "PreviewsSupport",
                 "genericSig": "<τ_0_0 where τ_0_0 : PreviewsSupport.MakeViewControllerProvider>",
                 "sugared_genericSig": "<Self where Self : PreviewsSupport.MakeViewControllerProvider>",
