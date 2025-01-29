@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DateView: View {
-  let currentDate = Date.current
+  let currentDate = Date()
 
     var body: some View {
         Text(currentDate, style: .date)

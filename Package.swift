@@ -37,12 +37,13 @@ let package = Package(
     dependencies: [
       .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.16.0"),
       .package(url: "https://github.com/EmergeTools/AccessibilitySnapshot.git", exact: "1.0.2"),
+      .package(url: "https://github.com/EmergeTools/SimpleDebugger.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         // Target that provides the XCTest
-        .target(name: "SnapshottingTestsObjc"),
+      .target(name: "SnapshottingTestsObjc", dependencies: [.product(name: "SimpleDebugger", package: "SimpleDebugger", condition: .when(platforms: [.iOS, .macOS, .macCatalyst]))]),
         .target(name: "SnapshottingTests", dependencies: ["SnapshotPreviewsCore", "SnapshottingTestsObjc"]),
         .target(name: "SnapshotSharedModels"),
         // Core functionality
@@ -59,5 +60,6 @@ let package = Package(
         .testTarget(
             name: "SnapshotPreviewsTests",
             dependencies: ["SnapshotPreviewsCore"]),
-    ]
+    ],
+    cxxLanguageStandard: .cxx11
 )
