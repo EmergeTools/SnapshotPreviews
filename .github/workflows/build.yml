@@ -8,12 +8,19 @@ on:
 jobs:
   build:
     runs-on: macos-14
-
+    strategy:
+      matrix:
+        xcode-version: [15.4, 16.1]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
       - name: Build TestApp
         run: cd Examples && xcodebuild build -scheme DemoApp -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -project DemoApp/DemoApp.xcodeproj
       - name: Build Snapshotting
@@ -22,12 +29,20 @@ jobs:
         run: xcodebuild build -scheme SnapshottingTests -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
   build-tvos:
       runs-on: macos-14
+      strategy:
+        matrix:
+          xcode-version: [15.4, 16.1]
 
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
       - name: Build PreviewGallery
         run: xcodebuild build -scheme PreviewGallery -sdk appletvsimulator -destination 'generic/platform=tvOS Simulator'
       - name: Build Snapshotting
@@ -36,12 +51,20 @@ jobs:
         run: xcodebuild build -scheme SnapshottingTests -sdk appletvsimulator -destination 'generic/platform=tvOS Simulator'
   build-visionos:
       runs-on: macos-15
+      strategy:
+        matrix:
+          xcode-version: [15.4, 16.1]
 
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_16.0.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
       - name: Build TestApp
         run: cd Examples && xcodebuild build -scheme DemoApp -sdk xrsimulator -destination 'generic/platform=visionOS Simulator' -project DemoApp/DemoApp.xcodeproj
       - name: Build Snapshotting
@@ -50,12 +73,20 @@ jobs:
         run: xcodebuild build -scheme SnapshottingTests -sdk xrsimulator -destination 'generic/platform=visionOS Simulator'
   build-watchos:
       runs-on: macos-14
+      strategy:
+        matrix:
+          xcode-version: [15.4, 16.1]
 
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
       - name: Build Test Watch App
         run: cd Examples && xcodebuild build -scheme 'Demo Watch App' -sdk watchsimulator -destination 'generic/platform=watchOS Simulator' -project DemoApp/DemoApp.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
       - name: Build Snapshotting
@@ -64,12 +95,20 @@ jobs:
         run: xcodebuild build -scheme SnapshottingTests -sdk watchsimulator -destination 'generic/platform=watchOS Simulator'
   build-macos:
       runs-on: macos-14
+      strategy:
+        matrix:
+          xcode-version: [15.4, 16.1]
 
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
       - name: Build PreviewGallery
         run: xcodebuild build -scheme PreviewGallery -sdk macosx -destination 'generic/platform=macOS'
       - name: Build Snapshotting
@@ -78,11 +117,20 @@ jobs:
         run: xcodebuild build -scheme SnapshottingTests -sdk macosx -destination 'generic/platform=macOS'
   build-macos-catalyst:
       runs-on: macos-14
+      strategy:
+        matrix:
+          xcode-version: [15.4, 16.1]
+
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
       - name: Build PreviewGallery
         run: xcodebuild build -scheme PreviewGallery -sdk macosx -destination 'platform=macOS,variant=Mac Catalyst'
       - name: Build Snapshotting

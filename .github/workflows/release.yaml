@@ -8,28 +8,41 @@ on:
 jobs:
   release:
     runs-on: macos-14
+    strategy:
+      matrix:
+        xcode-version: [15.4, 16.1]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Xcode select
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Xcode select ${{ matrix.xcode-version }}
+        run: sudo xcode-select -s '/Applications/Xcode_${{ matrix.xcode-version }}.app/Contents/Developer'
+      - name: Get Swift Version
+        run: |
+          SWIFT_MAJOR_VERSION=$(swift --version 2>&1 | awk '/Apple Swift version/ { split($7, ver, "."); print ver[1]; exit }')
+          echo "Swift major version: $SWIFT_MAJOR_VERSION"
+          echo "SWIFT_MAJOR_VERSION=$SWIFT_MAJOR_VERSION" >> "$GITHUB_ENV"
+          echo "SWIFT_VERSION=$SWIFT_MAJOR_VERSION.0" >> "$GITHUB_ENV"
+      - name: Build xcframework
+        run: sh build.sh
+        env:
+          SWIFT_VERSION: ${{ env.SWIFT_VERSION }}
       - name: Build xcframework
         run: sh build.sh
       - name: Zip SnapshottingTests xcframework
-        run: zip -r SnapshottingTests.xcframework.zip SnapshottingTests.xcframework
+        run: zip -r SnapshottingTests_swift_${{ env.SWIFT_MAJOR_VERSION }}.xcframework.zip SnapshottingTests.xcframework
       - name: Zip PreviewGallery xcframework
-        run: zip -r PreviewGallery.xcframework.zip PreviewGallery.xcframework
+        run: zip -r PreviewGallery_swift_${{ env.SWIFT_MAJOR_VERSION }}.xcframework.zip PreviewGallery.xcframework
       - name: Zip preivews support
-        run: (cd PreviewsSupport && zip -r PreviewsSupport.xcframework.zip PreviewsSupport.xcframework)
+        run: (cd PreviewsSupport && zip -r PreviewsSupport_swift_${{ env.SWIFT_MAJOR_VERSION }}.xcframework.zip PreviewsSupport.xcframework)
       - name: Upload Artifact
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            PreviewGallery.xcframework.zip
-            SnapshottingTests.xcframework.zip
-            PreviewsSupport/PreviewsSupport.xcframework.zip
+            PreviewGallery_swift_${{ env.SWIFT_MAJOR_VERSION }}.xcframework.zip
+            SnapshottingTests_swift_${{ env.SWIFT_MAJOR_VERSION }}.xcframework.zip
+            PreviewsSupport_swift_${{ env.SWIFT_MAJOR_VERSION }}.xcframework.zip
           body:
             Release ${{ github.ref }}
             Automated release created by GitHub Actions.
