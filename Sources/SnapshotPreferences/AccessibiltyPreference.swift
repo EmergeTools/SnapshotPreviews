@@ -15,7 +15,7 @@ struct AccessibilityPreferenceKey: PreferenceKey {
     }
   }
 
-  static var defaultValue: Bool? = nil
+  static var defaultValue: Bool? = true
 }
 
 extension View {

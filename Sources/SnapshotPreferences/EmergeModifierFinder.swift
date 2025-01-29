@@ -23,7 +23,7 @@ class EmergeModifierState: NSObject {
     expansionPreference = nil
     renderingMode = nil
     precision = nil
-    accessibilityEnabled = nil
+    accessibilityEnabled = true
   }
 
   var expansionPreference: Bool?

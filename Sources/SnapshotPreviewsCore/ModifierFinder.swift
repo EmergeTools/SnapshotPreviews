@@ -36,7 +36,8 @@ public struct EmergeModifierView: View {
   }
 
   var accessibilityEnabled: Bool? {
-    stateMirror?.descendant("accessibilityEnabled") as? Bool
+//    stateMirror?.descendant("accessibilityEnabled") as? Bool
+    true
   }
 
   var appStoreSnapshot: Bool? {
