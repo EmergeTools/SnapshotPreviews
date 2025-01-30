@@ -24,7 +24,7 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
   /// Override this method to provide a custom XCUIApplication instance if needed.
   ///
   /// - Returns: An instance of XCUIApplication.
-  open class func getApp() -> XCUIApplication {
+  @MainActor open class func getApp() -> XCUIApplication {
     XCUIApplication()
   }
 
@@ -65,6 +65,8 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
   /// - Returns: A Boolean value indicating whether the issue was handled. Return `true` if the issue was handled, `false` otherwise.
   @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
   open func handle(issue: XCUIAccessibilityAuditIssue) -> Bool { false }
+  
+  nonisolated(unsafe) static var resultPath: String?
 
   private static func getDylibPath(dylibName: String) -> String? {
     let count = _dyld_image_count()
@@ -109,17 +111,13 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
       preconditionFailure("Invalid URL")
     }
 
-    var resultPath: String?
     let request = URLRequest(url: url)
     let group = DispatchGroup()
     group.enter()
-    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      if let data = data, let stringData = String(data: data, encoding: .utf8) {
-        resultPath = stringData
-      }
+    getResultsPath(request: request) { stringData in
+      resultPath = stringData
       group.leave()
     }
-    task.resume()
     guard group.wait(timeout: .now().advanced(by: .seconds(25))) == .success else {
       preconditionFailure("test timed out")
     }
@@ -150,11 +148,12 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
 
     let request = URLRequest(url: url)
     var resultData: Data?
-    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      resultData = data
-      expectation.fulfill()
+    getResultData(request: request) { data in
+      DispatchQueue.main.async {
+        resultData = data
+        expectation.fulfill()
+      }
     }
-    task.resume()
 
     waitForExpectations(timeout: 5) { error in
       if let error = error {
@@ -192,5 +191,23 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     try? app.performAccessibilityAudit(for: auditType()) { [weak self] issue in
       return self?.handle(issue: issue) ?? false
     }
+  }
+  
+  private class func getResultsPath(request: URLRequest, completion: @escaping @Sendable (String?) -> Void) {
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      var result: String? = nil
+      if let data = data, let stringData = String(data: data, encoding: .utf8) {
+        result = stringData
+      }
+      completion(result)
+    }
+    task.resume()
+  }
+  
+  private func getResultData(request: URLRequest, completion: @escaping @Sendable (Data?) -> Void) {
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      completion(data)
+    }
+    task.resume()
   }
 }

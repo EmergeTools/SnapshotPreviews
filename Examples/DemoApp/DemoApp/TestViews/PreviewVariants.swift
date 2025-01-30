@@ -15,13 +15,21 @@ extension View {
 struct PreviewVariants: View {
 
   init(
-    modifiers: [NamedViewModifier] = .previewDefault,
+    modifiers: [NamedViewModifier],
     layout: PreviewLayout = .device,
     @ArrayBuilder<PreviewView> views: () -> [PreviewView])
   {
     self.modifiers = modifiers
     self.layout = layout
     self.views = views()
+  }
+  
+  @MainActor
+  init(
+    layout: PreviewLayout = .device,
+    @ArrayBuilder<PreviewView> views: () -> [PreviewView])
+  {
+    self.init(modifiers: .previewDefault, layout: layout, views: views)
   }
 
   var body: some View {
@@ -73,6 +81,7 @@ extension NamedViewModifier {
   @available(watchOS, unavailable)
   @available(visionOS, unavailable)
   @available(tvOS, unavailable)
+  @MainActor
   static var accessibility: NamedViewModifier {
     .init(name: "Accessibility", value: { $0.emergeAccessibility(true) })
   }
@@ -84,6 +93,7 @@ extension NamedViewModifier {
 
 extension [NamedViewModifier] {
   /// The default named view modifiers in a ``PreviewVariants``.
+  @MainActor
   static var previewDefault: [NamedViewModifier] {
     #if os(iOS)
     if UserDefaults.standard.bool(forKey: "NSDoubleLocalizedStrings") {

@@ -23,10 +23,11 @@ extension SnapshotError: LocalizedError {
   }
 }
 
+@MainActor
 class Snapshots {
   let server = HTTPServer(address: .loopback(port: 38824))
 
-  public init() {
+  @MainActor public init() {
     #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
     renderingStrategy = UIKitRenderingStrategy()
     #elseif canImport(AppKit) && !targetEnvironment(macCatalyst)
@@ -54,8 +55,8 @@ class Snapshots {
   static let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
   static let resultsDir = documentsURL.appendingPathComponent("EMGSnapshots")
 
-  func startServer() async throws {
-    await server.appendRoute("GET /display/*") { [weak self] request in
+  @MainActor func startServer() async throws {
+    await server.appendRoute("GET /display/*") { @MainActor [weak self] request in
       let pathComponents = request.path.components(separatedBy: "/")
       guard let self, pathComponents.count > 3 else {
         return HTTPResponse(statusCode: .badRequest)
@@ -94,7 +95,7 @@ class Snapshots {
 
     await server.appendRoute("GET /file") { request in
       await Self.writeClassNames()
-      return HTTPResponse(statusCode: .ok, body: Self.resultsDir.path.data(using: .utf8)!)
+      return await HTTPResponse(statusCode: .ok, body: Self.resultsDir.path.data(using: .utf8)!)
     }
 
     try await server.start()

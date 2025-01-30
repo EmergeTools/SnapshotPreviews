@@ -15,23 +15,24 @@ import AppKit
 #endif
 
 protocol ContentHeightProviding {
-  var contentHeight: CGFloat { get }
+  @MainActor var contentHeight: CGFloat { get }
 
-  var visibleContentHeight: CGFloat { get }
+  @MainActor var visibleContentHeight: CGFloat { get }
 }
 
 protocol FirstScrollViewProviding {
-  var firstScrollView: ContentHeightProviding? { get }
+  @MainActor var firstScrollView: ContentHeightProviding? { get }
 }
 
 #if !os(watchOS)
 protocol ScrollExpansionProviding: AnyObject, FirstScrollViewProviding {
-  var previousHeight: CGFloat? { get set }
-  var heightAnchor: NSLayoutConstraint? { get }
-  var supportsExpansion: Bool { get }
+  @MainActor var previousHeight: CGFloat? { get set }
+  @MainActor var heightAnchor: NSLayoutConstraint? { get }
+  @MainActor var supportsExpansion: Bool { get }
 }
 
 extension ScrollExpansionProviding {
+  @MainActor
   func updateHeight(_ complete: (() -> Void)) {
     // If heightAnchor isn't set, this was a fixed size and we don't expand the scroll view
     guard let heightAnchor else {
@@ -81,6 +82,7 @@ extension UIScrollView: ContentHeightProviding {
 }
 
 extension UIView: FirstScrollViewProviding {
+  @MainActor
   var firstScrollView: ContentHeightProviding? {
     var subviews = subviews
     while !subviews.isEmpty {
@@ -100,6 +102,7 @@ extension UIView: FirstScrollViewProviding {
 }
 
 extension UIViewController: FirstScrollViewProviding {
+  @MainActor
   var firstScrollView: ContentHeightProviding? {
     view?.firstScrollView
   }

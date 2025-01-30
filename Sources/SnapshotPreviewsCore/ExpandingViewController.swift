@@ -16,6 +16,7 @@ import SnapshotSharedModels
 
 public final class ExpandingViewController: UIHostingController<EmergeModifierView>, ScrollExpansionProviding {
 
+  @MainActor
   var supportsExpansion: Bool {
     rootView.supportsExpansion
   }
@@ -112,15 +113,17 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
       }
       startTime = Date()
       timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        Task { @MainActor in
           guard let self,
-                let start = startTime,
-                Date().timeIntervalSince(start) >= HeightExpansionTimeLimitInSeconds else {
-              return
+                let start = self.startTime,
+                Date().timeIntervalSince(start) >= self.HeightExpansionTimeLimitInSeconds else {
+            return
           }
           let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width,
-                                                                        height: firstScrollView?.visibleContentHeight ?? -1))
-          NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(firstScrollView?.visibleContentHeight ?? -1)")
-          runCallback(timeoutError)
+                                                                        height: self.firstScrollView?.visibleContentHeight ?? -1))
+          NSLog("ExpandingViewController: Expanding Scroll View timed out. Current height is \(self.firstScrollView?.visibleContentHeight ?? -1)")
+          self.runCallback(timeoutError)
+        }
       }
   }
 

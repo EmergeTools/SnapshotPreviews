@@ -36,7 +36,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   ///
   /// This method selects between UIKit, AppKit, and SwiftUI rendering strategies depending on the available frameworks and OS version.
   /// - Returns: A `RenderingStrategy` object suitable for the current environment.
-  private static func getRenderingStrategy() -> RenderingStrategy {
+  @MainActor private static func getRenderingStrategy() -> RenderingStrategy {
     #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
       return UIKitRenderingStrategy()
     #elseif canImport(AppKit) && !targetEnvironment(macCatalyst)
@@ -49,9 +49,9 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     }
     #endif
   }
-  private static let renderingStrategy = getRenderingStrategy()
+  @MainActor private static let renderingStrategy = getRenderingStrategy()
 
-  static private var previews: [SnapshotPreviewsCore.PreviewType] = []
+  @MainActor static private var previews: [SnapshotPreviewsCore.PreviewType] = []
 
   /// Discovers all relevant previews based on inclusion and exclusion filters. Subclasses should NOT override this method.
   ///

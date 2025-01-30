@@ -32,7 +32,7 @@ open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
     nil
   }
 
-  static private var previews: [PreviewType] = []
+  @MainActor static private var previews: [PreviewType] = []
 
   /// Discovers all relevant previews based on inclusion and exclusion filters. Subclasses should NOT override this method.
   ///

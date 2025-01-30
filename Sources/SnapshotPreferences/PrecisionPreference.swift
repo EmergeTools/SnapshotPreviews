@@ -13,7 +13,7 @@ struct PrecisionPreferenceKey: PreferenceKey {
     value = nextValue()
   }
   
-  static var defaultValue: Float? = nil
+  static let defaultValue: Float? = nil
 }
 
 extension View {

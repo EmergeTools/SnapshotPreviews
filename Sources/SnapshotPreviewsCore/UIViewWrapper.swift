@@ -13,7 +13,7 @@ import SwiftUI
 struct UIViewControllerWrapper: UIViewControllerRepresentable {
   let builder: @MainActor () -> UIViewController
 
-  init(_ builder: @escaping @MainActor () -> UIViewController) {
+  init(_ builder: @escaping @MainActor @Sendable () -> UIViewController) {
     self.builder = builder
   }
 
@@ -28,7 +28,7 @@ struct UIViewWrapper: UIViewRepresentable {
 
   let builder: @MainActor () -> UIView
 
-  init(_ builder: @escaping @MainActor () -> UIView) {
+  init(_ builder: @escaping @MainActor @Sendable () -> UIView) {
     self.builder = builder
   }
 

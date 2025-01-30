@@ -20,14 +20,14 @@ struct DiscoveredPreviewAndIndex {
   let index: Int
 }
 
-var previews: [DiscoveredPreviewAndIndex] = []
+@MainActor var previews: [DiscoveredPreviewAndIndex] = []
 
 @objc(EMGPreviewBaseTest)
 open class PreviewBaseTest: XCTestCase {
 
-  static var signatureCreator: NSObject?
+  @MainActor static var signatureCreator: NSObject?
 
-  @objc
+  @objc @MainActor 
   static func swizzle(_ signatureCreator: NSObject) {
     self.signatureCreator = signatureCreator
     let originalSelector = NSSelectorFromString("testInvocations")

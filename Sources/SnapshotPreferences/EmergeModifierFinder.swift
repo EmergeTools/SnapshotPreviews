@@ -13,10 +13,10 @@ import SnapshotSharedModels
 // The inserted test runner code finds these classes through ObjC runtime functions (NSClassFromString)
 // and Swift reflection (Mirror).
 
-@objc(EmergeModifierState)
-class EmergeModifierState: NSObject {
+@objc(EmergeModifierState) @MainActor
+final class EmergeModifierState: NSObject {
 
-  @objc
+  @MainActor @objc
   static let shared = EmergeModifierState()
 
   func reset() {
@@ -35,23 +35,34 @@ class EmergeModifierState: NSObject {
 
 @objc(EmergeModifierFinder)
 class EmergeModifierFinder: NSObject {
+  @MainActor
   let finder: (any View) -> (any View) = { view in
     EmergeModifierState.shared.reset()
     return view
       .onPreferenceChange(ExpansionPreferenceKey.self, perform: { value in
-        EmergeModifierState.shared.expansionPreference = value
+        Task { @MainActor in
+          EmergeModifierState.shared.expansionPreference = value
+        }
       })
       .onPreferenceChange(RenderingModePreferenceKey.self, perform: { value in
-        EmergeModifierState.shared.renderingMode = value
+        Task { @MainActor in
+          EmergeModifierState.shared.renderingMode = value
+        }
       })
       .onPreferenceChange(PrecisionPreferenceKey.self, perform: { value in
-        EmergeModifierState.shared.precision = value
+        Task { @MainActor in
+          EmergeModifierState.shared.precision = value
+        }
       })
       .onPreferenceChange(AccessibilityPreferenceKey.self, perform: { value in
-        EmergeModifierState.shared.accessibilityEnabled = value
+        Task { @MainActor in
+          EmergeModifierState.shared.accessibilityEnabled = value
+        }
       })
       .onPreferenceChange(AppStoreSnapshotPreferenceKey.self, perform: { value in
-        EmergeModifierState.shared.appStoreSnapshot = value
+        Task { @MainActor in
+          EmergeModifierState.shared.appStoreSnapshot = value
+        }
       })
   }
 }

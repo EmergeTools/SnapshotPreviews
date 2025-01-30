@@ -9,14 +9,15 @@ import Foundation
 import SwiftUI
 import SnapshotSharedModels
 
-private let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
-private let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
-private let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
-private let stateMirror = modifierState != nil ? Mirror(
+@MainActor private let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
+@MainActor private let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
+@MainActor private let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
+@MainActor private let stateMirror = modifierState != nil ? Mirror(
   reflecting: modifierState!
     .perform(NSSelectorFromString("shared"))
     .takeUnretainedValue()) : nil
 
+@MainActor
 public struct EmergeModifierView: View {
 
   private let internalView: AnyView
