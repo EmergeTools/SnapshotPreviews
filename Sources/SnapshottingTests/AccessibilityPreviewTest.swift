@@ -190,25 +190,21 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     }
   }
   
-  private class func getResultsPath(request: URLRequest, completion: @escaping @MainActor (String?) -> Void) {
+  private class func getResultsPath(request: URLRequest, completion: @escaping (String?) -> Void) {
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      Task {
-        var result: String? = nil
-        if let data = data, let stringData = String(data: data, encoding: .utf8) {
-          result = stringData
-        }
-          
-        await completion(result)
+      var result: String? = nil
+      if let data = data, let stringData = String(data: data, encoding: .utf8) {
+        result = stringData
       }
+        
+      completion(result)
     }
     task.resume()
   }
   
-  private func getResultData(request: URLRequest, completion: @escaping @MainActor (Data?) -> Void) {
+  private func getResultData(request: URLRequest, completion: @escaping (Data?) -> Void) {
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      Task {
-        await completion(data)
-      }
+      completion(data)
     }
     task.resume()
   }
