@@ -53,12 +53,16 @@ public struct Preview: Identifiable {
     } else {
       #if canImport(UIKit) && !os(watchOS)
       if let source = source as? MakeUIViewProvider {
-        _view = {
-          UIViewWrapper(source.makeView)
+        _view = { @MainActor @Sendable in
+          UIViewWrapper {
+            source.makeView()
+          }
         }
       } else if let source = source as? MakeViewControllerProvider {
-        _view = {
-          UIViewControllerWrapper(source.makeViewController)
+        _view = { @MainActor @Sendable in
+          UIViewControllerWrapper {
+            source.makeViewController()
+          }
         }
       } else {
         return nil
