@@ -24,6 +24,7 @@ struct PreviewVariants: View {
     self.views = views()
   }
   
+  @MainActor
   init(
     layout: PreviewLayout = .device,
     @ArrayBuilder<PreviewView> views: () -> [PreviewView])
