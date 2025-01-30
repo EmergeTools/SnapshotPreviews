@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-compiler-version: Apple Swift version 6.0 effective-5.10 (swiftlang-6.0.0.9.10 clang-1600.0.26.2)
 // swift-module-flags: -target arm64-apple-tvos15.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name PreviewsSupport
 // swift-module-flags-ignorable: -no-verify-emitted-module-interface
 @_exported import PreviewsSupport
@@ -10,11 +10,11 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 public protocol MakeViewProvider {
-  var makeView: @_Concurrency.MainActor @Sendable () -> any SwiftUI.View { get }
+  var makeView: @_Concurrency.MainActor () -> any SwiftUI.View { get }
 }
 public protocol MakeUIViewProvider {
-  var makeView: @_Concurrency.MainActor @Sendable () -> UIKit.UIView { get }
+  var makeView: @_Concurrency.MainActor () -> UIKit.UIView { get }
 }
 public protocol MakeViewControllerProvider {
-  var makeViewController: @_Concurrency.MainActor @Sendable () -> UIKit.UIViewController { get }
+  var makeViewController: @_Concurrency.MainActor () -> UIKit.UIViewController { get }
 }
