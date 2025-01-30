@@ -14,15 +14,21 @@ extension View {
 
 struct PreviewVariants: View {
 
-  @MainActor
   init(
-    modifiers: [NamedViewModifier] = .previewDefault,
+    modifiers: [NamedViewModifier],
     layout: PreviewLayout = .device,
     @ArrayBuilder<PreviewView> views: () -> [PreviewView])
   {
     self.modifiers = modifiers
     self.layout = layout
     self.views = views()
+  }
+  
+  init(
+    layout: PreviewLayout = .device,
+    @ArrayBuilder<PreviewView> views: () -> [PreviewView])
+  {
+    self.init(modifiers: .previewDefault, layout: layout, views: views)
   }
 
   var body: some View {
