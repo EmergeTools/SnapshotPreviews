@@ -65,6 +65,8 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
   /// - Returns: A Boolean value indicating whether the issue was handled. Return `true` if the issue was handled, `false` otherwise.
   @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
   open func handle(issue: XCUIAccessibilityAuditIssue) -> Bool { false }
+  
+  nonisolated(unsafe) static var resultPath: String?
 
   private static func getDylibPath(dylibName: String) -> String? {
     let count = _dyld_image_count()
@@ -109,7 +111,6 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
       preconditionFailure("Invalid URL")
     }
 
-    var resultPath: String?
     let request = URLRequest(url: url)
     let group = DispatchGroup()
     group.enter()
@@ -148,8 +149,10 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     let request = URLRequest(url: url)
     var resultData: Data?
     getResultData(request: request) { data in
-      resultData = data
-      expectation.fulfill()
+      DispatchQueue.main.async {
+        resultData = data
+        expectation.fulfill()
+      }
     }
 
     waitForExpectations(timeout: 5) { error in
@@ -190,19 +193,18 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     }
   }
   
-  private class func getResultsPath(request: URLRequest, completion: @escaping (String?) -> Void) {
+  private class func getResultsPath(request: URLRequest, completion: @escaping @Sendable (String?) -> Void) {
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       var result: String? = nil
       if let data = data, let stringData = String(data: data, encoding: .utf8) {
         result = stringData
       }
-        
       completion(result)
     }
     task.resume()
   }
   
-  private func getResultData(request: URLRequest, completion: @escaping (Data?) -> Void) {
+  private func getResultData(request: URLRequest, completion: @escaping @Sendable (Data?) -> Void) {
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       completion(data)
     }
