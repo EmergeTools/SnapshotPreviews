@@ -42,27 +42,18 @@ int gettimeofday_new(struct timeval *t, void *a) {
   return 0;
 }
 
-void callback(mach_port_t thread, arm_thread_state64_t state, std::function<void(bool removeBreak)> a) {
-  state.__pc = (__uint64_t) &gettimeofday_new;
-  thread_set_state(thread, ARM_THREAD_STATE64, (thread_state_t) &state, ARM_THREAD_STATE64_COUNT);
-  a(false);
-}
-
 #endif
 
 + (void)hookTime {
 #if EMG_ENABLE_FIX_TIME
-  vm_address_t a = (vm_address_t) &gettimeofday;
   handler = new SimpleDebugger();
-  handler->setBreakpoint(a);
-  handler->setExceptionCallback(&callback);
-  handler->startDebugging();
+  handler->hookFunction((void *) &gettimeofday, (void *) &gettimeofday_new);
 #endif
 }
 
 + (void)load {
   NSDictionary<NSString *, NSString *> *env = [[NSProcessInfo processInfo] environment];
-  if ([[env objectForKey:@"EMERGE_SHOULD_FIX_TIME"] isEqualToString:@"1"]) {
+  if (![[env objectForKey:@"EMERGE_DISABLE_FIX_TIME"] isEqualToString:@"1"]) {
     [self hookTime];
   }
   id previewBaseTest = NSClassFromString(@"EMGPreviewBaseTest");
