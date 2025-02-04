@@ -11,7 +11,7 @@ import XCTest
 
 final class DemoWatchAccessibilityPreviewTest: AccessibilityPreviewTest {
 
-  override func getApp() -> XCUIApplication {
+  override class func getApp() -> XCUIApplication {
     return XCUIApplication()
   }
 }

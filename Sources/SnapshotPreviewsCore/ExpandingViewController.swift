@@ -20,7 +20,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
     rootView.supportsExpansion
   }
 
-  private let HeightExpansionTimeLimitInSeconds: Double = 30
+  private let HeightExpansionTimeLimitInSeconds: UInt64 = 30
 
   private var didCall = false
   var previousHeight: CGFloat?
@@ -28,7 +28,7 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
   var heightAnchor: NSLayoutConstraint?
   private var widthAnchor: NSLayoutConstraint?
 
-  private var startTime: Date?
+  private var startTime: UInt64?
   private var timer: Timer?
 
   public var expansionSettled: ((EmergeRenderingMode?, Float?, Bool?, Bool?, Error?) -> Void)? {
@@ -110,11 +110,11 @@ public final class ExpandingViewController: UIHostingController<EmergeModifierVi
         print("Timer already exists")
         return
       }
-      startTime = Date()
+      startTime = clock_gettime_nsec_np(CLOCK_MONOTONIC_RAW)
       timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
           guard let self,
                 let start = startTime,
-                Date().timeIntervalSince(start) >= HeightExpansionTimeLimitInSeconds else {
+                clock_gettime_nsec_np(CLOCK_MONOTONIC_RAW) - start >= (HeightExpansionTimeLimitInSeconds * 1_000_000_000) else {
               return
           }
           let timeoutError = RenderingError.expandingViewTimeout(CGSize(width: UIScreen.main.bounds.size.width,
