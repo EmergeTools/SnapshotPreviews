@@ -68,15 +68,16 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   /// This method renders the specified preview using the appropriate rendering strategy,
   /// creates a snapshot image, and attaches it to the test results.
   ///
-  /// - Parameter preview: A `DiscoveredPreviewAndIndex` object representing the preview to be tested.
+  /// - Parameter discoveredPreview: A `DiscoveredPreviewAndIndex` object representing the preview to be tested.
   @MainActor
-  override func testPreview(_ preview: DiscoveredPreviewAndIndex) {
-    let previewType = Self.previews.first { $0.typeName == preview.preview.typeName }
-    guard let preview = previewType?.previews[preview.index] else {
-      XCTFail("Preview not found")
+  override func testPreview(_ discoveredPreview: DiscoveredPreviewAndIndex) {
+    let previewType = Self.previews.first { $0.typeName == discoveredPreview.preview.typeName }
+    guard let previewType = previewType else {
+      XCTFail("Preview type not found")
       return
     }
 
+    let preview = previewType.previews[discoveredPreview.index]
     var result: SnapshotResult? = nil
     let expectation = XCTestExpectation()
     Self.renderingStrategy.render(preview: preview) { snapshotResult in
@@ -88,9 +89,14 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
       XCTFail("Did not render")
       return
     }
+
+    var typeFileName = previewType.displayName
+    if let fileId = previewType.fileID, let lineNumber = previewType.line {
+      typeFileName = "\(fileId):\(lineNumber)"
+    }
     do {
       let attachment = try XCTAttachment(image: result.image.get())
-      attachment.name = preview.displayName
+      attachment.name = "\(typeFileName)_\(preview.displayName ?? String(discoveredPreview.index))"
       attachment.lifetime = .keepAlways
       add(attachment)
     } catch {
