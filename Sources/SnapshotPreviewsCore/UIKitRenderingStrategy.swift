@@ -63,8 +63,12 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       completion: @escaping (SnapshotResult) -> Void
   ) {
       if let geometryUpdateError {
+        if (geometryUpdateError as NSError).userInfo["BSErrorCodeDescription"] as? String == "timeout" {
+            completion(SnapshotResult(image: .failure(RenderingError.orientationChangeTimeout), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil, appStoreSnapshot: nil))
+            return
+        }
         completion(SnapshotResult(image: .failure(geometryUpdateError), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil, appStoreSnapshot: nil))
-          return
+        return
       }
       guard attempts > 0 else {
           let timeoutError = NSError(domain: "OrientationChangeTimeout", code: 0, userInfo: [NSLocalizedDescriptionKey: "Orientation change timed out"])

@@ -11,6 +11,7 @@ public enum RenderingError: Error {
   case failedRendering(CGSize)
   case maxSize(CGSize)
   case expandingViewTimeout(CGSize)
+  case orientationChangeTimeout
 }
 
 #if canImport(UIKit) && !os(visionOS) && !os(watchOS) && !os(tvOS)
