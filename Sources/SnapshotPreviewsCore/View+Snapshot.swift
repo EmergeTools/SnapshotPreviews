@@ -75,7 +75,7 @@ extension View {
 
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-          let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
+          let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, window: window, rootVC: containerVC, targetView: controller.view)
           completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
         }
       } else {
@@ -100,11 +100,11 @@ extension View {
 
             let elements = try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
             a11yView.sizeToFit()
-            let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, rootVC: containerVC, targetView: a11yView)
+            let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, window: window, rootVC: containerVC, targetView: a11yView)
             a11yView.removeFromSuperview()
             completion(SnapshotResult(image: result.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: elements, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
           } else {
-            let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, rootVC: containerVC, targetView: controller.view)
+            let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, window: window, rootVC: containerVC, targetView: controller.view)
             completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
           }
         }
@@ -143,10 +143,19 @@ extension View {
   private static func takeSnapshot(
     layout: PreviewLayout,
     renderingMode: EmergeRenderingMode?,
+    window: UIWindow,
     rootVC: UIViewController,
     targetView: UIView,
     maxSize: Double = 1_000_000) -> Result<UIImage, RenderingError>
   {
+    if renderingMode == EmergeRenderingMode.window {
+      let renderer = UIGraphicsImageRenderer(size: window.bounds.size)
+      let screenshot = renderer.image { _ in
+          window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+      }
+      return .success(screenshot)
+    }
+
     let view = targetView
     let drawCode: (CGContext) -> Void
 
@@ -203,7 +212,7 @@ extension UIView {
       return true
     case .uiView:
       return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
-    case .none:
+    case .window, .none:
       if !size.requiresCoreAnimationSnapshot {
         return drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
       } else {
@@ -219,7 +228,7 @@ extension EmergeRenderingMode {
     switch self {
     case .coreAnimation:
       return .renderLayerInContext
-    case .uiView:
+    case .window, .uiView:
       return .drawHierarchyInRect
     }
   }

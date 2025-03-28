@@ -18,4 +18,8 @@ public enum EmergeRenderingMode: Int {
 
   /// Renders using `UIView.drawHierarchy(in:afterScreenUpdates:true)`.
   case uiView
+
+  /// Renders the entire window instead of the previewed view.
+  /// This uses UIWindow.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+  case window
 }
