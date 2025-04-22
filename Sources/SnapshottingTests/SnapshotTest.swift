@@ -52,6 +52,8 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   private static let renderingStrategy = getRenderingStrategy()
 
   static private var previews: [SnapshotPreviewsCore.PreviewType] = []
+  
+  static private var previewCountForFileId: [String: Int] = [:]
 
   /// Discovers all relevant previews based on inclusion and exclusion filters. Subclasses should NOT override this method.
   ///
@@ -60,6 +62,12 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   @MainActor
   override class func discoverPreviews() -> [DiscoveredPreview] {
     previews = FindPreviews.findPreviews(included: Self.snapshotPreviews(), excluded: Self.excludedSnapshotPreviews())
+    
+    for preview in previews {
+        guard let fileId = preview.fileID else { continue }
+        previewCountForFileId[fileId, default: 0] += 1
+    }
+    
     return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
@@ -92,7 +100,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
     var typeFileName = previewType.displayName
     if let fileId = previewType.fileID, let lineNumber = previewType.line {
-      typeFileName = "\(fileId):\(lineNumber)"
+      typeFileName = Self.previewCountForFileId[fileId]! > 1 ? "\(fileId):\(lineNumber)" : fileId
     }
     do {
       let attachment = try XCTAttachment(image: result.image.get())
