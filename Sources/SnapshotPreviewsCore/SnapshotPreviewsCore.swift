@@ -91,12 +91,15 @@ public struct PreviewType: Hashable, Identifiable {
     self.line = nil
     self.previews = A._allPreviews.map { Preview(preview: $0, type: A.self) }
     self.platform = A.platform
+    
+    // type names are unique (Module.StructName_Previews)
+    self.uniqueName = typeName
   }
 
 #if compiler(>=5.9)
   @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
   @MainActor
-  init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
+  init?<A: PreviewRegistry>(typeName: String, registry: A.Type, uniqueName: String) {
     self.typeName = typeName
     self.fileID = A.fileID
     self.line = A.line
@@ -105,6 +108,7 @@ public struct PreviewType: Hashable, Identifiable {
     }
     self.previews = [preview]
     self.platform = nil
+    self.uniqueName = typeName
   }
 #endif
 
@@ -141,6 +145,7 @@ public struct PreviewType: Hashable, Identifiable {
   public let typeName: String
   public var previews: [Preview]
   public let platform: PreviewPlatform?
+  public var uniqueName: String = ""
 }
 
 // The enum provides a namespace
@@ -205,8 +210,23 @@ public enum FindPreviews {
     shouldInclude: (String, String) -> Bool = { _, _ in true },
     willAccess: (String) -> Void = { _ in }) -> [PreviewType]
   {
-    return getPreviewTypes()
+    let previewTypes = getPreviewTypes()
       .filter { shouldInclude($0.name, $0.proto) }
+    
+    // Helper to diff Previews created using #Preview macros
+    var previewCountForFileId: [String: Int] = [:]
+
+#if compiler(>=5.9)
+    if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
+      for preview in previewTypes where preview.proto == "PreviewRegistry" {
+        willAccess(preview.name)
+        let registryType = unsafeBitCast(preview.accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
+        previewCountForFileId[registryType.fileID, default: 0] += 1
+      }
+    }
+#endif
+    
+    return previewTypes
       .compactMap { conformance -> PreviewType? in
         let (name, accessor, proto) = conformance
         willAccess(name)
@@ -218,7 +238,9 @@ public enum FindPreviews {
     #if compiler(>=5.9)
           if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
             let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
-            return PreviewType(typeName: name, registry: previewRegistry)
+            let fileId = previewRegistry.fileID
+            let uniqueName = (previewCountForFileId[fileId] ?? 0) > 1 ? "\(fileId):\(previewRegistry.line)" : fileId
+            return PreviewType(typeName: name, registry: previewRegistry, uniqueName: uniqueName)
           }
     #endif
           return nil
