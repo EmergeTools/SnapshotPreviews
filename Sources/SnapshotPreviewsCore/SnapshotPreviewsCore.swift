@@ -214,17 +214,7 @@ public enum FindPreviews {
       .filter { shouldInclude($0.name, $0.proto) }
     
     // Helper to diff Previews created using #Preview macros
-    var previewCountForFileId: [String: Int] = [:]
-
-#if compiler(>=5.9)
-    if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
-      for preview in previewTypes where preview.proto == "PreviewRegistry" {
-        willAccess(preview.name)
-        let registryType = unsafeBitCast(preview.accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
-        previewCountForFileId[registryType.fileID, default: 0] += 1
-      }
-    }
-#endif
+    let previewCountForFileId = FindPreviews.calculatePreviewCountForFileId(previewTypes, willAccess)
     
     return previewTypes
       .compactMap { conformance -> PreviewType? in
@@ -248,5 +238,22 @@ public enum FindPreviews {
           return nil
         }
     }
+  }
+  
+  @MainActor
+  private static func calculatePreviewCountForFileId(_ previewTypes: [LookupResult], _ willAccess: (String) -> Void) -> [String: Int] {
+    var previewCountForFileId: [String: Int] = [:]
+    
+#if compiler(>=5.9)
+    if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
+      for preview in previewTypes where preview.proto == "PreviewRegistry" {
+        willAccess(preview.name)
+        let registryType = unsafeBitCast(preview.accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
+        previewCountForFileId[registryType.fileID, default: 0] += 1
+      }
+    }
+#endif
+    
+    return previewCountForFileId
   }
 }
