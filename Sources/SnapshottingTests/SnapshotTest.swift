@@ -100,7 +100,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
     do {
       let attachment = try XCTAttachment(image: result.image.get())
-      attachment.name = "\(previewType.uniqueName)_\(preview.displayName ?? String(discoveredPreview.index))"
+      attachment.name = preview.uniqueName
       attachment.lifetime = .keepAlways
       add(attachment)
     } catch {
