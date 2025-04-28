@@ -45,7 +45,6 @@ public struct RowView: View {
     }
 }
 
-#if compiler(>=5.9)
 #Preview("New test") {
   RowView(
     imageName: "product-image",
@@ -53,7 +52,6 @@ public struct RowView: View {
     ratings: 4.2)
   .preferredColorScheme(.dark)
 }
-#endif
 
 struct RowView_Previews: PreviewProvider {
   static var previews: some View {

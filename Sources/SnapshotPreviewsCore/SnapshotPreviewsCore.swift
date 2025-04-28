@@ -17,7 +17,6 @@ public struct Preview: Identifiable {
     self.uniqueName = uniqueName
   }
 
-#if compiler(>=5.9)
   @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
   init?(preview: DeveloperToolsSupport.Preview, uniqueName: String) {
     previewId = "0"
@@ -70,7 +69,6 @@ public struct Preview: Identifiable {
     self._view = _view
     self.uniqueName = uniqueName
   }
-#endif
 
   public let id = UUID()
   public let previewId: String
@@ -240,7 +238,6 @@ public enum FindPreviews {
           platform: previewProvider.platform
         )
       case "PreviewRegistry":
-        #if compiler(>=5.9)
         if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
           let previewRegistry = unsafeBitCast(rawType.accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
           guard let internalPreview = try? previewRegistry.makePreview() else {
@@ -254,7 +251,6 @@ public enum FindPreviews {
             platform: nil
           )
         }
-        #endif
         return nil
       default:
         return nil
@@ -289,12 +285,10 @@ public enum FindPreviews {
         case .previewProvider(let internalPreview, let previewType):
           return Preview(preview: internalPreview, type: previewType, uniqueName: uniqueName)
         case .previewRegistry(let anyValue):
-#if compiler(>=5.9)
           if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *),
               let realPreview = anyValue as? DeveloperToolsSupport.Preview {
             return Preview(preview: realPreview, uniqueName: uniqueName)
           }
-#endif
           return nil
         }
       }
