@@ -2,14 +2,14 @@ import SwiftUI
 import PreviewsSupport
 
 protocol DeveloperPreview {
-  var displayName: String? { get }
-  var traits: [Any] { get }
-  var source: Any { get }
+  nonisolated var displayName: String? { get }
+  nonisolated var traits: [Any] { get }
+  nonisolated var source: Any { get }
 }
 
 @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
 extension DeveloperToolsSupport.Preview: DeveloperPreview {
-  private var mirror: Mirror {
+  private nonisolated var mirror: Mirror {
     return Mirror(reflecting: self)
   }
 
