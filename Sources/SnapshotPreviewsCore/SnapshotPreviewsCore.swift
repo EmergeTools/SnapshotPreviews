@@ -1,6 +1,31 @@
 import SwiftUI
 import PreviewsSupport
 
+nonisolated protocol DeveloperPreview {
+  var displayName: String? { get }
+  var traits: [Any] { get }
+  var source: Any { get }
+}
+
+@available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
+extension DeveloperToolsSupport.Preview: DeveloperPreview {
+  private nonisolated var mirror: Mirror {
+    return Mirror(reflecting: self)
+  }
+
+  var displayName: String? {
+    mirror.descendant("displayName") as? String
+  }
+
+  var traits: [Any] {
+    mirror.descendant("traits") as! [Any]
+  }
+
+  var source: Any {
+    mirror.descendant("source")!
+  }
+}
+
 public struct Preview: Identifiable {
   init<P: SwiftUI.PreviewProvider>(preview: _Preview, type: P.Type, uniqueName: String) {
     previewId = "\(preview.id)"
@@ -17,14 +42,12 @@ public struct Preview: Identifiable {
     self.uniqueName = uniqueName
   }
 
-  @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
-  init?(preview: DeveloperToolsSupport.Preview, uniqueName: String) {
+  init?(preview: DeveloperPreview, uniqueName: String) {
     previewId = "0"
     var orientation: InterfaceOrientation = .portrait
     device = nil
     index = 0
-    let preview = Mirror(reflecting: preview)
-    let traits = preview.descendant("traits")! as! [Any]
+    let traits = preview.traits
     var layout = PreviewLayout.device
     for t in traits {
       if let value = Mirror(reflecting: t).descendant("value") {
@@ -41,8 +64,8 @@ public struct Preview: Identifiable {
     }
     self.orientation = orientation
     self.layout = layout
-    displayName = preview.descendant("displayName") as? String
-    let source = preview.descendant("source")!
+    displayName = preview.displayName
+    let source = preview.source
     let _view: @MainActor () -> any View
     if let source = source as? MakeViewProvider {
       _view = {
@@ -138,8 +161,7 @@ private struct PreviewInformation {
 
 private enum InternalPreview {
   case previewProvider(_Preview, any SwiftUI.PreviewProvider.Type)
-  // Can't use DeveloperToolsSupport.Preview here because it's not available before iOS 17
-  case previewRegistry(Any)
+  case previewRegistry(DeveloperPreview)
   
   func getPreviewId() -> String {
     switch self {
@@ -155,7 +177,7 @@ private enum InternalPreview {
     case .previewProvider(let internalPreview, _):
       internalPreview.displayName
     case .previewRegistry(let internalPreview):
-      Mirror(reflecting: internalPreview).descendant("displayName") as? String
+      internalPreview.displayName
     }
   }
 }
@@ -284,12 +306,8 @@ public enum FindPreviews {
         switch preview {
         case .previewProvider(let internalPreview, let previewType):
           return Preview(preview: internalPreview, type: previewType, uniqueName: uniqueName)
-        case .previewRegistry(let anyValue):
-          if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *),
-              let realPreview = anyValue as? DeveloperToolsSupport.Preview {
-            return Preview(preview: realPreview, uniqueName: uniqueName)
-          }
-          return nil
+        case .previewRegistry(let internalPreview):
+          return Preview(preview: internalPreview, uniqueName: uniqueName)
         }
       }
       return PreviewType(previewInformation: previewInformation, previews: previews)
