@@ -98,13 +98,9 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
       return
     }
 
-    var typeFileName = previewType.displayName
-    if let fileId = previewType.fileID, let lineNumber = previewType.line {
-      typeFileName = Self.previewCountForFileId[fileId]! > 1 ? "\(fileId):\(lineNumber)" : fileId
-    }
     do {
       let attachment = try XCTAttachment(image: result.image.get())
-      attachment.name = "\(typeFileName)_\(preview.displayName ?? String(discoveredPreview.index))"
+      attachment.name = preview.uniqueName
       attachment.lifetime = .keepAlways
       add(attachment)
     } catch {

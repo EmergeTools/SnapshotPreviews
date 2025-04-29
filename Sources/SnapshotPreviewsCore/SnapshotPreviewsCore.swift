@@ -1,8 +1,33 @@
 import SwiftUI
 import PreviewsSupport
 
+protocol DeveloperPreview {
+  nonisolated var displayName: String? { get }
+  nonisolated var traits: [Any] { get }
+  nonisolated var source: Any { get }
+}
+
+@available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
+extension DeveloperToolsSupport.Preview: DeveloperPreview {
+  private nonisolated var mirror: Mirror {
+    return Mirror(reflecting: self)
+  }
+
+  var displayName: String? {
+    mirror.descendant("displayName") as? String
+  }
+
+  var traits: [Any] {
+    mirror.descendant("traits") as! [Any]
+  }
+
+  var source: Any {
+    mirror.descendant("source")!
+  }
+}
+
 public struct Preview: Identifiable {
-  init<P: SwiftUI.PreviewProvider>(preview: _Preview, type: P.Type) {
+  init<P: SwiftUI.PreviewProvider>(preview: _Preview, type: P.Type, uniqueName: String) {
     previewId = "\(preview.id)"
     index = preview.id
     orientation = preview.interfaceOrientation
@@ -14,17 +39,15 @@ public struct Preview: Identifiable {
         P.previews
       }
     }
+    self.uniqueName = uniqueName
   }
 
-#if compiler(>=5.9)
-  @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
-  init?(preview: DeveloperToolsSupport.Preview) {
+  init?(preview: DeveloperPreview, uniqueName: String) {
     previewId = "0"
     var orientation: InterfaceOrientation = .portrait
     device = nil
     index = 0
-    let preview = Mirror(reflecting: preview)
-    let traits = preview.descendant("traits")! as! [Any]
+    let traits = preview.traits
     var layout = PreviewLayout.device
     for t in traits {
       if let value = Mirror(reflecting: t).descendant("value") {
@@ -41,8 +64,8 @@ public struct Preview: Identifiable {
     }
     self.orientation = orientation
     self.layout = layout
-    displayName = preview.descendant("displayName") as? String
-    let source = preview.descendant("source")!
+    displayName = preview.displayName
+    let source = preview.source
     let _view: @MainActor () -> any View
     if let source = source as? MakeViewProvider {
       _view = {
@@ -67,8 +90,8 @@ public struct Preview: Identifiable {
     }
 
     self._view = _view
+    self.uniqueName = uniqueName
   }
-#endif
 
   public let id = UUID()
   public let previewId: String
@@ -77,36 +100,21 @@ public struct Preview: Identifiable {
   public let index: Int
   public let device: PreviewDevice?
   public let layout: PreviewLayout
+  public let uniqueName: String
   private let _view: @MainActor () -> any View
   @MainActor public func view() -> any View {
     _view()
   }
 }
 
-// Wraps PreviewProvider or PreviewRegistry
 public struct PreviewType: Hashable, Identifiable {
-  init<A: PreviewProvider>(typeName: String, previewProvider: A.Type) {
-    self.typeName = typeName
-    self.fileID = nil
-    self.line = nil
-    self.previews = A._allPreviews.map { Preview(preview: $0, type: A.self) }
-    self.platform = A.platform
+  fileprivate init(previewInformation: PreviewInformation, previews: [Preview]) {
+    self.typeName = previewInformation.name
+    self.fileID = previewInformation.fileID
+    self.line = previewInformation.line
+    self.previews = previews
+    self.platform = previewInformation.platform
   }
-
-#if compiler(>=5.9)
-  @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
-  @MainActor
-  init?<A: PreviewRegistry>(typeName: String, registry: A.Type) {
-    self.typeName = typeName
-    self.fileID = A.fileID
-    self.line = A.line
-    guard let internalPreview = try? A.makePreview(), let preview = Preview(preview: internalPreview)  else {
-      return nil
-    }
-    self.previews = [preview]
-    self.platform = nil
-  }
-#endif
 
   public var module: String {
     String(typeName.split(separator: ".").first!)
@@ -141,6 +149,37 @@ public struct PreviewType: Hashable, Identifiable {
   public let typeName: String
   public var previews: [Preview]
   public let platform: PreviewPlatform?
+}
+
+private struct PreviewInformation {
+  let name: String
+  let fileID: String?
+  let line: Int?
+  let previews: [InternalPreview]
+  let platform: PreviewPlatform?
+}
+
+private enum InternalPreview {
+  case previewProvider(_Preview, any SwiftUI.PreviewProvider.Type)
+  case previewRegistry(DeveloperPreview)
+  
+  func getPreviewId() -> String {
+    switch self {
+    case .previewProvider(let internalPreview, _):
+      "\(internalPreview.id)"
+    case .previewRegistry(_):
+      "0"
+    }
+  }
+  
+  func getDisplayName() -> String? {
+    switch self {
+    case .previewProvider(let internalPreview, _):
+      internalPreview.displayName
+    case .previewRegistry(let internalPreview):
+      internalPreview.displayName
+    }
+  }
 }
 
 // The enum provides a namespace
@@ -205,26 +244,92 @@ public enum FindPreviews {
     shouldInclude: (String, String) -> Bool = { _, _ in true },
     willAccess: (String) -> Void = { _ in }) -> [PreviewType]
   {
-    return getPreviewTypes()
+    let rawPreviewTypes = getPreviewTypes()
       .filter { shouldInclude($0.name, $0.proto) }
-      .compactMap { conformance -> PreviewType? in
-        let (name, accessor, proto) = conformance
-        willAccess(name)
-        switch proto {
-        case "PreviewProvider":
-          let previewProvider = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewProvider.Type
-          return PreviewType(typeName: name, previewProvider: previewProvider)
-        case "PreviewRegistry":
-    #if compiler(>=5.9)
-          if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
-            let previewRegistry = unsafeBitCast(accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
-            return PreviewType(typeName: name, registry: previewRegistry)
+    
+    let previewInfoArray = rawPreviewTypes.compactMap { rawType -> PreviewInformation? in
+      willAccess(rawType.name)
+      switch rawType.proto {
+      case "PreviewProvider":
+        let previewProvider = unsafeBitCast(rawType.accessor(), to: Any.Type.self) as! any PreviewProvider.Type
+        return PreviewInformation(
+          name: rawType.name,
+          fileID: nil,
+          line: nil,
+          previews: previewProvider._allPreviews.map { .previewProvider($0, previewProvider.self) },
+          platform: previewProvider.platform
+        )
+      case "PreviewRegistry":
+        if #available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *) {
+          let previewRegistry = unsafeBitCast(rawType.accessor(), to: Any.Type.self) as! any PreviewRegistry.Type
+          guard let internalPreview = try? previewRegistry.makePreview() else {
+            return nil
           }
-    #endif
-          return nil
-        default:
-          return nil
+          return PreviewInformation(
+            name: rawType.name,
+            fileID: previewRegistry.fileID,
+            line: previewRegistry.line,
+            previews: [ .previewRegistry(internalPreview) ],
+            platform: nil
+          )
         }
+        return nil
+      default:
+        return nil
+      }
+    }
+    
+    let previewCountForId = calculateIdToPreviewCount(previewInfoArray)
+    
+    return generateFinalPreviewTypes(previewInfoArray: previewInfoArray, previewCountForId: previewCountForId)
+  }
+  
+  private static func calculateIdToPreviewCount(_ previewInfoArray: [PreviewInformation]) -> [String: Int] {
+    var previewCountForId: [String: Int] = [:]
+    for previewInformation in previewInfoArray {
+      for preview in previewInformation.previews {
+        let possibleId = possibleUniqueIdForPreview(preview, previewInformation)
+        previewCountForId[possibleId, default: 0] += 1
+      }
+    }
+    return previewCountForId
+  }
+  
+  private static func generateFinalPreviewTypes(previewInfoArray: [PreviewInformation], previewCountForId: [String: Int]) -> [PreviewType] {
+    previewInfoArray.map { previewInformation in
+      let previews = previewInformation.previews.compactMap { preview in
+        let possibleId = possibleUniqueIdForPreview(preview, previewInformation)
+        let previewId = preview.getPreviewId()
+        let previewCount = previewCountForId[possibleId] ?? 1
+        let uniqueName = generateUniqueName(possibleId: possibleId, previewCount: previewCount, previewInformation: previewInformation, previewId: previewId)
+        
+        switch preview {
+        case .previewProvider(let internalPreview, let previewType):
+          return Preview(preview: internalPreview, type: previewType, uniqueName: uniqueName)
+        case .previewRegistry(let internalPreview):
+          return Preview(preview: internalPreview, uniqueName: uniqueName)
+        }
+      }
+      return PreviewType(previewInformation: previewInformation, previews: previews)
+    }
+  }
+  
+  private static func possibleUniqueIdForPreview(_ preview: InternalPreview, _ previewInformation: PreviewInformation) -> String {
+    var id = previewInformation.fileID ?? previewInformation.name
+    if let displayName = preview.getDisplayName() {
+      id += "_\(displayName)"
+    }
+    return id
+  }
+  
+  private static func generateUniqueName(possibleId: String, previewCount: Int, previewInformation: PreviewInformation, previewId: String) -> String {
+    if previewCount == 1 {
+      return possibleId
+    } else if let fileId = previewInformation.fileID, let line = previewInformation.line {
+      return "\(fileId)_\(line)"
+    } else {
+      return "\(previewInformation.name)_\(previewId)"
     }
   }
 }
+
