@@ -1,7 +1,7 @@
 import SwiftUI
 import PreviewsSupport
 
-nonisolated protocol DeveloperPreview {
+protocol DeveloperPreview {
   var displayName: String? { get }
   var traits: [Any] { get }
   var source: Any { get }
@@ -9,7 +9,7 @@ nonisolated protocol DeveloperPreview {
 
 @available(iOS 17.0, macOS 14.0, watchOS 10.0, tvOS 17.0, *)
 extension DeveloperToolsSupport.Preview: DeveloperPreview {
-  private nonisolated var mirror: Mirror {
+  private var mirror: Mirror {
     return Mirror(reflecting: self)
   }
 
