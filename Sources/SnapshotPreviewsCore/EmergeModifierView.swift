@@ -6,24 +6,19 @@
 //
 
 import Foundation
-import SwiftUI
 import SnapshotSharedModels
-
-private let modifierFinderClass = (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
-private let finder = modifierFinderClass != nil ? Mirror(reflecting: modifierFinderClass!).descendant("finder") as? (any View) -> any View : nil
-private let modifierState = NSClassFromString("EmergeModifierState") as? NSObject.Type
-private let stateMirror = modifierState != nil ? Mirror(
-  reflecting: modifierState!
-    .perform(NSSelectorFromString("shared"))
-    .takeUnretainedValue()) : nil
+import SwiftUI
 
 public struct EmergeModifierView: View {
 
   private let internalView: AnyView
+  private let stateMirror: Mirror?
 
   init(wrapped: some View) {
-    let rootView = finder?(wrapped)
-    internalView = rootView != nil ? AnyView(rootView!) : AnyView(wrapped)
+    let root = RuntimeCache.finder?(wrapped) ?? wrapped
+    internalView = AnyView(root)
+
+    stateMirror = RuntimeCache.stateMirror
   }
 
   public var body: some View {
@@ -31,8 +26,9 @@ public struct EmergeModifierView: View {
   }
 
   var emergeRenderingMode: EmergeRenderingMode? {
-    let renderingMode = stateMirror?.descendant("renderingMode") as? EmergeRenderingMode.RawValue
-    return renderingMode != nil ? EmergeRenderingMode(rawValue: renderingMode!) : nil
+    let raw =
+      stateMirror?.descendant("renderingMode") as? EmergeRenderingMode.RawValue
+    return raw != nil ? EmergeRenderingMode(rawValue: raw!) : nil
   }
 
   var accessibilityEnabled: Bool? {
@@ -50,4 +46,27 @@ public struct EmergeModifierView: View {
   var supportsExpansion: Bool {
     stateMirror?.descendant("expansionPreference") as? Bool ?? true
   }
+}
+
+private enum RuntimeCache {
+  static let finder: ((any View) -> any View)? = {
+    guard
+      let finderClass = NSClassFromString("EmergeModifierFinder")
+        as? NSObject.Type,
+      let closure = Mirror(reflecting: finderClass.init())
+        .descendant("finder") as? ((any View) -> any View)
+    else { return nil }
+    return closure
+  }()
+
+  static let stateMirror: Mirror? = {
+    guard
+      let stateClass = NSClassFromString("EmergeModifierState")
+        as? NSObject.Type,
+      let shared = stateClass.perform(
+        NSSelectorFromString("shared")
+      )?.takeUnretainedValue()
+    else { return nil }
+    return Mirror(reflecting: shared)
+  }()
 }
