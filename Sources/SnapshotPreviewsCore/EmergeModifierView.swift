@@ -11,14 +11,27 @@ import SwiftUI
 
 public struct EmergeModifierView: View {
 
+  private static let modifierFinderClass =
+    (NSClassFromString("EmergeModifierFinder") as? NSObject.Type)?.init()
+  private static let finder =
+    modifierFinderClass != nil
+    ? Mirror(reflecting: modifierFinderClass!).descendant("finder")
+      as? (any View) -> any View : nil
+  private static let modifierState =
+    NSClassFromString("EmergeModifierState") as? NSObject.Type
+  private static let stateMirror =
+    modifierState != nil
+    ? Mirror(
+      reflecting: modifierState!
+        .perform(NSSelectorFromString("shared"))
+        .takeUnretainedValue()
+    ) : nil
+
   private let internalView: AnyView
-  private let stateMirror: Mirror?
 
   init(wrapped: some View) {
-    let root = RuntimeCache.finder?(wrapped) ?? wrapped
-    internalView = AnyView(root)
-
-    stateMirror = RuntimeCache.stateMirror
+    let rootView = Self.finder?(wrapped)
+    internalView = rootView != nil ? AnyView(rootView!) : AnyView(wrapped)
   }
 
   public var body: some View {
@@ -26,47 +39,26 @@ public struct EmergeModifierView: View {
   }
 
   var emergeRenderingMode: EmergeRenderingMode? {
-    let raw =
-      stateMirror?.descendant("renderingMode") as? EmergeRenderingMode.RawValue
-    return raw != nil ? EmergeRenderingMode(rawValue: raw!) : nil
+    let renderingMode =
+      Self.stateMirror?.descendant("renderingMode")
+      as? EmergeRenderingMode.RawValue
+    return renderingMode != nil
+      ? EmergeRenderingMode(rawValue: renderingMode!) : nil
   }
 
   var accessibilityEnabled: Bool? {
-    stateMirror?.descendant("accessibilityEnabled") as? Bool
+    Self.stateMirror?.descendant("accessibilityEnabled") as? Bool
   }
 
   var appStoreSnapshot: Bool? {
-    stateMirror?.descendant("appStoreSnapshot") as? Bool
+    Self.stateMirror?.descendant("appStoreSnapshot") as? Bool
   }
 
   var precision: Float? {
-    stateMirror?.descendant("precision") as? Float
+    Self.stateMirror?.descendant("precision") as? Float
   }
 
   var supportsExpansion: Bool {
-    stateMirror?.descendant("expansionPreference") as? Bool ?? true
+    Self.stateMirror?.descendant("expansionPreference") as? Bool ?? true
   }
-}
-
-private enum RuntimeCache {
-  static let finder: ((any View) -> any View)? = {
-    guard
-      let finderClass = NSClassFromString("EmergeModifierFinder")
-        as? NSObject.Type,
-      let closure = Mirror(reflecting: finderClass.init())
-        .descendant("finder") as? ((any View) -> any View)
-    else { return nil }
-    return closure
-  }()
-
-  static let stateMirror: Mirror? = {
-    guard
-      let stateClass = NSClassFromString("EmergeModifierState")
-        as? NSObject.Type,
-      let shared = stateClass.perform(
-        NSSelectorFromString("shared")
-      )?.takeUnretainedValue()
-    else { return nil }
-    return Mirror(reflecting: shared)
-  }()
 }
