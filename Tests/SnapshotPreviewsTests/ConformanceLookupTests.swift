@@ -4,7 +4,7 @@ import XCTest
 
 final class ConformanceLookupTests: XCTestCase {
   func test_getPreviewTypes() throws {
-    let types = ConformanceLookup.getPreviewTypes()
+    let types = getPreviewTypes()
     XCTAssertEqual(types.count, 1)
 
     let firstType = types.first!

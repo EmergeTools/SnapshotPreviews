@@ -205,7 +205,7 @@ public enum FindPreviews {
     shouldInclude: (String, String) -> Bool = { _, _ in true },
     willAccess: (String) -> Void = { _ in }) -> [PreviewType]
   {
-    return ConformanceLookup.getPreviewTypes()
+    return getPreviewTypes()
       .filter { shouldInclude($0.name, $0.proto) }
       .compactMap { conformance -> PreviewType? in
         let (name, accessor, proto) = conformance
