@@ -3,7 +3,7 @@ import XCTest
 @testable import SnapshotPreviewsCore
 
 final class ConformanceLookupTests: XCTestCase {
-  func testGetPreviewTypes() throws {
+  func test_getPreviewTypes() throws {
     let types = ConformanceLookup.getPreviewTypes()
     XCTAssertEqual(types.count, 1)
 

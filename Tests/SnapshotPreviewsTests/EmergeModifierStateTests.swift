@@ -19,32 +19,32 @@ final class EmergeModifierStateTests: XCTestCase {
     EmergeModifierState.shared.reset()
   }
 
-  func testStoresRenderingMode() {
+  func test_storesRenderingMode() {
     let view = makeBaseText().emergeRenderingMode(.uiView)
     let state = state(for: view)
     XCTAssertEqual(state.renderingMode, EmergeRenderingMode.uiView.rawValue)
   }
 
-  func testStoresPrecision() throws {
+  func test_storesPrecision() throws {
     let view = makeBaseText().emergeSnapshotPrecision(0.95)
     let state = state(for: view)
     let precision = try XCTUnwrap(state.precision)
     XCTAssertEqual(precision, 0.95, accuracy: .ulpOfOne)
   }
 
-  func testStoresExpansionPreference() {
+  func test_storesExpansionPreference() {
     let view = makeBaseText().emergeExpansion(false)
     let state = state(for: view)
     XCTAssertEqual(state.expansionPreference, false)
   }
 
-  func testStoresAccessibilityFlag() {
+  func test_storesAccessibilityFlag() {
     let view = makeBaseText().emergeAccessibility(true)
     let state = state(for: view)
     XCTAssertEqual(state.accessibilityEnabled, true)
   }
 
-  func testStoresAppStoreSnapshotFlag() {
+  func test_storesAppStoreSnapshotFlag() {
     let view = makeBaseText().emergeAppStoreSnapshot(true)
     let state = state(for: view)
     XCTAssertEqual(state.appStoreSnapshot, true)
