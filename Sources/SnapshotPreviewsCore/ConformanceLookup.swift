@@ -85,8 +85,7 @@ public func getPreviewTypes() -> [LookupResult] {
   var types = [LookupResult]()
   for i in 0..<images {
     let imageName = String(cString: _dyld_get_image_name(i))
-    // System frameworks on the simulator are in Xcode.app/Contents/** (Although Xcode could be renamed like Xcode-beta.app so don't check for that specifically)
-    guard !imageName.contains(".simruntime") && !imageName.contains(".app/Contents/Developer") && !imageName.starts(with: "/usr/lib/") && !imageName.starts(with: "/System/Library/") else {
+    guard imageName.starts(with: Bundle.main.bundleURL.path) else {
       continue
     }
 
