@@ -33,6 +33,7 @@ let package = Package(
           name: "Snapshotting",
           type: .dynamic,
           targets: ["Snapshotting"]),
+        .library(name: "PreviewsSupport", targets: ["PreviewsSupport"])
     ],
     dependencies: [
       .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.16.0"),
