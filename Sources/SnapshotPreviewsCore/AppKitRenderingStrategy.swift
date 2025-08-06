@@ -47,12 +47,12 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     window.contentViewController = NSViewController()
     window.setContentSize(AppKitContainer.defaultSize)
     window.contentViewController = vc
-    vc.rendered = { [weak vc] mode, precision, accessibilityEnabled, appStoreSnapshot in
+    vc.rendered = { [weak window] mode, precision, accessibilityEnabled, appStoreSnapshot in
       DispatchQueue.main.async {
-        let image = vc?.view.snapshot()
+        let image = window?.snapshot()
         completion(
           SnapshotResult(
-            image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(vc?.view.bounds.size ?? .zero)),
+            image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(window?.frame.size ?? .zero)),
             precision: precision,
             accessibilityEnabled: accessibilityEnabled,
             accessibilityMarkers: nil,
@@ -141,18 +141,18 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
   }
 }
 
-extension NSView {
+extension NSWindow {
     func snapshot() -> NSImage? {
-        guard let bitmapRep = bitmapImageRepForCachingDisplay(in: bounds) else {
+        guard let cgImage = CGWindowListCreateImage(.null,
+                                                    .optionIncludingWindow,
+                                                    CGWindowID(self.windowNumber),
+                                                    .bestResolution)
+        else {
             return nil
         }
-        bitmapRep.size = bounds.size
-        cacheDisplay(in: bounds, to: bitmapRep)
 
-        let image = NSImage(size: bounds.size)
-        image.addRepresentation(bitmapRep)
-
-        return image
+        return NSImage(cgImage: cgImage, size: self.frame.size)
     }
 }
+
 #endif
