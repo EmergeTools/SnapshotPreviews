@@ -49,17 +49,47 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     window.contentViewController = vc
     vc.rendered = { [weak window] mode, precision, accessibilityEnabled, appStoreSnapshot in
       DispatchQueue.main.async {
-        let image = window?.snapshot()
-        completion(
-          SnapshotResult(
-            image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(window?.frame.size ?? .zero)),
-            precision: precision,
-            accessibilityEnabled: accessibilityEnabled,
-            accessibilityMarkers: nil,
-            colorScheme: _colorScheme,
-            appStoreSnapshot: appStoreSnapshot))
+        Self.attemptSnapshot(window: window, maxAttempts: 15) { image in
+          completion(
+            SnapshotResult(
+              image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(window?.frame.size ?? .zero)),
+              precision: precision,
+              accessibilityEnabled: accessibilityEnabled,
+              accessibilityMarkers: nil,
+              colorScheme: _colorScheme,
+              appStoreSnapshot: appStoreSnapshot))
+        }
       }
     }
+  }
+  
+  private static func attemptSnapshot(window: NSWindow?, maxAttempts: Int, completion: @escaping (NSImage?) -> Void) {
+    guard let window = window else {
+      completion(nil)
+      return
+    }
+    
+    func trySnapshot(attempt: Int) {
+      let image = window.snapshot()
+      
+      if image != nil || attempt >= maxAttempts {
+          if attempt >= maxAttempts {
+              completion(nil)
+          }
+        completion(image)
+        return
+      }
+      
+      // Calculate exponential backoff delay: 0.01 * 2^(attempt-1)
+      let baseDelay = 0.01
+      let exponentialDelay = baseDelay * pow(2.0, Double(attempt - 1))
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + exponentialDelay) {
+        trySnapshot(attempt: attempt + 1)
+      }
+    }
+    
+    trySnapshot(attempt: 1)
   }
 }
 
