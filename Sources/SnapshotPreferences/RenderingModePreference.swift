@@ -43,7 +43,6 @@ extension View {
     /// ```
     ///
     /// - SeeAlso: `EmergeRenderingMode`
-    @available(macOS, unavailable)
     @available(watchOS, unavailable)
     @available(visionOS, unavailable)
     @available(tvOS, unavailable)
