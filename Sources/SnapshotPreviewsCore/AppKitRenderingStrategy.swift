@@ -49,7 +49,7 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     window.contentViewController = vc
     vc.rendered = { [weak window] mode, precision, accessibilityEnabled, appStoreSnapshot in
       DispatchQueue.main.async {
-        Self.attemptSnapshot(window: window, maxAttempts: 15) { image in
+        Self.takeSnapshot(mode: mode ?? .nsView, viewController: vc, window: window) { image in
           completion(
             SnapshotResult(
               image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(window?.frame.size ?? .zero)),
@@ -59,6 +59,22 @@ public class AppKitRenderingStrategy: RenderingStrategy {
               colorScheme: _colorScheme,
               appStoreSnapshot: appStoreSnapshot))
         }
+      }
+    }
+  }
+
+  private static func takeSnapshot(mode: EmergeRenderingMode, viewController: NSViewController, window: NSWindow?, completion: @escaping (NSImage?) -> Void) {
+    switch mode {
+    case .coreAnimation:
+        completion(viewController.view.layerSnapshot())
+    case .nsView:
+      completion(viewController.view.snapshot())
+    case .window:
+      if let window {
+        attemptSnapshot(window: window, maxAttempts: 15, completion: completion)
+      }
+      else {
+        completion(nil)
       }
     }
   }
@@ -73,9 +89,9 @@ public class AppKitRenderingStrategy: RenderingStrategy {
       let image = window.snapshot()
       
       if image != nil || attempt >= maxAttempts {
-          if attempt >= maxAttempts {
-              completion(nil)
-          }
+        if attempt >= maxAttempts {
+          completion(nil)
+        }
         completion(image)
         return
       }
@@ -171,18 +187,53 @@ final class AppKitContainer: NSHostingController<EmergeModifierView>, ScrollExpa
   }
 }
 
-extension NSWindow {
-    func snapshot() -> NSImage? {
-        guard let cgImage = CGWindowListCreateImage(.null,
-                                                    .optionIncludingWindow,
-                                                    CGWindowID(self.windowNumber),
-                                                    .bestResolution)
-        else {
-            return nil
-        }
-
-        return NSImage(cgImage: cgImage, size: self.frame.size)
+extension NSView {
+  func snapshot() -> NSImage? {
+    guard let bitmapRep = bitmapImageRepForCachingDisplay(in: bounds) else {
+      return nil
     }
+    bitmapRep.size = bounds.size
+    cacheDisplay(in: bounds, to: bitmapRep)
+
+    let image = NSImage(size: bounds.size)
+    image.addRepresentation(bitmapRep)
+
+    return image
+  }
+    
+  func layerSnapshot() -> NSImage? {
+    let scale = window?.backingScaleFactor ?? 1
+    let height = Int(bounds.size.height * scale)
+    let width = Int(bounds.size.width * scale)
+    let bytesPerRow = width * 4
+    let space = CGColorSpaceCreateDeviceRGB()
+    guard let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: space, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+      return nil
+    }
+    
+    context.translateBy(x: 0, y: CGFloat(height))
+    context.scaleBy(x: scale, y: -scale)
+
+    (self.layer?.presentation() ?? self.layer)?.render(in: context)
+    guard let cgImage = context.makeImage() else {
+      return nil
+    }
+    return NSImage(cgImage: cgImage, size: bounds.size)
+  }
+}
+
+extension NSWindow {
+  func snapshot() -> NSImage? {
+    guard let cgImage = CGWindowListCreateImage(.null,
+                                                .optionIncludingWindow,
+                                                CGWindowID(self.windowNumber),
+                                                .bestResolution)
+    else {
+      return nil
+    }
+
+    return NSImage(cgImage: cgImage, size: self.frame.size)
+  }
 }
 
 #endif

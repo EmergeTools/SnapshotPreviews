@@ -17,9 +17,15 @@ public enum EmergeRenderingMode: Int {
   case coreAnimation
 
   /// Renders using `UIView.drawHierarchy(in:afterScreenUpdates:true)`.
+  @available(macOS, unavailable)
   case uiView
+    
+  /// Renders using `NSView.bitmapImageRepForCachingDisplay`.
+  @available(iOS, unavailable)
+  case nsView
 
   /// Renders the entire window instead of the previewed view.
-  /// This uses UIWindow.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+  /// This uses `UIWindow.drawHierarchy(in: window.bounds, afterScreenUpdates: true)` on iOS
+  /// This uses `CGWindowListCreateImage` on macOS.
   case window
 }
