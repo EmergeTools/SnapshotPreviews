@@ -47,7 +47,7 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     window.contentViewController = NSViewController()
     window.setContentSize(AppKitContainer.defaultSize)
     window.contentViewController = vc
-    vc.rendered = { [weak window] mode, precision, accessibilityEnabled, appStoreSnapshot in
+    vc.rendered = { [weak window, weak vc] mode, precision, accessibilityEnabled, appStoreSnapshot in
       DispatchQueue.main.async {
         Self.takeSnapshot(mode: mode ?? .nsView, viewController: vc, window: window) { image in
           completion(
@@ -63,12 +63,12 @@ public class AppKitRenderingStrategy: RenderingStrategy {
     }
   }
 
-  private static func takeSnapshot(mode: EmergeRenderingMode, viewController: NSViewController, window: NSWindow?, completion: @escaping (NSImage?) -> Void) {
+  private static func takeSnapshot(mode: EmergeRenderingMode, viewController: NSViewController?, window: NSWindow?, completion: @escaping (NSImage?) -> Void) {
     switch mode {
     case .coreAnimation:
-        completion(viewController.view.layerSnapshot())
+        completion(viewController?.view.layerSnapshot())
     case .nsView:
-      completion(viewController.view.snapshot())
+      completion(viewController?.view.snapshot())
     case .window:
       if let window {
         attemptSnapshot(window: window, maxAttempts: 15, completion: completion)
