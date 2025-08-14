@@ -84,16 +84,23 @@ public func getPreviewTypes() -> [LookupResult] {
   let images = _dyld_image_count()
   var types = [LookupResult]()
   for i in 0..<images {
-    let imageName = String(cString: _dyld_get_image_name(i))
-    guard imageName.starts(with: Bundle.main.bundleURL.path) else {
+    let header = _dyld_get_image_header(i)!
+    let headerType = UnsafeRawPointer(header).assumingMemoryBound(to: mach_header_type.self)
+
+    // Anything in the dylib cache is a system library that we should not include
+    guard headerType.pointee.flags & MH_DYLIB_IN_CACHE == 0 else {
       continue
     }
 
-    let header = _dyld_get_image_header(i)!
+    let imageName = String(cString: _dyld_get_image_name(i))
+    guard !imageName.contains(".simruntime") && !imageName.contains(".platform") && !imageName.starts(with: "/usr/lib/") && !imageName.starts(with: "/System/Library/") else {
+      continue
+    }
+
     var size: UInt = 0
     let sectStart = UnsafeRawPointer(
       getsectiondata(
-        UnsafeRawPointer(header).assumingMemoryBound(to: mach_header_type.self),
+        headerType,
         "__TEXT",
         "__swift5_proto",
         &size))?.assumingMemoryBound(to: Int32.self)
