@@ -86,6 +86,7 @@ public func getPreviewTypes() -> [LookupResult] {
   for i in 0..<images {
     let imageName = String(cString: _dyld_get_image_name(i))
     guard imageName.starts(with: Bundle.main.bundleURL.path) else {
+      print("Skipping \(imageName) because it does not start with \(Bundle.main.bundleURL.path)")
       continue
     }
 
