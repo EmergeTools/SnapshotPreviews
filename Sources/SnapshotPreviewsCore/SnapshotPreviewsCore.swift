@@ -42,7 +42,10 @@ public struct Preview: Identifiable {
     self.orientation = orientation
     self.layout = layout
     displayName = preview.descendant("displayName") as? String
-    let source = preview.descendant("source") ?? preview.descendant("dataSource", "preview")!
+    guard let source = preview.descendant("source") ?? preview.descendant("dataSource", "preview") else {
+      assertionFailure("Preview \(preview) missing source, found: \(preview.children)")
+      return nil
+    }
     let _view: @MainActor () -> any View
     if let source = source as? MakeViewProvider {
       _view = {
@@ -59,9 +62,11 @@ public struct Preview: Identifiable {
           return UIViewControllerWrapper(source.makeViewController)
         }
       } else {
+        print("Preview \(preview) (\(displayName ?? "no display name")) did not have matching source type")
         return nil
       }
       #else
+      print("Preview \(preview) (\(displayName ?? "no display name")) did not have matching source type")
       return nil
       #endif
     }
