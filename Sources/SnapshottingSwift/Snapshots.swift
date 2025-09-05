@@ -128,7 +128,8 @@ class Snapshots {
       var data = [
         "typeName": preview.typeName,
         "numPreviews": preview.previews.count,
-        "devices": preview.previews.map { $0.device?.rawValue ?? ""}
+        "devices": preview.previews.map { $0.device?.rawValue ?? ""},
+        "orientations": preview.previews.map { $0.orientation.id }
       ]
       if let fileId = preview.fileID, #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) {
         var name = fileId

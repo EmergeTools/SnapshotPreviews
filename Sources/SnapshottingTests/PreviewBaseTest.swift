@@ -12,6 +12,7 @@ struct DiscoveredPreview {
   let typeName: String
   let displayName: String?
   let devices: [String]
+  let orientations: [String]
   let numberOfPreviews: Int
 }
 
@@ -52,7 +53,7 @@ open class PreviewBaseTest: XCTestCase {
       return []
     }
 
-    let dynamicTestSelectors = addMethods()
+    let dynamicTestSelectors = addMethods().sorted()
     var invocations: [AnyObject] = []
     guard let signatureCreator else {
       return invocations
@@ -87,7 +88,8 @@ open class PreviewBaseTest: XCTestCase {
             }
           }
 
-          let testSelectorName = "\(displayName)-\(j)-\(i)"
+          let orientation = discoveredPreview.orientations[j]
+          let testSelectorName = "\(orientation)-\(displayName)-\(j)-\(i)"
           dynamicTestSelectors.append(testSelectorName)
 
           let preview = DiscoveredPreviewAndIndex(preview: discoveredPreview, index: j)

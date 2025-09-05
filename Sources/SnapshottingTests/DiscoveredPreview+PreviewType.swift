@@ -13,6 +13,7 @@ extension DiscoveredPreview {
     return DiscoveredPreview(typeName: previewType.typeName,
                              displayName: previewType.displayName,
                              devices: previewType.previews.map { $0.device?.rawValue ?? "" },
+                             orientations: previewType.previews.map { $0.orientation.id },
                              numberOfPreviews: previewType.previews.count)
   }
 }
