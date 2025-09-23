@@ -91,7 +91,8 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   ) {
     UIView.setAnimationsEnabled(false)
     let view = preview.view()
-    let controller = view.makeExpandingView(layout: preview.layout, window: window)
+    let controller = view.makeExpandingView(window: window)
+    controller.setupView(layout: preview.layout)
     view.snapshot(
       layout: preview.layout,
       controller: controller,

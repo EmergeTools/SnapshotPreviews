@@ -35,7 +35,7 @@ extension AccessibilityMarker: AccessibilityMark {
 private var _colorScheme: ColorScheme? = nil
 
 extension View {
-  public func makeExpandingView(layout: PreviewLayout, window: UIWindow) -> ExpandingViewController {
+  public func makeExpandingView(window: UIWindow) -> ExpandingViewController {
     UIView.setAnimationsEnabled(false)
     var wrappedView: any View = self.transaction { transaction in
       transaction.disablesAnimations = true
@@ -47,8 +47,6 @@ extension View {
       _colorScheme = scheme
     }
     let controller = ExpandingViewController(rootView: wrappedView)
-    controller.setupView(layout: layout)
-
     let windowRootVC = Self.setupRootVC(subVC: controller)
     window.rootViewController = windowRootVC
     return controller
