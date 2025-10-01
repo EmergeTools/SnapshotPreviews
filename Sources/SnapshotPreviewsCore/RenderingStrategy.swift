@@ -23,31 +23,17 @@ public enum MarkerShape {
   #endif
 }
 
-public protocol AccessibilityMark {
-  var description: String { get }
-  var hint: String? { get }
-  var userInputLabels: [String]? { get }
-  var accessibilityShape: MarkerShape { get }
-  var activationPoint: CGPoint { get }
-  var usesDefaultActivationPoint: Bool { get }
-  var customActions: [String] { get }
-  var accessibilityLanguage: String? { get }
-
-}
-
 public struct SnapshotResult {
   public init(
     image: Result<ImageType, Error>,
     precision: Float?,
     accessibilityEnabled: Bool?,
-    accessibilityMarkers: [AccessibilityMark]?,
     colorScheme: ColorScheme?,
     appStoreSnapshot: Bool?)
   {
     self.image = image
     self.precision = precision
     self.accessibilityEnabled = accessibilityEnabled
-    self.accessibilityMarkers = accessibilityMarkers
     self.colorScheme = colorScheme
     self.appStoreSnapshot = appStoreSnapshot
   }
@@ -55,7 +41,6 @@ public struct SnapshotResult {
   public let image: Result<ImageType, Error>
   public let precision: Float?
   public let accessibilityEnabled: Bool?
-  public let accessibilityMarkers: [AccessibilityMark]?
   public let colorScheme: ColorScheme?
   public let appStoreSnapshot: Bool?
 }

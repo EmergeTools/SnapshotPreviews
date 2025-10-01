@@ -12,7 +12,7 @@ import SwiftUI
 
 public class UIKitRenderingStrategy: RenderingStrategy {
 
-  public init() {
+  public init(a11yWrapper: ((UIViewController, UIWindow, PreviewLayout) -> UIView)? = nil) {
     let windowScene = UIApplication.shared
       .connectedScenes
       .filter { $0.activationState == .foregroundActive }
@@ -23,6 +23,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
     window.backgroundColor = UIColor.systemBackground
     window.makeKeyAndVisible()
     self.window = window
+    self.a11yWrapper = a11yWrapper
   }
 
   private var windowScene: UIWindowScene? {
@@ -30,6 +31,7 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   }
 
   private let window: UIWindow
+  private let a11yWrapper: ((UIViewController, UIWindow, PreviewLayout) -> UIView)?
   private var geometryUpdateError: Error?
 
   @MainActor
@@ -64,15 +66,15 @@ public class UIKitRenderingStrategy: RenderingStrategy {
   ) {
       if let geometryUpdateError {
         if (geometryUpdateError as NSError).userInfo["BSErrorCodeDescription"] as? String == "timeout" {
-            completion(SnapshotResult(image: .failure(RenderingError.orientationChangeTimeout), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil, appStoreSnapshot: nil))
+            completion(SnapshotResult(image: .failure(RenderingError.orientationChangeTimeout), precision: nil, accessibilityEnabled: nil, colorScheme: nil, appStoreSnapshot: nil))
             return
         }
-        completion(SnapshotResult(image: .failure(geometryUpdateError), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil, appStoreSnapshot: nil))
+        completion(SnapshotResult(image: .failure(geometryUpdateError), precision: nil, accessibilityEnabled: nil, colorScheme: nil, appStoreSnapshot: nil))
         return
       }
       guard attempts > 0 else {
           let timeoutError = NSError(domain: "OrientationChangeTimeout", code: 0, userInfo: [NSLocalizedDescriptionKey: "Orientation change timed out"])
-        completion(SnapshotResult(image: .failure(timeoutError), precision: nil, accessibilityEnabled: nil, accessibilityMarkers: nil, colorScheme: nil, appStoreSnapshot: nil))
+        completion(SnapshotResult(image: .failure(timeoutError), precision: nil, accessibilityEnabled: nil, colorScheme: nil, appStoreSnapshot: nil))
           return
       }
 
@@ -96,7 +98,8 @@ public class UIKitRenderingStrategy: RenderingStrategy {
       layout: preview.layout,
       controller: controller,
       window: window,
-      async: false) { result in
+      async: false,
+      a11yWrapper: a11yWrapper) { result in
         completion(result)
       }
   }

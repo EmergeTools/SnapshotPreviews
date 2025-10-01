@@ -18,19 +18,7 @@ public enum RenderingError: Error {
 import Foundation
 import SwiftUI
 import UIKit
-import AccessibilitySnapshotCore
 import SnapshotSharedModels
-
-extension AccessibilityMarker: AccessibilityMark {
-  public var accessibilityShape: MarkerShape {
-    switch shape {
-    case .frame(let frame):
-      return .frame(frame)
-    case .path(let path):
-      return .path(path)
-    }
-  }
-}
 
 private var _colorScheme: ColorScheme? = nil
 
@@ -59,6 +47,7 @@ extension View {
     controller: ExpandingViewController,
     window: UIWindow,
     async: Bool,
+    a11yWrapper: ((UIViewController, UIWindow, PreviewLayout) -> UIView)? = nil,
     completion: @escaping (SnapshotResult) -> Void)
   {
     controller.expansionSettled = { [weak controller, weak window] renderingMode, precision, accessibilityEnabled, appStoreSnapshot, error in
@@ -68,7 +57,7 @@ extension View {
 
       if let error {
         DispatchQueue.main.async {
-          completion(SnapshotResult(image: .failure(error), precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
+          completion(SnapshotResult(image: .failure(error), precision: precision, accessibilityEnabled: accessibilityEnabled, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
         }
         return
       }
@@ -76,36 +65,18 @@ extension View {
       if async {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
           let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, window: window, rootVC: containerVC, targetView: controller.view)
-          completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
+          completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
         }
       } else {
         DispatchQueue.main.async {
-          if let accessibilityEnabled, accessibilityEnabled {
-            let containedView: UIView
-            switch layout {
-            case .device:
-              containedView = containerVC.view
-            default:
-              containedView = controller.view
-            }
-            let mode = controller.view.bounds.size.requiresCoreAnimationSnapshot ? AccessibilitySnapshotView.ViewRenderingMode.renderLayerInContext : renderingMode?.a11yRenderingMode
-            let a11yView = AccessibilitySnapshotView(
-              containedView: containedView,
-              viewRenderingMode: mode ?? .drawHierarchyInRect,
-              activationPointDisplayMode: .never,
-              showUserInputLabels: true)
-
-            a11yView.center = window.center
-            window.addSubview(a11yView)
-
-            let elements = try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
-            a11yView.sizeToFit()
+          if let a11yWrapper, let accessibilityEnabled, accessibilityEnabled {
+            let a11yView = a11yWrapper(controller, window, layout)
             let result = Self.takeSnapshot(layout: .sizeThatFits, renderingMode: renderingMode, window: window, rootVC: containerVC, targetView: a11yView)
             a11yView.removeFromSuperview()
-            completion(SnapshotResult(image: result.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: elements, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
+            completion(SnapshotResult(image: result.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
           } else {
             let imageResult = Self.takeSnapshot(layout: layout, renderingMode: renderingMode, window: window, rootVC: containerVC, targetView: controller.view)
-            completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, accessibilityMarkers: nil, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
+            completion(SnapshotResult(image: imageResult.mapError { $0 }, precision: precision, accessibilityEnabled: accessibilityEnabled, colorScheme: _colorScheme, appStoreSnapshot: appStoreSnapshot))
           }
         }
       }
@@ -219,17 +190,6 @@ extension UIView {
         layer.layerForSnapshot.render(in: context)
         return true
       }
-    }
-  }
-}
-
-extension EmergeRenderingMode {
-  var a11yRenderingMode: AccessibilitySnapshotView.ViewRenderingMode {
-    switch self {
-    case .coreAnimation:
-      return .renderLayerInContext
-    case .window, .uiView:
-      return .drawHierarchyInRect
     }
   }
 }

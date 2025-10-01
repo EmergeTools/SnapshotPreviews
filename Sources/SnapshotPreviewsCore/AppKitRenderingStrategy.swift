@@ -55,7 +55,6 @@ public class AppKitRenderingStrategy: RenderingStrategy {
               image: image != nil ? .success(image!) : .failure(RenderingError.failedRendering(window?.frame.size ?? .zero)),
               precision: precision,
               accessibilityEnabled: accessibilityEnabled,
-              accessibilityMarkers: nil,
               colorScheme: _colorScheme,
               appStoreSnapshot: appStoreSnapshot))
         }

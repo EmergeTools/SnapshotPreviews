@@ -36,7 +36,6 @@ let package = Package(
     ],
     dependencies: [
       .package(url: "https://github.com/swhitty/FlyingFox.git", exact: "0.16.0"),
-      .package(url: "https://github.com/EmergeTools/AccessibilitySnapshot.git", exact: "1.0.2"),
       .package(url: "https://github.com/EmergeTools/SimpleDebugger.git", exact: "1.0.0"),
     ],
     targets: [
@@ -47,7 +46,7 @@ let package = Package(
         .target(name: "SnapshottingTests", dependencies: ["SnapshotPreviewsCore", "SnapshottingTestsObjc"]),
         .target(name: "SnapshotSharedModels"),
         // Core functionality
-        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", "SnapshotSharedModels", .product(name: "AccessibilitySnapshotCore", package: "AccessibilitySnapshot", condition: .when(platforms: [.iOS, .macCatalyst]))]),
+        .target(name: "SnapshotPreviewsCore", dependencies: ["PreviewsSupport", "SnapshotSharedModels"]),
         .target(name: "SnapshotPreferences", dependencies: ["SnapshotSharedModels"]),
         // Inserted dylib
         .target(name: "Snapshotting", dependencies: ["SnapshottingSwift"]),
