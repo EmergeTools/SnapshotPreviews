@@ -33,7 +33,6 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   
   #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
   open class func setupA11y() -> ((UIViewController, UIWindow, PreviewLayout) -> UIView)? {
-    print("base class")
     return nil
   }
   #endif
