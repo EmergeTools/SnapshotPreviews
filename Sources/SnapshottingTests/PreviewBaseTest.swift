@@ -73,6 +73,7 @@ open class PreviewBaseTest: XCTestCase {
       var i = 0
 
       let currentDeviceName = ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"]
+      let defaultDeviceName = ProcessInfo.processInfo.environment["EMERGE_DEFAULT_DEVICE_NAME"]
 
       for discoveredPreview in discoveredPreviews {
         let typeName = discoveredPreview.typeName
@@ -80,11 +81,14 @@ open class PreviewBaseTest: XCTestCase {
         let count = discoveredPreview.numberOfPreviews
 
         for j in 0..<count {
-          // Filter out device specific previews whose device name doesn't match the currently selected one
           if currentDeviceName != nil {
             let specifiedPreviewDevice = discoveredPreview.devices[j]
-            guard specifiedPreviewDevice.isEmpty || specifiedPreviewDevice == currentDeviceName else {
-              continue
+            if specifiedPreviewDevice.isEmpty {
+              if let defaultDeviceName, currentDeviceName != defaultDeviceName {
+                continue
+              }
+            } else {
+              guard specifiedPreviewDevice == currentDeviceName else { continue }
             }
           }
 
