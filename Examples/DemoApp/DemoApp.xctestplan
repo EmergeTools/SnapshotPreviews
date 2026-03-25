@@ -15,8 +15,8 @@
     {
       "target" : {
         "containerPath" : "container:DemoApp.xcodeproj",
-        "identifier" : "FAC167E62A5F41C500D79C23",
-        "name" : "DemoAppUITests"
+        "identifier" : "FA8F8B7A2C66C4C4007CEA33",
+        "name" : "DemoAppTests"
       }
     }
   ],
