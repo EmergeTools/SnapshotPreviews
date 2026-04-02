@@ -250,8 +250,6 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     hasDrained = true
     stateLock.unlock()
 
-    guard fileManager.fileExists(atPath: exportDirectoryURL.path) else { return }
-
     let semaphore = DispatchSemaphore(value: 0)
     writeQueue.addBarrierBlock {
       semaphore.signal()
