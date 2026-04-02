@@ -171,6 +171,12 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
       [(nil, "")]
     }
 
+    defer {
+      if schemes != nil {
+        applyColorSchemeOverride(nil)
+      }
+    }
+
     for pass in renderPasses {
       if let scheme = pass.scheme {
         applyColorSchemeOverride(scheme)
@@ -233,11 +239,6 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
           XCTFail("Error \(error)")
         }
       }
-    }
-
-    // Reset override after all passes
-    if schemes != nil {
-      applyColorSchemeOverride(nil)
     }
   }
 }
