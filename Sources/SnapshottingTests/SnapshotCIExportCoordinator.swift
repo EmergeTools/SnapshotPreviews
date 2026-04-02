@@ -250,11 +250,7 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     hasDrained = true
     stateLock.unlock()
 
-    let semaphore = DispatchSemaphore(value: 0)
-    writeQueue.addBarrierBlock {
-      semaphore.signal()
-    }
-    semaphore.wait()
+    writeQueue.waitUntilAllOperationsAreFinished()
   }
 
   // MARK: - XCTestObservation
