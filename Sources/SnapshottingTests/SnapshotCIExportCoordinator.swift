@@ -145,7 +145,7 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     var lastWasUnderscore = false
 
     for c in raw {
-      if c.isLetter || c.isNumber || c == "." || c == "-" {
+      if c.isLetter || c.isNumber || c == "." || c == "-" || c == "_" {
         result.append(c)
         lastWasUnderscore = false
       } else if !lastWasUnderscore {

@@ -67,9 +67,14 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertEqual(a, b)
   }
 
-  func testSanitizeCollapsesRepeatedUnderscores() {
-    let result = SnapshotCIExportCoordinator.sanitize("A///B___C")
-    XCTAssertFalse(result.contains("__"))
+  func testSanitizeCollapsesRepeatedUnsafeCharacters() {
+    let result = SnapshotCIExportCoordinator.sanitize("A///B   C")
+    XCTAssertFalse(result.contains("__"), "Consecutive unsafe chars should collapse to a single underscore")
+  }
+
+  func testSanitizePreservesExistingUnderscores() {
+    let result = SnapshotCIExportCoordinator.sanitize("A___B")
+    XCTAssertEqual(result, "A___B", "Underscores in the input should be preserved as-is")
   }
 
   func testSanitizeFallsBackForEmptyResult() {
