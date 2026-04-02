@@ -197,9 +197,8 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     result: SnapshotResult,
     context: SnapshotContext
   ) {
-    let sanitizedName = Self.sanitize(context.baseFileName)
-    let pngFileName = "\(sanitizedName).png"
-    let jsonFileName = "\(sanitizedName).json"
+    let pngFileName = "\(context.baseFileName).png"
+    let jsonFileName = "\(context.baseFileName).json"
 
     let displayName = Self.canonicalDisplayName(for: context)
     let group = Self.canonicalGroup(
@@ -226,7 +225,7 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
 
       let sidecar = SnapshotCIExportSidecar(
         context: context,
-        imageFileName: sanitizedName,
+        imageFileName: context.baseFileName,
         displayName: displayName,
         group: group
       )

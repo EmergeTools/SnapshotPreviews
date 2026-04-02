@@ -133,9 +133,8 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     coordinator.enqueueExport(result: makeSuccessResult(), context: context)
     coordinator.drain()
 
-    let sanitized = SnapshotCIExportCoordinator.sanitize(context.baseFileName)
-    let jsonURL = tempDir.appendingPathComponent("\(sanitized).json")
-    let pngURL = tempDir.appendingPathComponent("\(sanitized).png")
+    let jsonURL = tempDir.appendingPathComponent("\(context.baseFileName).json")
+    let pngURL = tempDir.appendingPathComponent("\(context.baseFileName).png")
 
     XCTAssertTrue(FileManager.default.fileExists(atPath: jsonURL.path))
     XCTAssertTrue(FileManager.default.fileExists(atPath: pngURL.path))
@@ -146,7 +145,7 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
   func testSidecarUsesPreviewDisplayNameAndTypeDisplayNameForPreviewProviderPresentation() throws {
     let coordinator = SnapshotCIExportCoordinator(exportDirectoryURL: tempDir)
     let context = makeContext(
-      baseFileName: "Login Screen_Dark Mode",
+      baseFileName: "Login_Screen_Dark_Mode",
       typeName: "MyModule.LoginScreen_Previews",
       typeDisplayName: "Login Screen",
       previewDisplayName: "Dark Mode"
@@ -157,7 +156,7 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
 
     let json = try readJSON(forBaseFileName: context.baseFileName)
 
-    XCTAssertEqual(json["image_file_name"] as? String, SnapshotCIExportCoordinator.sanitize(context.baseFileName))
+    XCTAssertEqual(json["image_file_name"] as? String, context.baseFileName)
     XCTAssertEqual(json["display_name"] as? String, "Dark Mode")
     XCTAssertEqual(json["group"] as? String, "Login Screen")
   }
@@ -267,9 +266,8 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     coordinator.enqueueExport(result: makeFailureResult(), context: context)
     coordinator.drain()
 
-    let sanitized = SnapshotCIExportCoordinator.sanitize(context.baseFileName)
-    XCTAssertFalse(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(sanitized).png").path))
-    XCTAssertFalse(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(sanitized).json").path))
+    XCTAssertFalse(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(context.baseFileName).png").path))
+    XCTAssertFalse(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(context.baseFileName).json").path))
   }
 
   // MARK: - Drain Semantics
@@ -282,8 +280,7 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     coordinator.drain()
     coordinator.drain()
 
-    let sanitized = SnapshotCIExportCoordinator.sanitize(context.baseFileName)
-    XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(sanitized).json").path))
+    XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(context.baseFileName).json").path))
   }
 
   func testDrainOnEmptyQueueDoesNotCrash() {
@@ -311,9 +308,8 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     coordinator.drain()
 
     for context in contexts {
-      let sanitized = SnapshotCIExportCoordinator.sanitize(context.baseFileName)
-      XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(sanitized).png").path))
-      XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(sanitized).json").path))
+      XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(context.baseFileName).png").path))
+      XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.appendingPathComponent("\(context.baseFileName).json").path))
     }
   }
 }
@@ -323,8 +319,7 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
 extension SnapshotCIExportCoordinatorTests {
 
   private func readJSON(forBaseFileName baseFileName: String) throws -> [String: Any] {
-    let sanitized = SnapshotCIExportCoordinator.sanitize(baseFileName)
-    let data = try Data(contentsOf: tempDir.appendingPathComponent("\(sanitized).json"))
+    let data = try Data(contentsOf: tempDir.appendingPathComponent("\(baseFileName).json"))
     return try JSONSerialization.jsonObject(with: data) as! [String: Any]
   }
 

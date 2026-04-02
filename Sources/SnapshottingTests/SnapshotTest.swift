@@ -213,7 +213,9 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
         previewIndex: discoveredPreview.index,
         duplicateDisplayNameCount: duplicateDisplayNameCount
       )
-      let baseFileName = "\(typeFileName)_\(fileNameComponent)\(pass.suffix)"
+      let baseFileName = SnapshotCIExportCoordinator.sanitize(
+        "\(typeFileName)_\(fileNameComponent)\(pass.suffix)"
+      )
       let colorSchemeValue = pass.scheme?.stringValue ?? result.colorScheme?.stringValue
 
       let context = SnapshotContext(
