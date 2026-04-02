@@ -122,7 +122,11 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
         previewCountForFileId[fileId, default: 0] += 1
       }
 
-      let group = previewType.fileID ?? previewType.typeName
+      let group = SnapshotCIExportCoordinator.canonicalGroup(
+        fileId: previewType.fileID,
+        typeDisplayName: previewType.displayName,
+        typeName: previewType.typeName
+      )
       for preview in previewType.previews {
         guard let previewDisplayName = preview.displayName, !previewDisplayName.isEmpty else {
           continue
@@ -194,7 +198,11 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
         continue
       }
 
-      let previewGroup = previewType.fileID ?? previewType.typeName
+      let previewGroup = SnapshotCIExportCoordinator.canonicalGroup(
+        fileId: previewType.fileID,
+        typeDisplayName: previewType.displayName,
+        typeName: previewType.typeName
+      )
       let duplicateDisplayNameCount = preview.displayName.flatMap {
         Self.previewDisplayNameCountByGroup[previewGroup]?[$0]
       } ?? 0

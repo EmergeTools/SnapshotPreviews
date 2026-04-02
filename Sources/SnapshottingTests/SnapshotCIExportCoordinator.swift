@@ -161,16 +161,20 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
 
   // MARK: - Export
 
-  private static func canonicalGroup(for context: SnapshotContext) -> String {
-    if let fileId = context.fileId, !fileId.isEmpty {
+  static func canonicalGroup(
+    fileId: String?,
+    typeDisplayName: String,
+    typeName: String
+  ) -> String {
+    if let fileId, !fileId.isEmpty {
       return fileId
     }
 
-    if !context.typeDisplayName.isEmpty {
-      return context.typeDisplayName
+    if !typeDisplayName.isEmpty {
+      return typeDisplayName
     }
 
-    return context.typeName
+    return typeName
   }
 
   private static func canonicalDisplayName(for context: SnapshotContext) -> String {
@@ -198,7 +202,11 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     let jsonFileName = "\(sanitizedName).json"
 
     let displayName = Self.canonicalDisplayName(for: context)
-    let group = Self.canonicalGroup(for: context)
+    let group = Self.canonicalGroup(
+      fileId: context.fileId,
+      typeDisplayName: context.typeDisplayName,
+      typeName: context.typeName
+    )
     let exportDir = exportDirectoryURL
     
     guard case .success(let image) = result.image else { return }
