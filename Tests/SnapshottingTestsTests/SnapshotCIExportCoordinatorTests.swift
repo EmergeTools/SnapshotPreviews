@@ -14,6 +14,7 @@ import UIKit
 import AppKit
 #endif
 
+@MainActor
 final class SnapshotCIExportCoordinatorTests: XCTestCase {
 
   private var tempDir: URL!

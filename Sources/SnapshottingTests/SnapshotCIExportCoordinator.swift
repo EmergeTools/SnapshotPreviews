@@ -69,9 +69,9 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
 
   // MARK: - Shared Instance
 
-  private static var _shared: SnapshotCIExportCoordinator?
+  @MainActor private static var _shared: SnapshotCIExportCoordinator?
 
-  static func sharedIfEnabled(
+  @MainActor static func sharedIfEnabled(
     environment: [String: String] = ProcessInfo.processInfo.environment
   ) -> SnapshotCIExportCoordinator? {
     if let _shared { return _shared }
@@ -106,7 +106,7 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
   }
 
   /// Resets shared state. Exposed for testing only.
-  static func resetShared() {
+  @MainActor static func resetShared() {
     if let shared = _shared {
       XCTestObservationCenter.shared.removeTestObserver(shared)
     }
