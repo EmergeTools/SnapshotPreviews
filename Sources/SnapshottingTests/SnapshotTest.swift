@@ -7,7 +7,7 @@
 
 import Foundation
 @_implementationOnly import SnapshotPreviewsCore
-@_exported import enum SwiftUI.ColorScheme
+import enum SwiftUI.ColorScheme
 import XCTest
 
 extension ColorScheme {
@@ -45,18 +45,6 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     nil
   }
 
-  /// Override to render each preview in multiple color schemes.
-  ///
-  /// When `nil` (the default), each preview renders once with whatever color scheme
-  /// it naturally uses — no override is applied. When set to e.g. `[.light, .dark]`,
-  /// each preview renders once per scheme, producing separate snapshot files suffixed
-  /// with the scheme name.
-  ///
-  /// - Returns: An optional array of `ColorScheme` values, or `nil` for no override.
-  open class func colorSchemes() -> [ColorScheme]? {
-    nil
-  }
-  
   #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
   open class func setupA11y() -> ((UIViewController, UIWindow, PreviewLayout) -> UIView)? {
     return nil
@@ -168,124 +156,68 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
       typeFileName = Self.previewCountForFileId[fileId]! > 1 ? "\(fileId):\(lineNumber)" : fileId
     }
 
-    let schemes = Self.colorSchemes()
-    let renderPasses: [(scheme: ColorScheme?, suffix: String)] = if let schemes {
-      schemes.map { ($0, "_\($0.stringValue)") }
+    var result: SnapshotResult? = nil
+    let expectation = XCTestExpectation()
+    strategy.render(preview: preview) { snapshotResult in
+      result = snapshotResult
+      expectation.fulfill()
+    }
+    wait(for: [expectation], timeout: 10)
+    guard let result else {
+      XCTFail("Did not render")
+      return
+    }
+
+    let previewGroup = SnapshotCIExportCoordinator.canonicalGroup(
+      fileId: previewType.fileID,
+      typeDisplayName: previewType.displayName,
+      typeName: previewType.typeName
+    )
+    let duplicateDisplayNameCount = preview.displayName.flatMap {
+      Self.previewDisplayNameCountByGroup[previewGroup]?[$0]
+    } ?? 0
+    let fileNameComponent = Self.resolvedFileNameComponent(
+      fileId: previewType.fileID,
+      line: previewType.line,
+      previewDisplayName: preview.displayName,
+      previewIndex: discoveredPreview.index,
+      duplicateDisplayNameCount: duplicateDisplayNameCount
+    )
+    let baseFileName = SnapshotCIExportCoordinator.sanitize(
+      "\(typeFileName)_\(fileNameComponent)"
+    )
+    let colorSchemeValue = result.colorScheme?.stringValue
+
+    let context = SnapshotContext(
+      baseFileName: baseFileName,
+      testName: name,
+      typeName: previewType.typeName,
+      typeDisplayName: previewType.displayName,
+      fileId: previewType.fileID,
+      line: previewType.line,
+      previewDisplayName: preview.displayName,
+      previewIndex: discoveredPreview.index,
+      previewId: preview.previewId,
+      orientation: preview.orientation.id,
+      declaredDevice: preview.device?.rawValue,
+      simulatorDeviceName: ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"],
+      simulatorModelIdentifier: ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"],
+      precision: result.precision,
+      accessibilityEnabled: result.accessibilityEnabled,
+      colorScheme: colorSchemeValue,
+      appStoreSnapshot: result.appStoreSnapshot)
+
+    if let coordinator = SnapshotCIExportCoordinator.sharedIfEnabled() {
+      coordinator.enqueueExport(result: result, context: context)
     } else {
-      [(nil, "")]
-    }
-
-    defer {
-      if schemes != nil {
-        applyColorSchemeOverride(nil)
-      }
-    }
-
-    for pass in renderPasses {
-      if let scheme = pass.scheme {
-        applyColorSchemeOverride(scheme)
-      }
-
-      var result: SnapshotResult? = nil
-      let expectation = XCTestExpectation()
-      strategy.render(preview: preview) { snapshotResult in
-        result = snapshotResult
-        expectation.fulfill()
-      }
-      wait(for: [expectation], timeout: 10)
-      guard let result else {
-        XCTFail("Did not render")
-        continue
-      }
-
-      let previewGroup = SnapshotCIExportCoordinator.canonicalGroup(
-        fileId: previewType.fileID,
-        typeDisplayName: previewType.displayName,
-        typeName: previewType.typeName
-      )
-      let duplicateDisplayNameCount = preview.displayName.flatMap {
-        Self.previewDisplayNameCountByGroup[previewGroup]?[$0]
-      } ?? 0
-      let fileNameComponent = Self.resolvedFileNameComponent(
-        fileId: previewType.fileID,
-        line: previewType.line,
-        previewDisplayName: preview.displayName,
-        previewIndex: discoveredPreview.index,
-        duplicateDisplayNameCount: duplicateDisplayNameCount
-      )
-      let baseFileName = SnapshotCIExportCoordinator.sanitize(
-        "\(typeFileName)_\(fileNameComponent)\(pass.suffix)"
-      )
-      let colorSchemeValue = pass.scheme?.stringValue ?? result.colorScheme?.stringValue
-
-      let context = SnapshotContext(
-        baseFileName: baseFileName,
-        testName: name,
-        typeName: previewType.typeName,
-        typeDisplayName: previewType.displayName,
-        fileId: previewType.fileID,
-        line: previewType.line,
-        previewDisplayName: preview.displayName,
-        previewIndex: discoveredPreview.index,
-        previewId: preview.previewId,
-        orientation: preview.orientation.id,
-        declaredDevice: preview.device?.rawValue,
-        simulatorDeviceName: ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"],
-        simulatorModelIdentifier: ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"],
-        precision: result.precision,
-        accessibilityEnabled: result.accessibilityEnabled,
-        colorScheme: colorSchemeValue,
-        appStoreSnapshot: result.appStoreSnapshot)
-
-      if let coordinator = SnapshotCIExportCoordinator.sharedIfEnabled() {
-        coordinator.enqueueExport(result: result, context: context)
-      } else {
-        do {
-          let attachment = try XCTAttachment(image: result.image.get())
-          attachment.name = baseFileName
-          attachment.lifetime = .keepAlways
-          add(attachment)
-        } catch {
-          XCTFail("Error \(error)")
-        }
+      do {
+        let attachment = try XCTAttachment(image: result.image.get())
+        attachment.name = baseFileName
+        attachment.lifetime = .keepAlways
+        add(attachment)
+      } catch {
+        XCTFail("Error \(error)")
       }
     }
   }
-}
-
-// Color scheme override helpers — kept outside the open class to avoid
-// @_implementationOnly deserialization issues with private members.
-
-@MainActor
-private func applyColorSchemeOverride(_ scheme: ColorScheme?) {
-  #if canImport(UIKit) && !os(watchOS)
-  let style: UIUserInterfaceStyle
-  switch scheme {
-  case .light:
-    style = .light
-  case .dark:
-    style = .dark
-  case nil:
-    style = .unspecified
-  @unknown default:
-    style = .unspecified
-  }
-  for scene in UIApplication.shared.connectedScenes {
-    guard let windowScene = scene as? UIWindowScene else { continue }
-    for window in windowScene.windows {
-      window.overrideUserInterfaceStyle = style
-    }
-  }
-  #elseif canImport(AppKit) && !targetEnvironment(macCatalyst)
-  switch scheme {
-  case .light:
-    NSApplication.shared.appearance = NSAppearance(named: .aqua)
-  case .dark:
-    NSApplication.shared.appearance = NSAppearance(named: .darkAqua)
-  case nil:
-    NSApplication.shared.appearance = nil
-  @unknown default:
-    NSApplication.shared.appearance = nil
-  }
-  #endif
 }
