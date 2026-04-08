@@ -67,15 +67,11 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
   private let stateLock = NSLock()
   private var hasDrained = false
 
-  // MARK: - Shared Instance
+  // MARK: - Factory
 
-  @MainActor private static var _shared: SnapshotCIExportCoordinator?
-
-  @MainActor static func sharedIfEnabled(
+  static func createFromEnvironment(
     environment: [String: String] = ProcessInfo.processInfo.environment
   ) -> SnapshotCIExportCoordinator? {
-    if let _shared { return _shared }
-
     guard let exportDir = environment[envKey] else {
       return nil
     }
@@ -100,17 +96,8 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     }
 
     let coordinator = Self(exportDirectoryURL: url)
-    _shared = coordinator
     XCTestObservationCenter.shared.addTestObserver(coordinator)
     return coordinator
-  }
-
-  /// Resets shared state. Exposed for testing only.
-  @MainActor static func resetShared() {
-    if let shared = _shared {
-      XCTestObservationCenter.shared.removeTestObserver(shared)
-    }
-    _shared = nil
   }
 
   // MARK: - Init

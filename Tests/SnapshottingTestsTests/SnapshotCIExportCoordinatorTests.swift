@@ -23,35 +23,26 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     super.setUp()
     tempDir = FileManager.default.temporaryDirectory
       .appendingPathComponent("SnapshotCIExportTests-\(UUID().uuidString)")
-    SnapshotCIExportCoordinator.resetShared()
   }
 
   override func tearDown() {
     try? FileManager.default.removeItem(at: tempDir)
-    SnapshotCIExportCoordinator.resetShared()
     super.tearDown()
   }
 
-  // MARK: - Shared Instance Gating
+  // MARK: - Factory
 
-  func testSharedIfEnabledReturnsNilWhenEnvVarAbsent() {
-    let coordinator = SnapshotCIExportCoordinator.sharedIfEnabled(environment: [:])
+  func testCreateFromEnvironmentReturnsNilWhenEnvVarAbsent() {
+    let coordinator = SnapshotCIExportCoordinator.createFromEnvironment(environment: [:])
     XCTAssertNil(coordinator)
   }
 
-  func testSharedIfEnabledReturnsCoordinatorWhenEnvVarSet() {
-    let coordinator = SnapshotCIExportCoordinator.sharedIfEnabled(
+  func testCreateFromEnvironmentReturnsCoordinatorWhenEnvVarSet() {
+    let coordinator = SnapshotCIExportCoordinator.createFromEnvironment(
       environment: [SnapshotCIExportCoordinator.envKey: tempDir.path]
     )
     XCTAssertNotNil(coordinator)
     XCTAssertTrue(FileManager.default.fileExists(atPath: tempDir.path))
-  }
-
-  func testSharedIfEnabledReturnsSameInstanceOnRepeatedCalls() {
-    let env = [SnapshotCIExportCoordinator.envKey: tempDir.path]
-    let first = SnapshotCIExportCoordinator.sharedIfEnabled(environment: env)
-    let second = SnapshotCIExportCoordinator.sharedIfEnabled(environment: env)
-    XCTAssertTrue(first === second, "Should return the same cached instance")
   }
 
   // MARK: - Filename Sanitization

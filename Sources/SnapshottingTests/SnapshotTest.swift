@@ -73,9 +73,10 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   }
     #endif
   private static var renderingStrategy: RenderingStrategy? = nil
+  @MainActor private static var ciExportCoordinator: SnapshotCIExportCoordinator?
 
   static private var previews: [SnapshotPreviewsCore.PreviewType] = []
-  
+
   static private var previewCountForFileId: [String: Int] = [:]
   static private var previewDisplayNameCountByGroup: [String: [String: Int]] = [:]
 
@@ -99,7 +100,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
   @MainActor
   override class func discoverPreviews() -> [DiscoveredPreview] {
-    _ = SnapshotCIExportCoordinator.sharedIfEnabled()
+    ciExportCoordinator = SnapshotCIExportCoordinator.createFromEnvironment()
 
     previews = FindPreviews.findPreviews(included: Self.snapshotPreviews(), excluded: Self.excludedSnapshotPreviews())
     previewCountForFileId = [:]
@@ -142,14 +143,17 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     let preview = previewType.previews[discoveredPreview.index]
 
     // Lazily create the rendering strategy
-    if Self.renderingStrategy == nil {
+    let strategy: RenderingStrategy
+    if let existing = Self.renderingStrategy {
+      strategy = existing
+    } else {
       #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
-      Self.renderingStrategy = Self.makeRenderingStrategy(a11y: Self.setupA11y())
+      strategy = Self.makeRenderingStrategy(a11y: Self.setupA11y())
       #else
-      Self.renderingStrategy = Self.makeRenderingStrategy()
+      strategy = Self.makeRenderingStrategy()
       #endif
+      Self.renderingStrategy = strategy
     }
-    let strategy = Self.renderingStrategy!
 
     var typeFileName = previewType.displayName
     if let fileId = previewType.fileID, let lineNumber = previewType.line {
@@ -186,28 +190,26 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     let baseFileName = SnapshotCIExportCoordinator.sanitize(
       "\(typeFileName)_\(fileNameComponent)"
     )
-    let colorSchemeValue = result.colorScheme?.stringValue
-
-    let context = SnapshotContext(
-      baseFileName: baseFileName,
-      testName: name,
-      typeName: previewType.typeName,
-      typeDisplayName: previewType.displayName,
-      fileId: previewType.fileID,
-      line: previewType.line,
-      previewDisplayName: preview.displayName,
-      previewIndex: discoveredPreview.index,
-      previewId: preview.previewId,
-      orientation: preview.orientation.id,
-      declaredDevice: preview.device?.rawValue,
-      simulatorDeviceName: ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"],
-      simulatorModelIdentifier: ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"],
-      precision: result.precision,
-      accessibilityEnabled: result.accessibilityEnabled,
-      colorScheme: colorSchemeValue,
-      appStoreSnapshot: result.appStoreSnapshot)
-
-    if let coordinator = SnapshotCIExportCoordinator.sharedIfEnabled() {
+    if let coordinator = Self.ciExportCoordinator {
+      let colorSchemeValue = result.colorScheme?.stringValue
+      let context = SnapshotContext(
+        baseFileName: baseFileName,
+        testName: name,
+        typeName: previewType.typeName,
+        typeDisplayName: previewType.displayName,
+        fileId: previewType.fileID,
+        line: previewType.line,
+        previewDisplayName: preview.displayName,
+        previewIndex: discoveredPreview.index,
+        previewId: preview.previewId,
+        orientation: preview.orientation.id,
+        declaredDevice: preview.device?.rawValue,
+        simulatorDeviceName: ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"],
+        simulatorModelIdentifier: ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"],
+        precision: result.precision,
+        accessibilityEnabled: result.accessibilityEnabled,
+        colorScheme: colorSchemeValue,
+        appStoreSnapshot: result.appStoreSnapshot)
       coordinator.enqueueExport(result: result, context: context)
     } else {
       do {
