@@ -59,6 +59,9 @@ let package = Package(
         .testTarget(
             name: "SnapshotPreviewsTests",
             dependencies: ["SnapshotPreviewsCore"]),
+        .testTarget(
+            name: "SnapshottingTestsTests",
+            dependencies: ["SnapshottingTests", "SnapshotPreviewsCore"]),
     ],
     cxxLanguageStandard: .cxx11
 )

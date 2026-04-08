@@ -117,7 +117,8 @@ extension View {
     window: UIWindow,
     rootVC: UIViewController,
     targetView: UIView,
-    maxSize: Double = 1_000_000) -> Result<UIImage, RenderingError>
+    maxSize: Double = 1_000_000,
+    maxTotalPixels: Double = 40_000_000) -> Result<UIImage, RenderingError>
   {
     if renderingMode == EmergeRenderingMode.window {
       let renderer = UIGraphicsImageRenderer(size: window.bounds.size)
@@ -155,7 +156,9 @@ extension View {
         success = rootVC.view.render(size: targetSize, mode: renderingMode, context: ctx)
       }
     }
-    if targetSize.height > maxSize || targetSize.width > maxSize {
+    let scale = Double(UIScreen.main.scale)
+    let totalPixels = Double(targetSize.width) * scale * Double(targetSize.height) * scale
+    if targetSize.height > maxSize || targetSize.width > maxSize || totalPixels > maxTotalPixels {
       return .failure(RenderingError.maxSize(targetSize))
     }
     let renderer = UIGraphicsImageRenderer(size: targetSize)
