@@ -135,7 +135,7 @@ The display name will show up in XCTest results and the EmergeTools UI. Display 
 
 ### Environment variables
 
-It’s recommended to set the environment variable `EMERGE_IS_RUNNING_FOR_SNAPSHOTS` to `1` in your unit test scheme. This is also set when snapshots are generated from the EmergeTools snapshot testing service. Combine it with the Xcode previews variable like this:
+It’s recommended to set the environment variable `XCODE_RUNNING_FOR_PREVIEWS` to `1` in your unit test scheme. This is also set when snapshots are generated from the EmergeTools snapshot testing service. Combine it with the Xcode previews variable like this:
 
 ```swift
 extension ProcessInfo {
@@ -146,6 +146,15 @@ extension ProcessInfo {
 ```
 
 Check `ProcessInfo.isRunningPeviews` to disable behavior you don’t want in previews such as emitting logging data.
+
+#### CI export for Sentry Snapshots
+
+Set `TEST_RUNNER_SNAPSHOTS_EXPORT_DIR` to a directory path in your CI environment to export snapshot PNGs and JSON metadata sidecars to disk instead of attaching them to the XCTest results bundle. This is used by [Sentry Snapshots](https://docs.sentry.io/platforms/apple/guides/ios/snapshots/) to upload images for visual diffing.
+
+```yaml
+env:
+  TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ github.workspace }}/snapshot-images"
+```
 
 ### Variants
 
@@ -161,10 +170,10 @@ struct MyView_Previews: PreviewProvider {
       MyView(mode: .loaded)
         // PreviewVariants requires that every view has a name, so you can’t create one without a display name
         .previewVariant(named: "My View - Loaded")
-      
+
       MyView(mode: .loading)
         .previewVariant(named: "My View - Loading")
-      
+
       MyView(mode: .error)
         .previewVariant(named: "My View - Error")
     }
