@@ -149,7 +149,7 @@ Check `ProcessInfo.isRunningPeviews` to disable behavior you don’t want in pre
 
 #### CI export for Sentry Snapshots
 
-Set `TEST_RUNNER_SNAPSHOTS_EXPORT_DIR` to a directory path in your CI environment to export snapshot PNGs and JSON metadata sidecars to disk instead of attaching them to the XCTest results bundle. This is used by [Sentry Snapshots](https://docs.sentry.io/platforms/apple/guides/ios/snapshots/) to upload images for visual diffing.
+Set `TEST_RUNNER_SNAPSHOTS_EXPORT_DIR` to a directory path in your CI environment to export snapshot PNGs and JSON metadata sidecars to disk instead of attaching them to the XCTest results bundle. This is used by [Sentry Snapshots](https://docs.sentry.io/product/snapshots/) to upload images for visual diffing.
 
 ```yaml
 env:
