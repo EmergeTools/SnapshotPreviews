@@ -220,6 +220,7 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
       let jsonURL = exportDir.appendingPathComponent(jsonFileName)
       do {
         let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(sidecar)
         try data.write(to: jsonURL, options: .atomic)
