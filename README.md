@@ -49,6 +49,7 @@ Generate PNGs for each Xcode preview with no code as part of an XCTest. Link you
 import SnapshottingTests
 
 class DemoAppPreviewTest: SnapshotTest {
+  override class var testFilePath: String? { #filePath }
 
   // Return the type names of previews like "MyApp.MyView._Previews" to selectively render only some previews
   override class func snapshotPreviews() -> [String]? {

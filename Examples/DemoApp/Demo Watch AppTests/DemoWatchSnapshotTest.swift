@@ -9,5 +9,5 @@ import Foundation
 import SnapshottingTests
 
 final class DemoWatchSnapshotTest: SnapshotTest {
-  
+  override class var testFilePath: String? { #filePath }
 }

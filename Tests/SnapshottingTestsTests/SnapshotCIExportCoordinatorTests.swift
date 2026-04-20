@@ -248,6 +248,42 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertNil(json["context"])
   }
 
+  func testSidecarWritesTestFilePathWhenProvided() throws {
+    let repoRoot = tempDir.appendingPathComponent("Repo", isDirectory: true)
+    let gitDir = repoRoot.appendingPathComponent(".git", isDirectory: true)
+    let testsDir = repoRoot.appendingPathComponent("Tests", isDirectory: true)
+    try FileManager.default.createDirectory(at: gitDir, withIntermediateDirectories: true)
+    try FileManager.default.createDirectory(at: testsDir, withIntermediateDirectories: true)
+
+    let coordinator = SnapshotCIExportCoordinator(exportDirectoryURL: tempDir)
+    let context = makeContext(baseFileName: "TestView_Preview")
+    let testFilePath = testsDir.appendingPathComponent("DemoAppSnapshotTest.swift").path
+
+    coordinator.enqueueExport(
+      result: makeSuccessResult(),
+      context: context,
+      testFilePath: testFilePath
+    )
+    coordinator.drain()
+
+    let json = try readJSON(forBaseFileName: context.baseFileName)
+
+    XCTAssertEqual(json["test_file_path"] as? String, "Tests/DemoAppSnapshotTest.swift")
+  }
+
+  func testSidecarEmitsNullTestFilePathWhenAbsent() throws {
+    let coordinator = SnapshotCIExportCoordinator(exportDirectoryURL: tempDir)
+    let context = makeContext(baseFileName: "TestView_Preview")
+
+    coordinator.enqueueExport(result: makeSuccessResult(), context: context)
+    coordinator.drain()
+
+    let json = try readJSON(forBaseFileName: context.baseFileName)
+
+    XCTAssertTrue(json.keys.contains("test_file_path"))
+    XCTAssertTrue(json["test_file_path"] is NSNull)
+  }
+
   // MARK: - Render Failure
 
   func testRenderFailureProducesNoFiles() {

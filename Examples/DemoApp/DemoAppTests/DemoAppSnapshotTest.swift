@@ -13,6 +13,8 @@ import SnapshottingTests
 import AccessibilitySnapshotCore
 
 class DemoAppSnapshotTest: SnapshotTest {
+  override class var testFilePath: String? { #filePath }
+
   override class func snapshotPreviews() -> [String]? {
     return nil
   }

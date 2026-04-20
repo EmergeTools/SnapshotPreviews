@@ -51,6 +51,24 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   }
   #endif
 
+  /// Absolute source path of the XCTest subclass, normalized to a repo-relative
+  /// path and recorded in the sidecar metadata under the `test_file_path` key
+  /// during CI export.
+  ///
+  /// The Swift runtime does not expose the source file for a class, so callers
+  /// must opt in from their own `.swift` file. Override in each `SnapshotTest`
+  /// subclass and return `#filePath` so the compiler captures the path at the
+  /// override site:
+  ///
+  /// ```swift
+  /// final class MySnapshotTest: SnapshotTest {
+  ///   override class var testFilePath: String? { #filePath }
+  /// }
+  /// ```
+  ///
+  /// Defaults to `nil`, which causes the sidecar to emit `test_file_path: null`.
+  open class var testFilePath: String? { nil }
+
   /// Determines the appropriate rendering strategy based on the current platform and OS version.
   ///
   /// This method selects between UIKit, AppKit, and SwiftUI rendering strategies depending on the available frameworks and OS version.
@@ -210,7 +228,11 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
         accessibilityEnabled: result.accessibilityEnabled,
         colorScheme: colorSchemeValue,
         appStoreSnapshot: result.appStoreSnapshot)
-      coordinator.enqueueExport(result: result, context: context)
+      coordinator.enqueueExport(
+        result: result,
+        context: context,
+        testFilePath: Self.testFilePath
+      )
     } else {
       do {
         let attachment = try XCTAttachment(image: result.image.get())

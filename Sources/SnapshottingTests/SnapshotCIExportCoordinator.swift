@@ -39,11 +39,13 @@ private struct SnapshotCIExportSidecar: Sendable, Encodable {
   let imageFileName: String
   let displayName: String
   let group: String
+  let testFilePath: String?
 
   private enum ExtraKeys: String, CodingKey {
     case image_file_name
     case display_name
     case group
+    case test_file_path
   }
 
   func encode(to encoder: Encoder) throws {
@@ -52,6 +54,7 @@ private struct SnapshotCIExportSidecar: Sendable, Encodable {
     try container.encode(imageFileName, forKey: .image_file_name)
     try container.encode(displayName, forKey: .display_name)
     try container.encode(group, forKey: .group)
+    try container.encode(testFilePath, forKey: .test_file_path)
   }
 }
 
@@ -164,6 +167,36 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     return typeName
   }
 
+  static func relativeTestFilePath(
+    _ testFilePath: String?,
+    fileManager: FileManager = .default
+  ) -> String? {
+    guard let testFilePath, !testFilePath.isEmpty else {
+      return nil
+    }
+
+    let fileURL = URL(fileURLWithPath: testFilePath).standardizedFileURL
+    var searchURL = fileURL.deletingLastPathComponent()
+
+    while searchURL.path != searchURL.deletingLastPathComponent().path {
+      let gitURL = searchURL.appendingPathComponent(".git")
+      if fileManager.fileExists(atPath: gitURL.path) {
+        let rootPath = searchURL.path
+        guard fileURL.path.hasPrefix(rootPath) else {
+          return testFilePath
+        }
+
+        let relativePath = String(fileURL.path.dropFirst(rootPath.count))
+          .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        return relativePath.isEmpty ? fileURL.lastPathComponent : relativePath
+      }
+
+      searchURL = searchURL.deletingLastPathComponent()
+    }
+
+    return testFilePath
+  }
+
   private static func canonicalDisplayName(for context: SnapshotContext) -> String {
     if let previewDisplayName = context.previewDisplayName, !previewDisplayName.isEmpty {
       return previewDisplayName
@@ -180,9 +213,15 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
   ///
   /// PNG encoding and file writes are dispatched to a concurrent background queue
   /// so the calling test can proceed to the next preview immediately.
+  ///
+  /// - Parameter testFilePath: Absolute source path of the XCTest subclass that
+  ///   produced this snapshot. This is normalized to a path relative to the
+  ///   enclosing Git repository root and emitted under the `test_file_path` key
+  ///   in the sidecar. Pass `nil` when the originating test does not supply one.
   func enqueueExport(
     result: SnapshotResult,
-    context: SnapshotContext
+    context: SnapshotContext,
+    testFilePath: String? = nil
   ) {
     let pngFileName = "\(context.baseFileName).png"
     let jsonFileName = "\(context.baseFileName).json"
@@ -193,6 +232,7 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
       typeDisplayName: context.typeDisplayName,
       typeName: context.typeName
     )
+    let normalizedTestFilePath = Self.relativeTestFilePath(testFilePath, fileManager: fileManager)
     let exportDir = exportDirectoryURL
     
     guard case .success(let image) = result.image else { return }
@@ -214,7 +254,8 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
         context: context,
         imageFileName: context.baseFileName,
         displayName: displayName,
-        group: group
+        group: group,
+        testFilePath: normalizedTestFilePath
       )
 
       let jsonURL = exportDir.appendingPathComponent(jsonFileName)
