@@ -79,40 +79,99 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertEqual(result, "Hello_World-2.0")
   }
 
-  func testResolvedFileNameComponentUsesDisplayNameWhenUnique() {
-    let component = SnapshotTest.resolvedFileNameComponent(
-      fileId: nil,
-      line: nil,
+  func testRawBaseFileNameUsesDisplayNameWhenUniqueForPreviewProvider() {
+    let fileName = makeRawBaseFileName(
       previewDisplayName: "Dark Mode",
-      previewIndex: 1,
-      duplicateDisplayNameCount: 1
+      displayNameOccurrenceCount: 1
     )
 
-    XCTAssertEqual(component, "Dark Mode")
+    XCTAssertEqual(fileName, "Test View_Dark Mode")
   }
 
-  func testResolvedFileNameComponentFallsBackToLineForDuplicatePreviewMacroDisplayNames() {
-    let component = SnapshotTest.resolvedFileNameComponent(
-      fileId: "Feature/LoginView.swift",
-      line: 42,
-      previewDisplayName: "Dark Mode",
-      previewIndex: 0,
-      duplicateDisplayNameCount: 2
-    )
+  func testRawBaseFileNameFallsBackToIndexForUnnamedPreviewProvider() {
+    let fileName = makeRawBaseFileName()
 
-    XCTAssertEqual(component, "line-42")
+    XCTAssertEqual(fileName, "Test View_0")
   }
 
-  func testResolvedFileNameComponentFallsBackToIndexForDuplicatePreviewProviderDisplayNames() {
-    let component = SnapshotTest.resolvedFileNameComponent(
-      fileId: nil,
-      line: nil,
+  func testRawBaseFileNameUsesDisplayNameOrdinalForDuplicatePreviewProviderDisplayNames() {
+    let fileName = makeRawBaseFileName(
       previewDisplayName: "Dark Mode",
       previewIndex: 3,
-      duplicateDisplayNameCount: 2
+      displayNameOccurrenceCount: 2,
+      duplicateDisplayNameOrdinal: 1
     )
 
-    XCTAssertEqual(component, "3")
+    XCTAssertEqual(fileName, "Test View_Dark Mode_1")
+  }
+
+  func testRawBaseFileNameUsesDisplayNameForSinglePreviewMacro() {
+    let fileName = makeRawBaseFileName(
+      typeDisplayName: "Login View",
+      fileId: "Feature/LoginView.swift",
+      previewDisplayName: "Dark Mode",
+      line: 42,
+      displayNameOccurrenceCount: 1
+    )
+
+    XCTAssertEqual(fileName, "Feature/LoginView.swift_Dark Mode")
+  }
+
+  func testRawBaseFileNameFallsBackToLineForAnonymousSinglePreviewMacro() {
+    let fileName = makeRawBaseFileName(
+      typeDisplayName: "Login View",
+      fileId: "Feature/LoginView.swift",
+      line: 42
+    )
+
+    XCTAssertEqual(fileName, "Feature/LoginView.swift_line-42")
+  }
+
+  func testRawBaseFileNameUsesDisplayNameForMultiPreviewMacro() {
+    let fileName = makeRawBaseFileName(
+      typeDisplayName: "Login View",
+      fileId: "Feature/LoginView.swift",
+      previewDisplayName: "Dark Mode",
+      line: 42,
+      displayNameOccurrenceCount: 1
+    )
+
+    XCTAssertEqual(fileName, "Feature/LoginView.swift_Dark Mode")
+  }
+
+  func testRawBaseFileNameFallsBackToLineForAnonymousMultiPreviewMacro() {
+    let fileName = makeRawBaseFileName(
+      typeDisplayName: "Login View",
+      fileId: "Feature/LoginView.swift",
+      line: 42
+    )
+
+    XCTAssertEqual(fileName, "Feature/LoginView.swift_line-42")
+  }
+
+  func testRawBaseFileNameUsesDisplayNameOrdinalForDuplicateNamedMultiPreviewMacro() {
+    let fileName = makeRawBaseFileName(
+      typeDisplayName: "Login View",
+      fileId: "Feature/LoginView.swift",
+      previewDisplayName: "Dark Mode",
+      line: 42,
+      displayNameOccurrenceCount: 2,
+      duplicateDisplayNameOrdinal: 1
+    )
+
+    XCTAssertEqual(fileName, "Feature/LoginView.swift_Dark Mode_1")
+  }
+
+  func testRawBaseFileNameFallsBackToLineWhenDuplicateNamedMultiPreviewMacroOrdinalMissing() {
+    let fileName = makeRawBaseFileName(
+      typeDisplayName: "Login View",
+      fileId: "Feature/LoginView.swift",
+      previewDisplayName: "Dark Mode",
+      line: 42,
+      displayNameOccurrenceCount: 2
+    )
+
+    XCTAssertEqual(fileName, "Feature/LoginView.swift_line-42")
   }
 
   // MARK: - Successful Export
@@ -312,6 +371,26 @@ extension SnapshotCIExportCoordinatorTests {
   private func readJSON(forBaseFileName baseFileName: String) throws -> [String: Any] {
     let data = try Data(contentsOf: tempDir.appendingPathComponent("\(baseFileName).json"))
     return try JSONSerialization.jsonObject(with: data) as! [String: Any]
+  }
+
+  private func makeRawBaseFileName(
+    typeDisplayName: String = "Test View",
+    fileId: String? = nil,
+    previewDisplayName: String? = nil,
+    previewIndex: Int = 0,
+    line: Int? = nil,
+    displayNameOccurrenceCount: Int = 0,
+    duplicateDisplayNameOrdinal: Int? = nil
+  ) -> String {
+    SnapshotTest.FileNameResolver.rawBaseFileName(
+      typeDisplayName: typeDisplayName,
+      fileId: fileId,
+      previewDisplayName: previewDisplayName,
+      previewIndex: previewIndex,
+      line: line,
+      displayNameOccurrenceCount: displayNameOccurrenceCount,
+      duplicateDisplayNameOrdinal: duplicateDisplayNameOrdinal
+    )
   }
 
   private func makeContext(
