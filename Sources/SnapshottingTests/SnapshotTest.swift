@@ -206,7 +206,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
         declaredDevice: preview.device?.rawValue,
         simulatorDeviceName: ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"],
         simulatorModelIdentifier: ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"],
-        precision: result.precision,
+        diffThreshold: SnapshotCIExportCoordinator.diffThreshold(for: result.precision),
         accessibilityEnabled: result.accessibilityEnabled,
         colorScheme: colorSchemeValue,
         appStoreSnapshot: result.appStoreSnapshot)

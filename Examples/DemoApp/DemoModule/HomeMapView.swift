@@ -46,6 +46,6 @@ struct HomeMapView: View {
 struct HomeMapView_Previews: PreviewProvider {
     static var previews: some View {
         HomeMapView(address: "123 Main St, San Francisco, CA")
-        .emergeSnapshotPrecision(0.9)
+        .diffThreshold(0.1)
     }
 }
