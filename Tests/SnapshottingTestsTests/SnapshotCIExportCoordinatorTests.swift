@@ -307,6 +307,46 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertNil(json["context"])
   }
 
+  func testDiffThresholdIsDerivedFromPrecision() {
+    XCTAssertEqual(SnapshotCIExportCoordinator.diffThreshold(for: 1.0) ?? .zero, 0.0, accuracy: 0.000_1)
+    XCTAssertEqual(SnapshotCIExportCoordinator.diffThreshold(for: 0.8) ?? .zero, 0.2, accuracy: 0.000_1)
+    XCTAssertNil(SnapshotCIExportCoordinator.diffThreshold(for: nil))
+  }
+
+  func testSidecarIncludesDiffThreshold() throws {
+    let coordinator = SnapshotCIExportCoordinator(exportDirectoryURL: tempDir)
+    let context = makeContext(
+      baseFileName: "TestView_DiffThreshold",
+      diffThreshold: 0.2
+    )
+
+    coordinator.enqueueExport(result: makeSuccessResult(), context: context)
+    coordinator.drain()
+
+    let json = try readJSON(forBaseFileName: context.baseFileName)
+    let diffThreshold = try XCTUnwrap(json["diff_threshold"] as? Double)
+
+    XCTAssertEqual(diffThreshold, 0.2, accuracy: 0.000_1)
+  }
+
+  func testSidecarIncludesDiffThresholdWhenDerivedFromPrecision() throws {
+    let coordinator = SnapshotCIExportCoordinator(exportDirectoryURL: tempDir)
+    let context = makeContext(
+      baseFileName: "TestView_BothThresholds",
+      diffThreshold: 0.2
+    )
+
+    coordinator.enqueueExport(
+      result: makeSuccessResult(precision: 0.95),
+      context: context)
+    coordinator.drain()
+
+    let json = try readJSON(forBaseFileName: context.baseFileName)
+    let diffThreshold = try XCTUnwrap(json["diff_threshold"] as? Double)
+
+    XCTAssertEqual(diffThreshold, 0.2, accuracy: 0.000_1)
+  }
+
   // MARK: - Render Failure
 
   func testRenderFailureProducesNoFiles() {
@@ -402,6 +442,7 @@ extension SnapshotCIExportCoordinatorTests {
     previewDisplayName: String? = "Preview",
     previewId: String = "0",
     previewIndex: Int = 0,
+    diffThreshold: Float? = nil,
     colorScheme: String? = nil
   ) -> SnapshotContext {
     SnapshotContext(
@@ -418,7 +459,7 @@ extension SnapshotCIExportCoordinatorTests {
       declaredDevice: nil,
       simulatorDeviceName: nil,
       simulatorModelIdentifier: nil,
-      precision: nil,
+      diffThreshold: diffThreshold,
       accessibilityEnabled: nil,
       colorScheme: colorScheme,
       appStoreSnapshot: nil
@@ -451,10 +492,10 @@ extension SnapshotCIExportCoordinatorTests {
     #endif
   }
 
-  private func makeSuccessResult() -> SnapshotResult {
+  private func makeSuccessResult(precision: Float? = nil) -> SnapshotResult {
     SnapshotResult(
       image: .success(makeTestImage()),
-      precision: nil,
+      precision: precision,
       accessibilityEnabled: nil,
       colorScheme: nil,
       appStoreSnapshot: nil

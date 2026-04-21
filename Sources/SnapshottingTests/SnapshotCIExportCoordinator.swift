@@ -26,7 +26,7 @@ struct SnapshotContext: Sendable, Encodable {
   let declaredDevice: String?
   let simulatorDeviceName: String?
   let simulatorModelIdentifier: String?
-  let precision: Float?
+  let diffThreshold: Float?
   let accessibilityEnabled: Bool?
   let colorScheme: String?
   let appStoreSnapshot: Bool?
@@ -60,6 +60,10 @@ private struct SnapshotCIExportSidecar: Sendable, Encodable {
 final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
 
   static let envKey = "SNAPSHOTS_EXPORT_DIR"
+
+  static func diffThreshold(for precision: Float?) -> Float? {
+    precision.map { 1 - $0 }
+  }
 
   private let exportDirectoryURL: URL
   private let writeQueue: OperationQueue
