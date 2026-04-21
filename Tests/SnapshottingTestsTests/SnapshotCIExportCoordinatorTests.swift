@@ -299,11 +299,11 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
 
     let json = try readJSON(forBaseFileName: context.baseFileName)
 
-    XCTAssertEqual(json["typeName"] as? String, context.typeName)
+    XCTAssertEqual(json["type_name"] as? String, context.typeName)
     XCTAssertEqual(json["orientation"] as? String, "portrait")
-    XCTAssertEqual(json["previewId"] as? String, "7")
+    XCTAssertEqual(json["preview_id"] as? String, "7")
     XCTAssertEqual(json["line"] as? Int, 99)
-    XCTAssertEqual(json["colorScheme"] as? String, "dark")
+    XCTAssertEqual(json["color_scheme"] as? String, "dark")
     XCTAssertNil(json["context"])
   }
 
