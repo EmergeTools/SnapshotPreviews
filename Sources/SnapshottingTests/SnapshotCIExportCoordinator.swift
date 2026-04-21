@@ -164,6 +164,14 @@ final class SnapshotCIExportCoordinator: NSObject, XCTestObservation {
     return typeName
   }
 
+  static func canonicalGroup(for previewType: SnapshotPreviewsCore.PreviewType) -> String {
+    canonicalGroup(
+      fileId: previewType.fileID,
+      typeDisplayName: previewType.displayName,
+      typeName: previewType.typeName
+    )
+  }
+
   private static func canonicalDisplayName(for context: SnapshotContext) -> String {
     if let previewDisplayName = context.previewDisplayName, !previewDisplayName.isEmpty {
       return previewDisplayName
