@@ -36,7 +36,6 @@ private struct SnapshotSidecar: Sendable, Encodable {
   let group: String
   let tags: Tags?
   let diffThreshold: Float?
-  let colorMode: String?
   let context: Context
 
   struct Tags: Sendable, Encodable {
@@ -47,6 +46,7 @@ private struct SnapshotSidecar: Sendable, Encodable {
   struct Context: Sendable, Encodable {
     let testName: String
     let accessibilityEnabled: Bool
+    let preferredColorScheme: String?
     let simulator: Simulator?
     let preview: Preview
 
@@ -79,7 +79,6 @@ private struct SnapshotSidecar: Sendable, Encodable {
     self.displayName = displayName
     self.group = group
     self.diffThreshold = context.diffThreshold
-    self.colorMode = context.colorScheme
 
     let orientation = context.orientation.isEmpty ? nil : context.orientation
     let device = context.simulatorDeviceName.flatMap { $0.isEmpty ? nil : $0 }
@@ -98,6 +97,7 @@ private struct SnapshotSidecar: Sendable, Encodable {
     self.context = Context(
       testName: context.testName,
       accessibilityEnabled: context.accessibilityEnabled ?? false,
+      preferredColorScheme: context.colorScheme,
       simulator: simulator,
       preview: Context.Preview(
         index: context.previewIndex,

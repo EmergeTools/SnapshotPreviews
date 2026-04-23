@@ -305,12 +305,13 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertEqual(preview["index"] as? Int, 0)
     XCTAssertEqual(preview["line"] as? Int, 99)
     XCTAssertEqual(tags["orientation"] as? String, "portrait")
-    XCTAssertEqual(json["color_mode"] as? String, "dark")
+    XCTAssertEqual(nestedContext["preferred_color_scheme"] as? String, "dark")
     XCTAssertEqual(nestedContext["test_name"] as? String, context.testName)
 
     // Fields that previously sat at the top level no longer do.
     XCTAssertNil(json["type_name"])
     XCTAssertNil(json["line"])
+    XCTAssertNil(json["color_mode"])
     XCTAssertNil(json["color_scheme"])
     XCTAssertNil(json["orientation"])
   }
