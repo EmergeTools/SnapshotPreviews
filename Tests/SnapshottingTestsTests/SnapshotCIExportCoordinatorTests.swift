@@ -296,7 +296,6 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
 
     let json = try readJSON(forBaseFileName: context.baseFileName)
     let nestedContext = try XCTUnwrap(json["context"] as? [String: Any])
-    let tags = try XCTUnwrap(json["tags"] as? [String: Any])
     let preview = try XCTUnwrap(nestedContext["preview"] as? [String: Any])
 
     XCTAssertEqual(preview["container_type_name"] as? String, context.typeName)
@@ -304,11 +303,12 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertEqual(preview["display_name"] as? String, context.previewDisplayName)
     XCTAssertEqual(preview["index"] as? Int, 0)
     XCTAssertEqual(preview["line"] as? Int, 99)
-    XCTAssertEqual(tags["orientation"] as? String, "portrait")
-    XCTAssertEqual(nestedContext["preferred_color_scheme"] as? String, "dark")
+    XCTAssertEqual(preview["orientation"] as? String, "portrait")
+    XCTAssertEqual(preview["preferred_color_scheme"] as? String, "dark")
     XCTAssertEqual(nestedContext["test_name"] as? String, context.testName)
 
     // Fields that previously sat at the top level no longer do.
+    XCTAssertNil(json["tags"])
     XCTAssertNil(json["type_name"])
     XCTAssertNil(json["line"])
     XCTAssertNil(json["color_mode"])

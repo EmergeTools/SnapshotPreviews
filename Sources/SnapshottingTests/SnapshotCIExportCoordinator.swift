@@ -34,19 +34,12 @@ struct SnapshotContext: Sendable {
 private struct SnapshotSidecar: Sendable, Encodable {
   let displayName: String
   let group: String
-  let tags: Tags?
   let diffThreshold: Float?
   let context: Context
-
-  struct Tags: Sendable, Encodable {
-    let orientation: String?
-    let device: String?
-  }
 
   struct Context: Sendable, Encodable {
     let testName: String
     let accessibilityEnabled: Bool
-    let preferredColorScheme: String?
     let simulator: Simulator?
     let preview: Preview
 
@@ -66,6 +59,11 @@ private struct SnapshotSidecar: Sendable, Encodable {
       /// Human-readable label derived from the container's type name or file name.
       /// Not author-declared — there's no SwiftUI API to set it.
       let containerDisplayName: String
+      /// The author-declared `.preferredColorScheme(_:)` value, if set. `"light"` or `"dark"`.
+      let preferredColorScheme: String?
+      /// The author-declared preview interface orientation (e.g. `"portrait"`, `"landscapeLeft"`).
+      /// Defaults to `"portrait"` when the author doesn't declare one.
+      let orientation: String?
       let line: Int?
     }
   }
@@ -80,12 +78,6 @@ private struct SnapshotSidecar: Sendable, Encodable {
     self.group = group
     self.diffThreshold = context.diffThreshold
 
-    let orientation = context.orientation.isEmpty ? nil : context.orientation
-    let device = context.simulatorDeviceName.flatMap { $0.isEmpty ? nil : $0 }
-    self.tags = (orientation == nil && device == nil)
-      ? nil
-      : Tags(orientation: orientation, device: device)
-
     let simulator: Context.Simulator? =
       (context.simulatorDeviceName == nil && context.simulatorModelIdentifier == nil)
       ? nil
@@ -97,13 +89,14 @@ private struct SnapshotSidecar: Sendable, Encodable {
     self.context = Context(
       testName: context.testName,
       accessibilityEnabled: context.accessibilityEnabled ?? false,
-      preferredColorScheme: context.colorScheme,
       simulator: simulator,
       preview: Context.Preview(
         index: context.previewIndex,
         displayName: context.previewDisplayName,
         containerTypeName: context.typeName,
         containerDisplayName: context.typeDisplayName,
+        preferredColorScheme: context.colorScheme,
+        orientation: context.orientation.isEmpty ? nil : context.orientation,
         line: context.line
       )
     )
