@@ -206,7 +206,6 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
 
     let json = try readJSON(forBaseFileName: context.baseFileName)
 
-    XCTAssertEqual(json["image_file_name"] as? String, context.baseFileName)
     XCTAssertEqual(json["display_name"] as? String, "Dark Mode")
     XCTAssertEqual(json["group"] as? String, "Login Screen")
   }
@@ -254,7 +253,6 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
       fileId: nil,
       line: nil,
       previewDisplayName: nil,
-      previewId: "0",
       previewIndex: 0
     )
 
@@ -285,12 +283,11 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     XCTAssertEqual(json["group"] as? String, "MyModule.TestView_Previews")
   }
 
-  func testSidecarFlattensContextFields() throws {
+  func testSidecarNestsContextFieldsUnderContextKey() throws {
     let coordinator = SnapshotCIExportCoordinator(exportDirectoryURL: tempDir)
     let context = makeContext(
       baseFileName: "TestView_Preview",
       line: 99,
-      previewId: "7",
       colorScheme: "dark"
     )
 
@@ -298,13 +295,25 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
     coordinator.drain()
 
     let json = try readJSON(forBaseFileName: context.baseFileName)
+    let nestedContext = try XCTUnwrap(json["context"] as? [String: Any])
+    let preview = try XCTUnwrap(nestedContext["preview"] as? [String: Any])
 
-    XCTAssertEqual(json["type_name"] as? String, context.typeName)
-    XCTAssertEqual(json["orientation"] as? String, "portrait")
-    XCTAssertEqual(json["preview_id"] as? String, "7")
-    XCTAssertEqual(json["line"] as? Int, 99)
-    XCTAssertEqual(json["color_scheme"] as? String, "dark")
-    XCTAssertNil(json["context"])
+    XCTAssertEqual(preview["container_type_name"] as? String, context.typeName)
+    XCTAssertEqual(preview["container_display_name"] as? String, context.typeDisplayName)
+    XCTAssertEqual(preview["display_name"] as? String, context.previewDisplayName)
+    XCTAssertEqual(preview["index"] as? Int, 0)
+    XCTAssertEqual(preview["line"] as? Int, 99)
+    XCTAssertEqual(preview["orientation"] as? String, "portrait")
+    XCTAssertEqual(preview["preferred_color_scheme"] as? String, "dark")
+    XCTAssertEqual(nestedContext["test_name"] as? String, context.testName)
+
+    // Fields that previously sat at the top level no longer do.
+    XCTAssertNil(json["tags"])
+    XCTAssertNil(json["type_name"])
+    XCTAssertNil(json["line"])
+    XCTAssertNil(json["color_mode"])
+    XCTAssertNil(json["color_scheme"])
+    XCTAssertNil(json["orientation"])
   }
 
   func testDiffThresholdIsDerivedFromPrecision() {
@@ -387,7 +396,6 @@ final class SnapshotCIExportCoordinatorTests: XCTestCase {
       makeContext(
         baseFileName: "View\(i)_Preview",
         typeName: "Module.View\(i)",
-        previewId: "\(i)",
         previewIndex: i
       )
     }
@@ -440,7 +448,6 @@ extension SnapshotCIExportCoordinatorTests {
     fileId: String? = nil,
     line: Int? = nil,
     previewDisplayName: String? = "Preview",
-    previewId: String = "0",
     previewIndex: Int = 0,
     diffThreshold: Float? = nil,
     colorScheme: String? = nil
@@ -454,15 +461,12 @@ extension SnapshotCIExportCoordinatorTests {
       line: line,
       previewDisplayName: previewDisplayName,
       previewIndex: previewIndex,
-      previewId: previewId,
       orientation: "portrait",
-      declaredDevice: nil,
       simulatorDeviceName: nil,
       simulatorModelIdentifier: nil,
       diffThreshold: diffThreshold,
       accessibilityEnabled: nil,
-      colorScheme: colorScheme,
-      appStoreSnapshot: nil
+      colorScheme: colorScheme
     )
   }
 

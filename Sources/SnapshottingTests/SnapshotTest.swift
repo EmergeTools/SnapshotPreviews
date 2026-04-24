@@ -11,14 +11,14 @@ import enum SwiftUI.ColorScheme
 import XCTest
 
 extension ColorScheme {
-  var stringValue: String {
+  var stringValue: String? {
     switch self {
     case .light:
       return "light"
     case .dark:
       return "dark"
     @unknown default:
-      return "unknown"
+      return nil
     }
   }
 }
@@ -271,7 +271,7 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
 
     let baseFileName = SnapshotCIExportCoordinator.sanitize(rawBaseFileName)
     if let coordinator = Self.ciExportCoordinator {
-      let colorSchemeValue = result.colorScheme?.stringValue
+      let colorSchemeValue = result.colorScheme.flatMap { $0.stringValue }
       let context = SnapshotContext(
         baseFileName: baseFileName,
         testName: name,
@@ -281,15 +281,12 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
         line: previewType.line,
         previewDisplayName: preview.displayName,
         previewIndex: discoveredPreview.index,
-        previewId: preview.previewId,
         orientation: preview.orientation.id,
-        declaredDevice: preview.device?.rawValue,
         simulatorDeviceName: ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"],
         simulatorModelIdentifier: ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"],
         diffThreshold: SnapshotCIExportCoordinator.diffThreshold(for: result.precision),
         accessibilityEnabled: result.accessibilityEnabled,
-        colorScheme: colorSchemeValue,
-        appStoreSnapshot: result.appStoreSnapshot)
+        colorScheme: colorSchemeValue)
       coordinator.enqueueExport(result: result, context: context)
     } else {
       do {
