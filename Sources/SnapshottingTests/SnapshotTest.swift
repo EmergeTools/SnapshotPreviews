@@ -179,6 +179,20 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
     nil
   }
 
+  /// Returns an optional array of module names to include in snapshot testing.
+  ///
+  /// Elements should be exact module names from the preview type name, such as "MyModule" in "MyModule.MyView_Previews".
+  open class func snapshotPreviewModules() -> [String]? {
+    nil
+  }
+
+  /// Returns an optional array of module names to exclude from snapshot testing.
+  ///
+  /// Elements should be exact module names from the preview type name, such as "MyModule" in "MyModule.MyView_Previews".
+  open class func excludedSnapshotPreviewModules() -> [String]? {
+    nil
+  }
+
   #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
   open class func setupA11y() -> ((UIViewController, UIWindow, PreviewLayout) -> UIView)? {
     return nil
@@ -216,7 +230,12 @@ open class SnapshotTest: PreviewBaseTest, PreviewFilters {
   override class func discoverPreviews() -> [DiscoveredPreview] {
     ciExportCoordinator = SnapshotCIExportCoordinator.createFromEnvironment()
 
-    previews = FindPreviews.findPreviews(included: Self.snapshotPreviews(), excluded: Self.excludedSnapshotPreviews())
+    previews = FindPreviews.findPreviews(
+      included: Self.snapshotPreviews(),
+      excluded: Self.excludedSnapshotPreviews(),
+      includedModules: Self.snapshotPreviewModules(),
+      excludedModules: Self.excludedSnapshotPreviewModules()
+    )
     fileNameResolver = FileNameResolver(previews: previews)
     return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
