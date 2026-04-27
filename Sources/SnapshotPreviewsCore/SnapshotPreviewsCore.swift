@@ -150,6 +150,24 @@ public struct PreviewType: Hashable, Identifiable {
 
 // The enum provides a namespace
 public enum FindPreviews {
+  static func moduleName(typeName: String) -> String {
+    String(typeName.split(separator: ".", maxSplits: 1).first ?? "")
+  }
+
+  static func shouldIncludeModule(typeName: String, includedModulesSet: Set<String>?, excludedModulesSet: Set<String>?) -> Bool {
+    let module = moduleName(typeName: typeName)
+
+    if let excludedModulesSet, excludedModulesSet.contains(module) {
+      return false
+    }
+
+    guard let includedModulesSet else {
+      return true
+    }
+
+    return includedModulesSet.contains(module)
+  }
+
   @available(iOS 16.0, macOS 13.0, tvOS 16.0, *)
   private static func shouldInclude(name: String, excludedPreviewsSet: Set<String>?, previewsSet: Set<String>?) -> Bool {
     if let excludedPreviewsSet {
@@ -181,11 +199,22 @@ public enum FindPreviews {
   }
 
   @MainActor
-  public static func findPreviews(included: [String]?, excluded: [String]?) -> [PreviewType] {
+  public static func findPreviews(
+    included: [String]?,
+    excluded: [String]?,
+    includedModules: [String]? = nil,
+    excludedModules: [String]? = nil
+  ) -> [PreviewType] {
     let previewsSet = included.map { Set($0) }
     let excludedPreviewsSet = excluded.map { Set($0) }
+    let includedModulesSet = includedModules.map { Set($0) }
+    let excludedModulesSet = excludedModules.map { Set($0) }
 
     let previewTypes = findPreviews { name, proto in
+      if !shouldIncludeModule(typeName: name, includedModulesSet: includedModulesSet, excludedModulesSet: excludedModulesSet) {
+        return false
+      }
+
       guard #available(iOS 16.0, macOS 13.0, tvOS 16.0, *) else { return true }
       guard proto == "PreviewProvider" else { return true }
 

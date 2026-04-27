@@ -20,6 +20,14 @@ class DemoAppSnapshotTest: SnapshotTest {
   override class func excludedSnapshotPreviews() -> [String]? {
     return nil
   }
+
+  override class func snapshotPreviewModules() -> [String]? {
+    return nil
+  }
+
+  override class func excludedSnapshotPreviewModules() -> [String]? {
+    return nil
+  }
   
   #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
   override open class func setupA11y() -> ((UIViewController, UIWindow, PreviewLayout) -> UIView)? {

@@ -32,6 +32,20 @@ open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
     nil
   }
 
+  /// Returns an optional array of module names to include in preview layout testing.
+  ///
+  /// Elements should be exact module names from the preview type name, such as "MyModule" in "MyModule.MyView_Previews".
+  open class func snapshotPreviewModules() -> [String]? {
+    nil
+  }
+
+  /// Returns an optional array of module names to exclude from preview layout testing.
+  ///
+  /// Elements should be exact module names from the preview type name, such as "MyModule" in "MyModule.MyView_Previews".
+  open class func excludedSnapshotPreviewModules() -> [String]? {
+    nil
+  }
+
   static private var previews: [PreviewType] = []
 
   /// Discovers all relevant previews based on inclusion and exclusion filters. Subclasses should NOT override this method.
@@ -40,7 +54,12 @@ open class PreviewLayoutTest: PreviewBaseTest, PreviewFilters {
   /// - Returns: An array of `DiscoveredPreview` objects representing the found previews.
   @MainActor
   override class func discoverPreviews() -> [DiscoveredPreview] {
-    previews = FindPreviews.findPreviews(included: Self.snapshotPreviews(), excluded: Self.excludedSnapshotPreviews())
+    previews = FindPreviews.findPreviews(
+      included: Self.snapshotPreviews(),
+      excluded: Self.excludedSnapshotPreviews(),
+      includedModules: Self.snapshotPreviewModules(),
+      excludedModules: Self.excludedSnapshotPreviewModules()
+    )
     return previews.map { DiscoveredPreview.from(previewType: $0) }
   }
 
