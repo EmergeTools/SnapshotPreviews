@@ -121,8 +121,15 @@ class Snapshots {
 
     let snapshotPreviews = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEWS"].map { try! JSONDecoder().decode([String].self, from: $0.data(using: .utf8)!) }
     let excludedSnapshotPreviews = ProcessInfo.processInfo.environment["EXCLUDED_SNAPSHOT_PREVIEWS"].map { try! JSONDecoder().decode([String].self, from: $0.data(using: .utf8)!) }
+    let snapshotPreviewModules = ProcessInfo.processInfo.environment["SNAPSHOT_PREVIEW_MODULES"].map { try! JSONDecoder().decode([String].self, from: $0.data(using: .utf8)!) }
+    let excludedSnapshotPreviewModules = ProcessInfo.processInfo.environment["EXCLUDED_SNAPSHOT_PREVIEW_MODULES"].map { try! JSONDecoder().decode([String].self, from: $0.data(using: .utf8)!) }
 
-    let previewTypes = FindPreviews.findPreviews(included: snapshotPreviews, excluded: excludedSnapshotPreviews)
+    let previewTypes = FindPreviews.findPreviews(
+      included: snapshotPreviews,
+      excluded: excludedSnapshotPreviews,
+      includedModules: snapshotPreviewModules,
+      excludedModules: excludedSnapshotPreviewModules
+    )
 
     let json = previewTypes.map { preview -> [String: Any]? in
       var data = [

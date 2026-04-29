@@ -21,4 +21,12 @@ public protocol PreviewFilters {
   /// Override this method to specify which previews should be excluded from the snapshot test.
   /// - Returns: An optional array of String containing the names of previews to be excluded.
   static func excludedSnapshotPreviews() -> [String]?
+
+  /// Override to return a list of module names that should be snapshotted.
+  /// Elements should be exact module names from the type name prefix, e.g. "MyModule" for "MyModule.MyView_Previews".
+  static func snapshotPreviewModules() -> [String]?
+
+  /// Override to return a list of module names that should NOT be snapshotted.
+  /// Elements should be exact module names from the type name prefix, e.g. "MyModule" for "MyModule.MyView_Previews".
+  static func excludedSnapshotPreviewModules() -> [String]?
 }

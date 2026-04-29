@@ -17,7 +17,7 @@ import XCTest
 /// Usage: Create a subclass of it in your project and override any needed methods
 /// (ex. you only want to check for specific accessibility audit types rather than "all").
 @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
-open class AccessibilityPreviewTest: PreviewBaseTest {
+open class AccessibilityPreviewTest: PreviewBaseTest, PreviewFilters {
 
   /// Returns an instance of XCUIApplication for testing.
   ///
@@ -46,6 +46,22 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
   ///
   /// - Returns: An optional array of Strings representing preview type names to exclude, or `nil` to exclude none.
   open class func excludedSnapshotPreviews() -> [String]? {
+    nil
+  }
+
+  /// Specifies which modules should be included in snapshotting.
+  ///
+  /// Override this method to return exact module names from preview type names.
+  /// For example, for "MyModule.MyView_Previews", the module is "MyModule".
+  open class func snapshotPreviewModules() -> [String]? {
+    nil
+  }
+
+  /// Specifies which modules should be excluded from snapshotting.
+  ///
+  /// Override this method to return exact module names from preview type names.
+  /// For example, for "MyModule.MyView_Previews", the module is "MyModule".
+  open class func excludedSnapshotPreviewModules() -> [String]? {
     nil
   }
 
@@ -99,6 +115,18 @@ open class AccessibilityPreviewTest: PreviewBaseTest {
     if let excludedPreviews = Self.excludedSnapshotPreviews() {
       if let jsonData = try? JSONSerialization.data(withJSONObject: excludedPreviews, options: []) {
         launchEnvironment["EXCLUDED_SNAPSHOT_PREVIEWS"] = String(data: jsonData, encoding: .utf8)
+      }
+    }
+
+    if let modules = Self.snapshotPreviewModules() {
+      if let jsonData = try? JSONSerialization.data(withJSONObject: modules, options: []) {
+        launchEnvironment["SNAPSHOT_PREVIEW_MODULES"] = String(data: jsonData, encoding: .utf8)
+      }
+    }
+
+    if let excludedModules = Self.excludedSnapshotPreviewModules() {
+      if let jsonData = try? JSONSerialization.data(withJSONObject: excludedModules, options: []) {
+        launchEnvironment["EXCLUDED_SNAPSHOT_PREVIEW_MODULES"] = String(data: jsonData, encoding: .utf8)
       }
     }
 

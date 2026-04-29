@@ -64,6 +64,18 @@ class DemoAppPreviewTest: SnapshotTest {
 
 Note that there are no test functions; they are automatically added at runtime by `SnapshotTest`. You can return a list of previews from the `snapshotPreviews()` function based on what preview you are trying to locally validate. The snapshots will be added as attachments in Xcode’s test results.
 
+### Module-level filters
+
+You can also filter previews by module name using exact string matching:
+
+```swift
+// Only snapshot previews from these modules
+override class func snapshotPreviewModules() -> [String]? { ["MyFeatureModule"] }
+
+// Skip previews from these modules
+override class func excludedSnapshotPreviewModules() -> [String]? { ["LegacyModule"] }
+```
+
 > [!NOTE]
 > When you use Preview macros (`#Preview("Display Name")`) the name of the snapshot uses the file path and the name, for example: "MyModule/MyFile.swift:Display Name"
 
